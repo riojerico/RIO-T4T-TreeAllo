@@ -275,7 +275,7 @@ $qty_akhir=$item-$total_allo;
                                         ?>
                                   
                                  <!-- SUBMIT BUTTON ke adding 1-->
-                                  <form  id="form" action="admin.php?4c079fe60164545aca6a15d1da3842b2485f19446e3798321e88b99316830961" method="post">
+                                  <form  id="form" action="admin.php?a1a839ee8e9795202c5ebbcbe25ee83603d3bca16780d2fe5a2a52e2872a520f" method="post">
                                   <div align="center">
                                   
 
@@ -324,7 +324,7 @@ $qty_akhir=$item-$total_allo;
                                    elseif ($unallocated==0) {
                                      ?>
                                      <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="action/blocking-process/ac_container.php" method="post">
+                                  <form  id="form" action="action/blocking-process/ac_donation.php" method="post">
                                   <div align="center">
                                   <?php $pohon=$_REQUEST['total_trees']; 
                                         $unallocated=$total_allo-$pohon;

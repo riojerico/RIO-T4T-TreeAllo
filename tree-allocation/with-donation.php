@@ -51,12 +51,14 @@
                                     $no_ship = $_REQUEST['no_ship'] ;
                                     if ($parts) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
-
+                                      $date=date("dmy");
+                                      $jml_ns=mysql_fetch_array(mysql_query("select count(*) from t4t_shipment where bl like '%$date%' group by id_part='$id_part'"));
+                                      $jml_ns2=$jml_ns[0]+1;
                                   ?>
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">No Shipment</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" readonly="" name="no_ship" value="<?php echo $no_ship?>" required>
+                                          <input type="text" class="form-control" readonly="" name="no_ship" value="<?php echo $id_comp[0];echo $date;?><?php echo $jml_ns2 ?>" required>
                                       </div>
                                       <label class="col-sm-2 "></label>
                                       <div class="col-sm-10">
@@ -76,7 +78,13 @@
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">BL</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $data_ship['bl']?>" required>
+                                      <?php 
+                                      $bl=$_REQUEST['bl'];
+
+                                      $jml_bl=mysql_fetch_array(mysql_query("select count(*) from t4t_wins where bl like '%$date%' group by id_part='$id_comp[0]'"));
+                                      $jml_bl2=$jml_bl[0]+1; 
+                                      ?>
+                                          <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $id_comp[0]?>BL<?php echo $jml_bl2 ?><?php echo $date ?>" required>
                                       </div>
                                   </div>
                                     <!-- CLOSE BL -->
@@ -88,7 +96,7 @@
                                         $tot_wins=$_REQUEST['tot_wins'];
                                       ?>
                                       <div class="col-sm-10">
-                                          <input type="number" class="form-control" name="tot_wins" value="<?php echo $tot_wins ?>" required>
+                                          <input type="number" class="form-control" name="tot_wins" value="<?php echo $tot_wins ?>" required placeholder="WINS">
                                       </div>
                                   </div>
                                   
@@ -100,17 +108,30 @@
                                   <?php $total_allo=$_REQUEST['total_allo'];
                                   //echo $total_allo; ?>
 
-                                      <label class="col-sm-2 control-label">Total Allocation <b>(Tree)</b></label>
+                                      <label class="col-sm-2 control-label">Total Allocation <b>(Trees)</b></label>
                                       <div class="col-sm-10">
-                                          <input type="number" class="form-control a" onchange="hitung();" name="total_allo" value="<?php echo $total_allo;?>" required="" min="<?php echo $tot_wins ?>">
+                                          <input type="number" class="form-control a" onchange="hitung();" name="total_allo" value="<?php echo $total_allo;?>" required="" min="<?php echo $tot_wins ?>" placeholder="Tree Allocation">
                                       </div>
                                   </div>
                                       <!-- CLOSE TOTAL ALLO -->
 
+                                      <!-- OPEN Destination -->
+                                     
+                                  <div class="form-group">
+                                  <?php $destination=$_REQUEST['destination'];
+                                  //echo $total_allo; ?>
+
+                                      <label class="col-sm-2 control-label">Destination</label>
+                                      <div class="col-sm-10">
+                                          <input type="text" class="form-control" name="destination" value="<?php echo $destination;?>" placeholder="Destination">
+                                      </div>
+                                  </div>
+                                      <!-- CLOSE Destination -->
+
                                       <!-- cek wins -->
                                   <div class="form-group">
                                   <?php $ava_allo=$_REQUEST['win_num']; 
-                                    $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_shipment where no_shipment='$no_ship' "));
+                                    $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_wins where no_shipment='$no_ship' "));
                                   ?>
                                       <label class="col-sm-2 control-label">Wins Number</label>
                                       <div class="col-sm-10">
@@ -276,7 +297,7 @@
                                       <div class="col-sm-7">
                                       <?php $tree=$_REQUEST['total_trees'] ?>
 
-                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $jumlah_pohon[0] ?>" max="<?php echo $total_allo ?>" min="1" required="">
+                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $jumlah_pohon[0] ?>" max="<?php echo $total_allo ?>" min="1" required="" placeholder="Trees">
                                           <noscript><input type="submit" value="total_trees"></noscript>
                                       </div>
 
@@ -315,13 +336,13 @@
                                         ?>
 
                                  <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c" method="post">
+                                  <form  id="form" action="admin.php?a1a839ee8e9795202c5ebbcbe25ee83603d3bca16780d2fe5a2a52e2872a520f" method="post">
                                   <div align="center">
 
 
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
-                                  <input type="hidden" name="bl" value="<?php echo $data_ship['bl'] ?>">
+                                  <input type="hidden" name="bl" value="<?php echo $bl ?>">
                                   <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
                                   <input type="hidden" name="min_allo" value="<?php echo $tot_wins[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
@@ -368,7 +389,7 @@
                                    elseif ($unallocated==0) {
                                      ?>
                                      <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="action/blocking-process/index.php" method="post">
+                                  <form  id="form" action="action/blocking-process/ac_donation.php" method="post">
                                   <div align="center">
                                   <?php $pohon=$_REQUEST['total_trees'];
                                         $unallocated=$total_allo-$pohon;
@@ -376,7 +397,7 @@
 
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
-                                  <input type="hidden" name="bl" value="<?php echo $data_ship['bl'] ?>">
+                                  <input type="hidden" name="bl" value="<?php echo $bl ?>">
                                   <input type="hidden" name="tot_wins" value="<?php echo $tot_wins[0] ?>">
                                   <input type="hidden" name="min_allo" value="<?php echo $item[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
