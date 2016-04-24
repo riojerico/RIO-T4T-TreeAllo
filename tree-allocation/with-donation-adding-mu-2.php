@@ -46,22 +46,22 @@ $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$
 
 
 //insert into t4t_wins
-for ($i=1; $i <= $tot_wins ; $i++) { 
-  //get the last wins
-    // $last_wins=mysql_query("select wins from t4t_wins order by no desc limit 1 ");
-    // $last_wins2=mysql_fetch_array($last_wins);
-    // $wins=$last_wins2['wins'];
-      // $wins+$i;
-  //ambil start wins
-  $wins=$start_w-1;
-  //echo "<br>";
-    $win=$wins+$i;
+// for ($i=1; $i <= $tot_wins ; $i++) { 
+//   //get the last wins
+//     // $last_wins=mysql_query("select wins from t4t_wins order by no desc limit 1 ");
+//     // $last_wins2=mysql_fetch_array($last_wins);
+//     // $wins=$last_wins2['wins'];
+//       // $wins+$i;
+//   //ambil start wins
+//   $wins=$start_w-1;
+//   //echo "<br>";
+//     $win=$wins+$i;
 
-  //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
-  $id_partisipan[0];
+//   //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
+//   $id_partisipan[0];
 
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
-}
+//     $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
+// }
 
 //update current tree
  $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit $add_total_trees");

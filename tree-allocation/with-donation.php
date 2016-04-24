@@ -52,7 +52,7 @@
                                     if ($parts) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                       $date=date("dmy");
-                                      $jml_ns=mysql_fetch_array(mysql_query("select count(*) from t4t_shipment where bl like '%$date%' group by id_part='$id_part'"));
+                                      $jml_ns=mysql_fetch_array(mysql_query("select count(*) from add_htc where no_shipment like '%$date%' and id_part='$id_comp[0]' group by id_part"));
                                       $jml_ns2=$jml_ns[0]+1;
                                   ?>
                                   <div class="form-group">
@@ -81,7 +81,7 @@
                                       <?php 
                                       $bl=$_REQUEST['bl'];
 
-                                      $jml_bl=mysql_fetch_array(mysql_query("select count(*) from t4t_wins where bl like '%$date%' group by id_part='$id_comp[0]'"));
+                                      $jml_bl=mysql_fetch_array(mysql_query("select no_bl from add_htc where bl like '%$date%' and id_part='$id_comp[0]' order by no desc limit 1 "));
                                       $jml_bl2=$jml_bl[0]+1; 
                                       ?>
                                           <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $id_comp[0]?>BL<?php echo $jml_bl2 ?><?php echo $date ?>" required>
@@ -158,8 +158,10 @@
                                     <div class="col-lg-4">
                                       <label class="col-sm-3 control-label c">End Wins</label>
                                       <div class="col-sm-6">
-                                      <?php $start_w=$_REQUEST['start_w']; ?>
-                                          <input type="number" class="form-control " readonly="" name="end_w" value="<?php echo (int)$start_w+(int)$tot_wins[0]-1; ?>" required="">
+                                      <?php $start_w=$_REQUEST['start_w'];
+                                            $jml_win=$tot_wins-1;
+                                       ?>
+                                          <input type="number" class="form-control " readonly="" name="end_w" value="<?php echo (int)$start_w+$jml_win; ?>" required="">
                                       </div>
                                     </div>
                                     <div class="col-lg-2"></div>
@@ -354,11 +356,9 @@
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
 
                                   
-
-
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-unallo').modal('show');">
                                       <div id="my-modal-unallo" class="modal fade">
@@ -398,7 +398,7 @@
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
                                   <input type="hidden" name="bl" value="<?php echo $bl ?>">
-                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins[0] ?>">
+                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
                                   <input type="hidden" name="min_allo" value="<?php echo $item[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
                                   <input type="hidden" name="mu" value="<?php echo $mu ?>">
@@ -409,7 +409,7 @@
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-                                  
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
 
 
                                   <!-- modal -->
