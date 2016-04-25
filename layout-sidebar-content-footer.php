@@ -23,8 +23,8 @@
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-shipment')?>">With Shipment</a></li> 
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-container')?>">With Container</a></li> 
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation')?>">With Donation</a></li>  
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-adding-mu')?>">add</a></li>  
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-adding-mu-2')?>">add 2</a></li> 
+                          <!-- <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-adding-mu')?>">add</a></li>  
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-adding-mu-2')?>">add 2</a></li>  -->
 
                       </ul>
                   </li>       
