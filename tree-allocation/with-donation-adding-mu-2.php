@@ -13,6 +13,7 @@ $add_no_order   =$_POST['no_order'];
 $unallocated2   =$_POST['unallocated'];
 $start_w        =$_POST['start_w'];
 $land           =$_POST['land'];
+$destination=$_POST['destination'];
 
 $add=$_REQUEST['add'];
 $save=$_REQUEST['save'];
@@ -37,41 +38,56 @@ $kd_ta=$lahan['kd_ta'];
 $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kd_ta'")); //ta [0]
 $id_lahan=$lahan['id_lahan'];
 
+
+
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
 $geo=$lahan['koordinat'];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
 
-$query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
-                        '$desa[0]','$ta[0]','$add_nama_mu','$add_total_trees','','$add_noship')");
 
-
+//no shipment
+$date=date("dmy");
+$ns_win=mysql_fetch_array(mysql_query("select count(*) from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+ 
 //insert into t4t_wins
-// for ($i=1; $i <= $tot_wins ; $i++) { 
-//   //get the last wins
-//     // $last_wins=mysql_query("select wins from t4t_wins order by no desc limit 1 ");
-//     // $last_wins2=mysql_fetch_array($last_wins);
-//     // $wins=$last_wins2['wins'];
-//       // $wins+$i;
-//   //ambil start wins
-//   $wins=$start_w-1;
-//   //echo "<br>";
-//     $win=$wins+$i;
+for ($i=1; $i <= $add_tot_wins ; $i++) { 
+  //ambil start wins
+  $wins=$start_w-1;
+    $win=$wins+$i;
+   
+    $ns_win2=$ns_win[0]+$i;
+    $ns_win2;
+  //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
+   
+    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$add_no_order','','','','','$add_bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2')");
+}
 
-//   //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
-//   $id_partisipan[0];
+//insert into t4t_htc
+$ns_htc=mysql_fetch_array(mysql_query("select count(*) from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+for ($i=1; $i <= $add_total_trees ; $i++) { 
+   //no shipment
+    $date=date("dmy");
+    
+    $ns_htc2=$ns_htc[0]+$i;
 
-//     $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
-// }
+   //echo $ns_htc2;
+//no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment 
+$query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$destination','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
+                        '$desa[0]','$ta[0]','$add_nama_mu','1','','$id_partisipan[0]$date$ns_htc2')");
+}
+
 
 //update current tree
- $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit $add_total_trees");
+ $ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+for ($i=1; $i <= $add_total_trees ; $i++) { 
+   //no shipment
+    $date=date("dmy");
+   
+    $ns2=$ns[0]+$i;
+    //echo $ns2;  
+   $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$id_partisipan[0]$date$ns2' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit 1");
+}
 
-$item_qty=mysql_fetch_array(mysql_query("select item_qty from t4t_shipment where bl='$bl'"));
-$item=$item_qty[0];
-// echo "<br>";
-$qty_akhir=$item-$total_allo;
-
-  //$query_update_qty_item=mysql_query("update t4t_shipment set item_qty='$qty_akhir' where bl='$bl' ");
 }
 
 
@@ -137,7 +153,7 @@ $qty_akhir=$item-$total_allo;
                                                       <input type="hidden" name="no_order" value="<?php echo $add_no_order ?>">
                                                       <input type="hidden" name="unallocated" value="<?php echo $unallocated2 ?>">
                                                       <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-
+                                                      <input type="hidden" name="destination" value="<?php echo $destination ?>">
 
                                   </div>
                                       <!-- CLOSE MU -->
@@ -291,7 +307,7 @@ $qty_akhir=$item-$total_allo;
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
                     
                                     
                                   <!-- modal -->
@@ -342,7 +358,7 @@ $qty_akhir=$item-$total_allo;
                                   <input type="hidden" name="unallocated" value="0">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
                     
                                     
                                   <!-- modal -->
