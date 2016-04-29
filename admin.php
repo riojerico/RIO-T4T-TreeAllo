@@ -13,9 +13,9 @@ if (isset($_SESSION['level']))
    	
    }
    // jika kondisi level user maka akan diarahkan ke halaman lain
-   else if ($_SESSION['level'] == "user")
+   else
    {
-       header('location:user.php');
+       header('location:login/');
    }
 }
 if (!isset($_SESSION['level']))

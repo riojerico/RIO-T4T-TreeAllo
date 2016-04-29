@@ -296,7 +296,7 @@
                                       $tpw=$total_allo/$tot_wins;
                                        ?>
 
-                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $tpw ?>" min="<?php echo $tpw ?>" required="" placeholder="Trees">
+                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $tpw ?>" min="1" required="" placeholder="Trees">
                                           <noscript><input type="submit" value="total_trees"></noscript>
                                       </div>
 
@@ -354,6 +354,62 @@
                                   <!-- end modal -->
                                   <?php
                                  }//end over
+
+                                      //if unallocated ke add 3
+                                      elseif ($tree < $treeperwins == 1) {
+                                        ?>
+
+                                 <!-- SUBMIT BUTTON ke add 3-->
+                                  <form  id="form" action="admin.php?a1a839ee8e9795202c5ebbcbe25ee8366dfaeb653b3d0124f8d5d03d51be3066df0478077a0f663f42e6d516ce88d9a3" method="post">
+                                  <div align="center">
+
+
+                                  <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
+                                  <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
+                                  <input type="hidden" name="bl" value="<?php echo $bl ?>">
+                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
+                                  <input type="hidden" name="min_allo" value="<?php echo $tot_wins[0] ?>">
+                                  <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
+                                  <input type="hidden" name="mu" value="<?php echo $mu ?>">
+                                  <input type="hidden" name="ava_allo" value="<?php echo $ava_allo ?>">
+                                  <input type="hidden" name="type_trees" value="<?php echo $type_trees ?>">
+                                  <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
+                                  <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
+                                  <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
+                                  <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
+                                  <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
+                                  
+                                  
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-unallo').modal('show');">
+                                      <div id="my-modal-unallo" class="modal fade">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title">Data has been checked! ke add 3</h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Please submit data now...
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+
+                                      <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
+                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
+
+                                  </div>
+                                  </form>
+                                  <?php
+
+                                   }//end unallocated add 3
+
+
 
                                       //if unallocated
                                       elseif ($unallocated > 0) {

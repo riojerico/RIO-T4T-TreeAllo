@@ -6,7 +6,7 @@ $username = mysql_real_escape_string($_POST['username']);
 $password = mysql_real_escape_string($_POST['password']);
 $password = md5($password);
 // query untuk mendapatkan record dari username
-$query = "SELECT * FROM otenuser WHERE uname = '$username'";
+$query = "SELECT * FROM otenuser WHERE uname = '$username' and id_grup='adm'";
 $hasil = mysql_query($query);
 $data = mysql_fetch_array($hasil);
 // cek kesesuaian password
