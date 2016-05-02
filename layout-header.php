@@ -12,7 +12,7 @@ include 'koneksi/koneksi.php';
     <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Blocking Trees  - Trees4Trees.org</title>
+    <title>Tree Allocation - Trees4Trees.org</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">

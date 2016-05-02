@@ -15,6 +15,7 @@ $start_w        =$_POST['start_w'];
 $land           =$_POST['land'];
 $destination=$_POST['destination'];
 $treeperwins=$_POST['treeperwins'];
+$tpw_fix        =$_POST['tpw_fix'];
 
 $add=$_REQUEST['add'];
 $save=$_REQUEST['save'];
@@ -25,7 +26,7 @@ if ($add or $save ) {
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$add_type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$add_nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$add_noship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan from current_tree where bl='' and no_shipment='' and hidup='1' and used='0' and koordinat!='' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]'"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where bl='' and no_shipment='' and hidup='1' and used='0' and koordinat!='' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]'"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -42,7 +43,7 @@ $id_lahan=$lahan['id_lahan'];
 
 
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
-$geo=$lahan['koordinat'];
+$geo=$no_t4tlahan['koordinat'];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
 
 
@@ -156,6 +157,7 @@ for ($i=1; $i <= 1 ; $i++) {
                                                       <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                                       <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                                       <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
+                                                      <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
 
 
                                   </div>
@@ -336,6 +338,7 @@ for ($i=1; $i <= 1 ; $i++) {
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
                                                         
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-unallo').modal('show');">
@@ -387,6 +390,7 @@ for ($i=1; $i <= 1 ; $i++) {
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
                                     
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">

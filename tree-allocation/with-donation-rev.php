@@ -1,7 +1,7 @@
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Donation</h3>
+          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Donation Rev</h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="admin.php?3ad70a78a1605cb4e480205df880705c">Home</a></li>
             <li><i class="fa fa-tree"></i>Tree Allocation</li>
@@ -380,6 +380,7 @@
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
                                   
                                   
                                   <!-- modal -->
@@ -436,6 +437,7 @@
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
                                   
                                   
                                   <!-- modal -->
@@ -490,6 +492,7 @@
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
 
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">
