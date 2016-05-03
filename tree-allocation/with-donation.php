@@ -94,9 +94,10 @@
                                       <label class="col-sm-2 control-label">Total Allocation <b>(WINS)</b></label>
                                       <?php
                                         $tot_wins=$_REQUEST['tot_wins'];
+                                        $total_allo=$_REQUEST['total_allo'];
                                       ?>
                                       <div class="col-sm-10">
-                                          <input type="number" class="form-control" name="tot_wins" value="<?php echo $tot_wins ?>" required placeholder="WINS">
+                                          <input type="number" class="form-control" name="tot_wins" value="<?php echo $total_allo ?>" required placeholder="WINS" readonly=''>
                                       </div>
                                   </div>
                                   
@@ -263,14 +264,13 @@
                                               $idpohon2=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
                                               $idmu2=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
 
-                                              $data=mysql_query("select * from t4t_lahan a join current_tree b on a.no=b.no_t4tlahan 
-                                                where a.kd_mu='$idmu2[0]' and b.id_pohon='$idpohon2[0]' and b.used=0 and b.bl='' and b.no_shipment='' and b.koordinat!='' 
-                                                and used=0 and hidup=1 group by b.no_t4tlahan");
+                                              $data=mysql_query("select count(*) as jml_pohon,no from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and id_pohon='$idpohon2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' 
+                                                and used=0 and hidup=1 group by no_t4tlahan order by jml_pohon desc");
                                               while ($data2=mysql_fetch_array($data)) {
 
 
                                               ?>
-                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?></option>
+                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?> (<?php echo $data2[0] ?> Trees)</option>
                                               <?php
                                               } ?>
                                           </select>

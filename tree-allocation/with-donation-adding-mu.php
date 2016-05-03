@@ -24,7 +24,7 @@ if ($add or $save ) {
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$add_type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$add_nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$add_noship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan from current_tree where hidup='1' and used='0' and bl='' and no_shipment='' and koordinat!='' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]'"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit 1"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -40,7 +40,7 @@ $id_lahan=$lahan['id_lahan'];
 
 
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
-$geo=$lahan['koordinat'];
+$geo=$no_t4tlahan['koordinat'];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
 
 
@@ -202,31 +202,30 @@ for ($i=1; $i <= $add_total_trees ; $i++) {
                                   <div class="form-group">
                                       <label class="control-label col-sm-2">Land ID</label>
                                       <div class="col-sm-10">
-                                      <?php $land=$_REQUEST['land'] ?>
-                                          <select class="form-control m-bot15" name="land" onchange='this.form.submit()' required>
+                                      <?php $land2=$_REQUEST['land2'] ?>
+                                          <select class="form-control m-bot15" name="land2" onchange='this.form.submit()' required>
                                               <option><?php
-                                              if ($land=='') {
+                                              if ($land2=='') {
                                                 echo "- Land ID -";
                                               }else{
-                                              echo $land; }?>
+                                              echo $land2; }?>
                                               </option>
                                               <?php
                                               //ambilidmu dan id pohon
                                               $idpohon2=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
                                               $idmu2=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
 
-                                              $data=mysql_query("select * from t4t_lahan a join current_tree b on a.no=b.no_t4tlahan 
-                                                where a.kd_mu='$idmu2[0]' and b.id_pohon='$idpohon2[0]' and b.used=0 and b.bl='' and b.no_shipment='' and b.koordinat!='' 
-                                                and used=0 and hidup=1 group by b.no_t4tlahan");
+                                              $data=mysql_query("select count(*) as jml_pohon,no from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and id_pohon='$idpohon2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' 
+                                                and used=0 and hidup=1 group by no_t4tlahan order by jml_pohon desc");
                                               while ($data2=mysql_fetch_array($data)) {
 
 
                                               ?>
-                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?></option>
+                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?> (<?php echo $data2[0] ?> Trees)</option>
                                               <?php
                                               } ?>
                                           </select>
-                                          <noscript><input type="submit" value="land"></noscript>
+                                          <noscript><input type="submit" value="land2"></noscript>
                                       </div>
                                   </div>
                                   <!-- CLOSE LAHAN TREES -->
@@ -239,7 +238,7 @@ for ($i=1; $i <= $add_total_trees ; $i++) {
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land'"));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land2'"));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -306,7 +305,7 @@ for ($i=1; $i <= $add_total_trees ; $i++) {
                                   <input type="hidden" name="no_order" value="<?php echo $_REQUEST['no_order'] ?>">
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land2 ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
 
                                     
@@ -357,7 +356,7 @@ for ($i=1; $i <= $add_total_trees ; $i++) {
                                   <input type="hidden" name="no_order" value="<?php echo $_REQUEST['no_order'] ?>">
                                   <input type="hidden" name="unallocated" value="0">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land2 ?>">
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                     
                                     

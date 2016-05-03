@@ -23,7 +23,7 @@ if ($add or $save ) {
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$add_type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$add_nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$add_noship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan from current_tree where bl='' and no_shipment='' and hidup='1' and used='0' and koordinat!='' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]'"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit 1"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -38,7 +38,7 @@ $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$k
 $id_lahan=$lahan['id_lahan'];
 
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
-$geo=$lahan['koordinat'];
+$geo=$no_t4tlahan[1];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
 
 $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
@@ -77,17 +77,17 @@ $qty_akhir=$item-$total_allo;
 
 ?>
           <section class="wrapper">
-		  <div class="row">
-				<div class="col-lg-12">
-					<h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Shipments</h3>
-					<ol class="breadcrumb">
+      <div class="row">
+        <div class="col-lg-12">
+          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Shipments</h3>
+          <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="admin.php?3ad70a78a1605cb4e480205df880705c">Home</a></li>
             <li><i class="fa fa-tree"></i>Tree Allocation</li>
             <li><i class="fa fa-file-text-o"></i>With Shipment</li>
             <li><i class="fa fa-file-text-o"></i>Adding Management Unit</li>
-					</ol>
-				</div>
-			</div>
+          </ol>
+        </div>
+      </div>
               <div class="row">
                   <div class="col-lg-12">
                       <section class="panel">
@@ -186,31 +186,30 @@ $qty_akhir=$item-$total_allo;
                                   <div class="form-group">
                                       <label class="control-label col-sm-2">Land ID</label>
                                       <div class="col-sm-10">
-                                      <?php $land=$_REQUEST['land'] ?>
-                                          <select class="form-control m-bot15" name="land" onchange='this.form.submit()' required>
+                                      <?php $land2=$_REQUEST['land2'] ?>
+                                          <select class="form-control m-bot15" name="land2" onchange='this.form.submit()' required>
                                               <option><?php
-                                              if ($land=='') {
+                                              if ($land2=='') {
                                                 echo "- Land ID -";
                                               }else{
-                                              echo $land; }?>
+                                              echo $land2; }?>
                                               </option>
                                               <?php
                                               //ambilidmu dan id pohon
                                               $idpohon2=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
                                               $idmu2=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
 
-                                              $data=mysql_query("select * from t4t_lahan a join current_tree b on a.no=b.no_t4tlahan 
-                                                where a.kd_mu='$idmu2[0]' and b.id_pohon='$idpohon2[0]' and b.used=0 and b.bl='' and b.no_shipment='' and b.koordinat!='' 
-                                                and used=0 and hidup=1 group by b.no_t4tlahan");
+                                              $data=mysql_query("select count(*) as jml_pohon,no from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and id_pohon='$idpohon2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' 
+                                                and used=0 and hidup=1 group by no_t4tlahan order by jml_pohon desc");
                                               while ($data2=mysql_fetch_array($data)) {
 
 
                                               ?>
-                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?></option>
+                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?> (<?php echo $data2[0] ?> Trees)</option>
                                               <?php
                                               } ?>
                                           </select>
-                                          <noscript><input type="submit" value="land"></noscript>
+                                          <noscript><input type="submit" value="land2"></noscript>
                                       </div>
                                   </div>
                                   <!-- CLOSE LAHAN TREES -->
@@ -223,7 +222,7 @@ $qty_akhir=$item-$total_allo;
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land'"));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land2'"));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -290,7 +289,7 @@ $qty_akhir=$item-$total_allo;
                                   <input type="hidden" name="no_order" value="<?php echo $_REQUEST['no_order'] ?>">
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land2 ?>">
 
                     
                                     
@@ -341,7 +340,7 @@ $qty_akhir=$item-$total_allo;
                                   <input type="hidden" name="no_order" value="<?php echo $_REQUEST['no_order'] ?>">
                                   <input type="hidden" name="unallocated" value="0">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land2 ?>">
 
                     
                                     

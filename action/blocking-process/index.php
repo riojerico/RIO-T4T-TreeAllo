@@ -27,12 +27,11 @@ $land 		=$_POST['land'];
 
 // if ($_POST['save']) {
 
-
 //insert into t4t_htc
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$no_ship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan from current_tree where hidup='1' and used='0' and koordinat!='' and bl='' and no_shipment='' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]'"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and no_t4tlahan='$land' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' limit 1"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -47,7 +46,7 @@ $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$k
 $id_lahan=$lahan['id_lahan'];
 
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
-$geo=$lahan['koordinat'];
+$geo=$no_t4tlahan['koordinat'];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$id_part'"));
 
  $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
