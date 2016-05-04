@@ -32,8 +32,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ( $_SERVER['HTTP_X_REQUESTED_WIT
 
     // SQL server connection information
     // $sql_details = array(
-    //     'user' => 't4t_rio',
-    //     'pass' => 'xCIhfI94-k7O',
+    //     'user' => 't4t_rio/t4t_t4t',
+    //     'pass' => 'xCIhfI94-k7O/DeviNasir2013',
     //     'db' => 't4t_t4t',
     //     'host' => 'localhost'
     // );

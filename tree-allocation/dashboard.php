@@ -69,8 +69,7 @@
                               <tbody>
                               <?php  
                               $no=1;
-                              $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 and bl='' and no_shipment='' and koordinat!='' group by id_pohon order by trees desc
-");
+                              $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 and bl='' and no_shipment='' and koordinat!='' group by id_pohon order by trees desc");
                               while ($data2=mysql_fetch_array($data)) {
                                 ?>
 
@@ -156,7 +155,7 @@
                       <!-- WINS -->
                       <section class="panel">
                         <header class="panel-heading">
-                         Last WINS
+                         Last 500.000 WINS
                         </header>
                         <div class="panel-body">
                           <div class="col-lg-12">

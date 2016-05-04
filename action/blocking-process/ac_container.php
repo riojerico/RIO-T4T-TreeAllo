@@ -39,9 +39,9 @@ $kd_lahan=$lahan['kd_lahan']; //kd_lahan
 $no_lahan=$lahan['no_lahan']; //no_lahan
 $luas=$lahan['luas_lahan']; //luas
 $kd_petani=$lahan['kd_petani'];
-$petani=mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_petani'")); //petani [0]
 $kd_desa=$lahan['id_desa'];
 $desa=mysql_fetch_array(mysql_query("select desa from t4t_desa where id_desa='$kd_desa'")); //desa [0]
+$petani=mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_petani' and id_desa='$kd_desa'")); //petani [0]
 $kd_ta=$lahan['kd_ta'];
 $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kd_ta'")); //ta [0]
 $id_lahan=$lahan['id_lahan'];
