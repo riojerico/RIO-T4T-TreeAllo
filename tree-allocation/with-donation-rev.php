@@ -37,7 +37,7 @@
                                               while ($data2=mysql_fetch_array($data)) {
                                               ?>
                                               <option value="<?php echo $data2['nama']?>"><?php echo $data2['nama'] ?></option>
-                                              <?php
+                                              <?php                                              
                                               } ?>
                                           </select>
                                           <noscript><input type="submit" value="partisipan"></noscript>
@@ -52,7 +52,7 @@
                                     if ($parts) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                       $date=date("dmy");
-                                      $jml_ns=mysql_fetch_array(mysql_query("select count(*) from add_htc where no_shipment like '%$date%' and id_part='$id_comp[0]' group by id_part"));
+                                      $jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$date%' and id_part='$id_comp[0]' order by no desc limit 1 "));
                                       $jml_ns2=$jml_ns[0]+1;
                                   ?>
                                   <div class="form-group">
@@ -243,7 +243,7 @@
                                   <!-- CLOSE TYPE TREES -->
 
                                   <!-- OPEN LAHAN TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Land ID</label>
                                       <div class="col-sm-10">
                                       <?php $land=$_REQUEST['land'] ?>
@@ -271,7 +271,7 @@
                                           </select>
                                           <noscript><input type="submit" value="land"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE LAHAN TREES -->
 
                                   <?php
@@ -284,8 +284,8 @@
                                  // echo $id_mu['kd_mu'];
 
                                   //echo $land;
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land'"));
-                                 // echo $jumlah_pohon[0];
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1"));
+                                  //echo $jumlah_pohon[0];
                                   ?>
 
                                   <!-- OPEN TOTAL TREES -->
@@ -296,7 +296,7 @@
                                       $tpw=$total_allo/$tot_wins;
                                        ?>
 
-                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $tpw ?>" min="1" required="" placeholder="Trees">
+                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $tpw ?>" min="<?php echo $tpw ?>" required="" placeholder="Trees">
                                           <noscript><input type="submit" value="total_trees"></noscript>
                                       </div>
 
@@ -342,10 +342,10 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data do not match!</h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please check your allocation trees...
+                                                      Please check the available trees ...
                                                   </div>
                                               </div>
                                           </div>
@@ -381,6 +381,7 @@
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
                                   <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
+                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns2+1 ?>">
                                   
                                   
                                   <!-- modal -->
@@ -390,7 +391,7 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked! ke add 3</h4>
+                                                  <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
@@ -438,6 +439,7 @@
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
                                   <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
+                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns2+1 ?>">
                                   
                                   
                                   <!-- modal -->
@@ -447,7 +449,7 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
@@ -493,6 +495,7 @@
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $total_allo/$tot_wins ?>">
                                   <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
+                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns2 ?>">
 
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">
@@ -501,7 +504,7 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
@@ -522,16 +525,16 @@
                                  elseif ($unallocated<0) {//Trees over allocation
                                   ?>
                                   <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                  <body onLoad="$('#my-modal-over').modal('show');" >
                                       <div id="my-modal-over" class="modal fade" align="center">
                                           <div class="modal-dialog">
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data do not match!</h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please check your allocation trees...
+                                                      Please check the available trees ...
                                                   </div>
                                               </div>
                                           </div>
