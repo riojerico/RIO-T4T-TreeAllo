@@ -173,7 +173,7 @@
                             </thead>
                             <?php  
                             $no=1;
-                            $htc=mysql_query("select * from t4t_wins order by no desc limit 1");
+                            $htc=mysql_query("select * from t4t_wins order by no desc limit 10");
                             while ($data=mysql_fetch_array($htc)) {
                             ?>
 

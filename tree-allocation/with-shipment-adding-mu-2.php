@@ -44,35 +44,75 @@ $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan wher
 $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
                         '$desa[0]','$ta[0]','$add_nama_mu','$add_total_trees','','$add_noship')");
 
-
-//insert into t4t_wins
-for ($i=1; $i <= $tot_wins ; $i++) { 
-  //get the last wins
-    // $last_wins=mysql_query("select wins from t4t_wins order by no desc limit 1 ");
-    // $last_wins2=mysql_fetch_array($last_wins);
-    // $wins=$last_wins2['wins'];
-      // $wins+$i;
-  //ambil start wins
-  $wins=$start_w-1;
-  //echo "<br>";
-    $win=$wins+$i;
-
-  //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
-  $id_partisipan[0];
-
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
-}
+//no shipment
+$date=date("dmy");
 
 //update current tree
- $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit $add_total_trees");
-
-$item_qty=mysql_fetch_array(mysql_query("select item_qty from t4t_shipment where bl='$bl'"));
-$item=$item_qty[0];
-// echo "<br>";
-$qty_akhir=$item-$total_allo;
-
-  //$query_update_qty_item=mysql_query("update t4t_shipment set item_qty='$qty_akhir' where bl='$bl' ");
+ $ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+for ($i=1; $i <= 1 ; $i++) { 
+     //no shipment
+    $date=date("dmy");
+   
+    $ns2=$ns[0]+$i;
+    //echo $ns2;
+    
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees");
 }
+
+
+
+//insert into t4t_wins
+// $ns_win=mysql_fetch_array(mysql_query("select no_sh from add_wins where bl like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+// for ($i=1; $i <= $tot_wins ; $i++) { 
+//   //ambil start wins
+//   $wins=$start_w-1;
+//     $win=$wins+$i;
+   
+//     $ns_win2=$ns_win[0]+$i;
+//     $ns_win2;
+//   //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
+   
+//     $query_wins=mysql_query("insert into t4t_wins values ('','$win','$add_no_order','','','','','$add_bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2')");
+// }
+
+
+//insert into t4t_htc
+// $ns_htc=mysql_fetch_array(mysql_query("select count(*) from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+
+ $data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='$add_noship' group by no_t4tlahan");
+// $ns_htc2=$ns_htc[0]+1;
+// $no_shipment_htc=$id_partisipan[0].''.$date.''.$ns_htc2;
+$i=1;
+while ( $data=mysql_fetch_array($data_lahan)) {
+    $no_lahan2      =$data['no_t4tlahan'];
+    $get_lahan      =mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no_lahan2'"));
+    $kd_lahan2      =$get_lahan['kd_lahan'];
+    $geo2           =$data['koordinat'];
+    $kd_sil         =$get_lahan['id_lahan'];
+    $silvilkultur2  =mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$kd_sil'"));
+    $luas2          =$get_lahan['luas_lahan'];
+    $kd_ptn         =$get_lahan['kd_petani'];
+    $kd_ds          =$get_lahan['id_desa'];
+    $desa2          =mysql_fetch_array(mysql_query("select desa from t4t_desa where id_desa='$kd_ds'"));
+    $petani2        =mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_ptn' and id_desa='$kd_ds'"));
+    $kdta           =$get_lahan['kd_ta'];
+    $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
+
+    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='$add_noship' group by no_t4tlahan");
+    $j=1;
+    while ($jml_pohon=mysql_fetch_array($a)) {
+        $jml_pohon2[$j]=$jml_pohon[0];
+    $j++;
+    }
+    
+    
+    //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment 
+    $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$destination','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$add_nama_mu','$jml_pohon2[$i]','','$add_noship')");
+
+$i++;
+}
+
+}//end
 
 
 ?>
@@ -183,7 +223,7 @@ $qty_akhir=$item-$total_allo;
                                   <!-- CLOSE TYPE TREES -->
 
                                   <!-- OPEN LAHAN TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Land ID</label>
                                       <div class="col-sm-10">
                                       <?php $land2=$_REQUEST['land2'] ?>
@@ -211,7 +251,7 @@ $qty_akhir=$item-$total_allo;
                                           </select>
                                           <noscript><input type="submit" value="land2"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE LAHAN TREES -->
 
                                   <?php 
@@ -222,7 +262,7 @@ $qty_akhir=$item-$total_allo;
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land2'"));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and hidup=1"));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -417,4 +457,3 @@ $qty_akhir=$item-$total_allo;
               </div>
               <!-- page end-->
           </section>
-<?php include 'js/jsku.php'; ?>

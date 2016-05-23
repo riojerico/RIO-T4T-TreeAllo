@@ -1,5 +1,5 @@
 <?php 
-// $con = mysql_connect("localhost","t4t_rio","xCIhfI94-k7O");
+// $con = mysql_connect("localhost","t4t_t4t","DeviNasir2013");
 // if (!$con) {
 // 	die('Cannot Connect'.mysql_error());
 // }

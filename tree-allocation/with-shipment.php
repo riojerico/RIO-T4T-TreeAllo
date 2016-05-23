@@ -23,7 +23,7 @@
                               <!-- PARTISIPAN -->
                               <?php $parts=$_REQUEST['partisipan'] ?>
                                   <div class="form-group">
-                                      <label class="col-sm-2 control-label">Partisipan</label>
+                                      <label class="col-sm-2 control-label">Participants</label>
                                       <div class="col-sm-10">
                                           <select class="form-control m-bot15" name="partisipan" onchange='this.form.submit()'>
                                               <option><?php
@@ -135,81 +135,6 @@
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">Total Allocation <b>(WINS)</b></label>
                                       <?php
-                                       // $tot_wins=mysql_fetch_array(mysql_query("select jml_wins from t4t_order where no_order='$no_order'"));
-
-                                        // $data_totwins=mysql_fetch_array(mysql_query("select a.jml_wins from t4t_order a, t4t_shipment b where a.no_order=b.no_order"));
-                                        //   $no_order=mysql_fetch_array(mysql_query("select no_order from t4t_shipment where no_shipment='$no_ship'"));
-
-                                  // [[IF WITH LOOPING]]
-                                       // $res=0;
-                                       // for ($i=0; $i < 100; $i++) {
-                                       //    $pisah=explode(", ", $no_order[0]);
-                                       //   //   echo $pisah[$i]."<br>";
-                                       //    $data_no_order=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[$i]'"));
-
-                                       //    $data_no_order2=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[2]'"));
-                                       //    $data_no_order19=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[19]'"));
-
-                                       //    // $wins_per_order=$data_no_order['jml_wins']."+" ;
-                                       //    $wins_per_order=$data_no_order['jml_wins'];
-                                       //    $wins_per_order1=$data_no_order1['jml_wins'];
-                                       //    $wins_per_order2=$data_no_order1['jml_wins'];
-                                       //    $wins_per_order19=$data_no_order1['jml_wins'];
-
-                                       //   //print_r ($wins_per_order[0]);
-
-                                       //    ECHO "<BR>";
-
-                                       //  }
-                                    // [[CLOSE LOOPING ]]
-
-                                    // [[PROSES MANUAL]]
-                                        // $pisah=explode(", ", $no_order[0]);
-                                        // //Hanya dapat memproses 20 Order
-                                        // $data_no_order1=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[0]'"));
-                                        // $data_no_order2=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[1]'"));
-                                        // $data_no_order3=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[2]'"));
-                                        // $data_no_order4=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[3]'"));
-                                        // $data_no_order5=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[4]'"));
-                                        // $data_no_order6=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[5]'"));
-                                        // $data_no_order7=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[6]'"));
-                                        // $data_no_order8=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[7]'"));
-                                        // $data_no_order9=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[8]'"));
-                                        // $data_no_order10=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[9]'"));
-                                        // $data_no_order11=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[10]'"));
-                                        // $data_no_order12=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[11]'"));
-                                        // $data_no_order13=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[12]'"));
-                                        // $data_no_order14=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[13]'"));
-                                        // $data_no_order15=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[14]'"));
-                                        // $data_no_order16=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[15]'"));
-                                        // $data_no_order17=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[16]'"));
-                                        // $data_no_order18=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[17]'"));
-                                        // $data_no_order19=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[18]'"));
-                                        // $data_no_order20=mysql_fetch_array(mysql_query("select * from t4t_order where no_order='$pisah[19]'"));
-
-                                        // $w1=$data_no_order1['jml_wins'];
-                                        // $w2=$data_no_order2['jml_wins'];
-                                        // $w3=$data_no_order3['jml_wins'];
-                                        // $w4=$data_no_order4['jml_wins'];
-                                        // $w5=$data_no_order5['jml_wins'];
-                                        // $w6=$data_no_order6['jml_wins'];
-                                        // $w7=$data_no_order7['jml_wins'];
-                                        // $w8=$data_no_order8['jml_wins'];
-                                        // $w9=$data_no_order9['jml_wins'];
-                                        // $w10=$data_no_order10['jml_wins'];
-                                        // $w11=$data_no_order11['jml_wins'];
-                                        // $w12=$data_no_order12['jml_wins'];
-                                        // $w13=$data_no_order13['jml_wins'];
-                                        // $w14=$data_no_order14['jml_wins'];
-                                        // $w15=$data_no_order15['jml_wins'];
-                                        // $w16=$data_no_order16['jml_wins'];
-                                        // $w17=$data_no_order17['jml_wins'];
-                                        // $w18=$data_no_order18['jml_wins'];
-                                        // $w19=$data_no_order19['jml_wins'];
-                                        // $w20=$data_no_order20['jml_wins'];
-
-                                        // $hasil= $w1+$w2+$w3+$w4+$w5+$w6+$w7+$w8+$w9+$w10+$w11+$w12+$w13+$w14+$w15+$w16+$w17+$w18+$w19+$w20;
-                                      //[[CLOSE MANUAL]]
                                         $tot_wins=$_REQUEST['tot_wins'];
                                       ?>
                                       <div class="col-sm-10">
@@ -217,18 +142,6 @@
                                       </div>
                                   </div>
                                       <!-- CLOSE TOTAL WINS -->
-
-                                      <!-- OPEN MIN. ALLO -->
-                                 <!--  <div class="form-group">
-                                      <label class="col-sm-2 control-label">Minimum Allocation</label>
-
-                                      <?php
-                                      $item=mysql_fetch_array(mysql_query("select item_qty from t4t_shipment where no_shipment='$no_ship'")); ?>
-                                      <div class="col-sm-10">
-                                          <input type="text" class="form-control b" name="min_allo" readonly="" value="<?php echo $tot_wins[0]; ?>" required>
-                                      </div>
-                                  </div> -->
-                                      <!-- CLOSE MIN. ALLO -->
 
                                       <!-- OPEN TOTAL ALLO -->
                                   <div class="form-group">
@@ -242,20 +155,6 @@
                                   </div>
                                       <!-- CLOSE TOTAL ALLO -->
 
-                                      <!-- OPEN AVA ALLO -->
-                                <!--  <div class="form-group">
-                                  <?php $ava_allo=$_REQUEST['ava_allo']; ?>
-                                      <label class="col-sm-2 control-label c">Available Allocation</label>
-                                      <div class="col-sm-10">
-                                          <input type="text" class="form-control c" readonly="" name="ava_allo" value="<?php echo $ava_allo ?>" required>
-                                      </div>
-                                      <label class="col-sm-2 "></label>
-                                      <div class="col-sm-10">
-                                       <font color="red">*data can not be negative</font>
-                                       </div>
-                                  </div> -->
-                                      <!-- CLOSE AVA ALLO -->
-
                                       <!-- cek wins -->
                                   <div class="form-group">
                                   <?php $ava_allo=$_REQUEST['win_num']; 
@@ -263,7 +162,7 @@
                                   ?>
                                       <label class="col-sm-2 control-label">Wins Number</label>
                                       <div class="col-sm-10">
-                                          <input type="" class="form-control" readonly="" name="win_num" value="<?php echo $win_num[0] ?>" required>
+                                          <textarea type="" class="form-control" readonly="" name="win_num" required><?php echo $win_num[0] ?></textarea>
                                       </div>
                                       <label class="col-sm-2 "></label>
                                       <div class="col-sm-10">
@@ -287,7 +186,7 @@
                                       <label class="col-sm-3 control-label c">End Wins</label>
                                       <div class="col-sm-6">
                                       <?php $start_w=$_REQUEST['start_w']; ?>
-                                          <input type="number" class="form-control " readonly="" name="end_w" value="<?php echo (int)$start_w+(int)$tot_wins[0]-1; ?>" required="">
+                                          <input type="number" class="form-control " readonly="" name="end_w" value="<?php echo (int)$start_w+(int)$tot_wins-1; ?>" required="">
                                       </div>
                                     </div>
                                     <div class="col-lg-2"></div>
@@ -372,38 +271,6 @@
                                   </div>
                                   <!-- CLOSE TYPE TREES -->
 
-                                  <!-- OPEN LAHAN TREES -->
-                                  <div class="form-group">
-                                      <label class="control-label col-sm-2">Land ID</label>
-                                      <div class="col-sm-10">
-                                      <?php $land=$_REQUEST['land'] ?>
-                                          <select class="form-control m-bot15" name="land" onchange='this.form.submit()' required>
-                                              <option><?php
-                                              if ($land=='') {
-                                                echo "- Land ID -";
-                                              }else{
-                                              echo $land; }?>
-                                              </option>
-                                              <?php
-                                              //ambilidmu dan id pohon
-                                              $idpohon2=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
-                                              $idmu2=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
-
-                                              $data=mysql_query("select count(*) as jml_pohon,no from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and id_pohon='$idpohon2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' 
-                                                and used=0 and hidup=1 group by no_t4tlahan order by jml_pohon desc");
-                                              while ($data2=mysql_fetch_array($data)) {
-
-
-                                              ?>
-                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?> (<?php echo $data2[0] ?> Trees)</option>
-                                              <?php
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="land"></noscript>
-                                      </div>
-                                  </div>
-                                  <!-- CLOSE LAHAN TREES -->
-
                                   <?php
 
                                   $tot_trees=$_REQUEST['type_trees'];
@@ -414,7 +281,7 @@
                                  // echo $id_mu['kd_mu'];
 
                                   //echo $land;
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land'"));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -452,18 +319,68 @@
                                   ?>
                               <!-- close form -->
                               <?php
-
+ 
                                  //if submit check
                                  $cek=$_REQUEST['cek'];
                                  if ($cek) {
+                                  date_default_timezone_set('Asia/Jakarta');
+                                   $time=date("Y-m-d");
+                                   $bl=$_REQUEST['bl'];
+                                   $cek_blocking=mysql_fetch_array(mysql_query("select * from current_tree where bl='$bl' and time='$time' limit 1"));
+                                   $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
+                                   if ($cek_blocking[11]==$time) {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Only allowed 1 times per day on this BL
+                                                      
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
 
-                                   $unallocated;
+                                  elseif ($cek_order['id_part']==$id_comp[0]) {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      "No Order" and "No Shipment" have ever been processed...
+                                                      
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
+                                  
                                       //if unallocated
-                                      if ($unallocated > 0) {
+                                    elseif ($unallocated > 0) {
                                         ?>
 
                                  <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c" method="post">
+                                  <!-- <form  id="form" action="admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c" method="post"> -->
                                   <div align="center">
 
 
@@ -493,10 +410,11 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-warning"> <strong>Warning!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please submit data now...
+                                                 <font color="red"> Tree < Total Tree Allocation </font><br>
+                                                      Sorry this process is not allowed...
                                                   </div>
                                               </div>
                                           </div>
@@ -504,11 +422,11 @@
                                   </body>
                                   <!-- end modal -->
 
-                                      <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
-                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
+                                      <!-- <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
+                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a> -->
 
                                   </div>
-                                  </form>
+                                  <<!-- /form> -->
                                   <?php
 
                                    }//end unallocated
@@ -525,7 +443,7 @@
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
                                   <input type="hidden" name="bl" value="<?php echo $data_ship['bl'] ?>">
-                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins[0] ?>">
+                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
                                   <input type="hidden" name="min_allo" value="<?php echo $item[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
                                   <input type="hidden" name="mu" value="<?php echo $mu ?>">
@@ -546,7 +464,7 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
@@ -573,7 +491,7 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data do not match!</h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please check your allocation trees...

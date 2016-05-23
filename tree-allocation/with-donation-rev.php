@@ -1,7 +1,7 @@
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Donation Rev</h3>
+          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Donation </h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="admin.php?3ad70a78a1605cb4e480205df880705c">Home</a></li>
             <li><i class="fa fa-tree"></i>Tree Allocation</li>
@@ -23,7 +23,7 @@
                               <!-- PARTISIPAN -->
                               <?php $parts=$_REQUEST['partisipan'] ?>
                                   <div class="form-group">
-                                      <label class="col-sm-2 control-label">Partisipant</label>
+                                      <label class="col-sm-2 control-label">Participants</label>
                                       <div class="col-sm-10">
                                           <select class="form-control m-bot15" name="partisipan" onchange='this.form.submit()'>
                                               <option><?php
@@ -296,7 +296,7 @@
                                       $tpw=$total_allo/$tot_wins;
                                        ?>
 
-                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $tpw ?>" min="<?php echo $tpw ?>" required="" placeholder="Trees">
+                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $total_allo ?>" min="<?php echo $total_allo ?>" required="" placeholder="Trees">
                                           <noscript><input type="submit" value="total_trees"></noscript>
                                       </div>
 
@@ -332,6 +332,9 @@
                                    $tree=$_REQUEST['total_trees'];
                                    $ava_trees=$jumlah_pohon[0];
                                    $unallocated;
+                                   date_default_timezone_set('Asia/Jakarta');
+                                   $time=date("Y-m-d");                                  
+                                   $cek_blocking=mysql_fetch_array(mysql_query("select * from t4t_wins where id_part='$id_comp[0]' and bl like '%BL1%' and time='$time' limit 1"));
 
                                    if ($tree>$ava_trees==1) {//Trees over allocation
                                   ?>
@@ -354,6 +357,29 @@
                                   <!-- end modal -->
                                   <?php
                                  }//end over
+
+                                 elseif ($cek_blocking[time]==$time) {// partisipan maks 1 per day
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Only allowed 1 times per day on this Participants
+                                                      
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end part
 
                                       //if unallocated ke add 3
                                       elseif ($tree < $treeperwins == 1) {
@@ -418,7 +444,9 @@
                                         ?>
 
                                  <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="admin.php?a1a839ee8e9795202c5ebbcbe25ee836683b251402adc157d4dc515e3e517df5" method="post">
+                                  <!-- <form  id="form" action="admin.php?a1a839ee8e9795202c5ebbcbe25ee836683b251402adc157d4dc515e3e517df5" method="post"> -->
+                                  <form  id="form" action="action/blocking-process/ac_donation-rev.php" method="post">
+
                                   <div align="center">
 
 

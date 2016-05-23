@@ -22,17 +22,14 @@ $no_order	=$_POST['no_order'];
 $unallocated=$_POST['unallocated'];
 $start_w 	=$_POST['start_w'];
 $land 		=$_POST['land'];
+date_default_timezone_set('Asia/Jakarta');
+$datetime	= date("Y-m-d H:i:s"); 
 
 
-
-// if ($_POST['save']) {
-
-
-//insert into t4t_htc
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$no_ship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and no_t4tlahan='$land' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' limit 1"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -47,63 +44,77 @@ $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$k
 $id_lahan=$lahan['id_lahan'];
 
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
-$geo=$no_t4tlahan[1];
+$geo=$no_t4tlahan['koordinat'];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$id_part'"));
+$date=date("Y-m-d");
 
- $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
-                         '$desa[0]','$ta[0]','$nama_mu','$total_trees','','$no_ship')");
-
-
-//insert into t4t_wins
-for ($i=1; $i <= $tot_wins ; $i++) { 
-	//get the last wins
-		// $last_wins=mysql_query("select wins from t4t_wins order by no desc limit 1 ");
-		// $last_wins2=mysql_fetch_array($last_wins);
-		// $wins=$last_wins2['wins'];
-	    // $wins+$i;
-	//ambil start wins
-	$wins=$start_w-1;
-	//echo "<br>";
-    $win=$wins+$i;
-
-	//no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
-  $id_partisipan[0];
-
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
+    
+//update current tree
+$ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where time like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+for ($i=1; $i <= 1 ; $i++) { 
+     //no shipment
+    $date=date("Y-m-d");
+   
+   $ns2=$ns[0]+$i;
+    
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship',time='$date' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees");
 }
 
-//update current tree
- $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship' where used='0' and hidup='1' and no_t4tlahan='$land' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' limit $total_trees");
+//insert into t4t_wins
+$date=date("Y-m-d");
+// $ns_win=mysql_fetch_array(mysql_query("select no_sh from add_wins where time like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+for ($i=1; $i <= $tot_wins ; $i++) { 
+	//ambil start wins
+	$wins=$start_w-1;
+    $win=$wins+$i;
+	//no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time
+   
+    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date')");
+}
 
-$item_qty=mysql_fetch_array(mysql_query("select item_qty from t4t_shipment where bl='$bl'"));
-$item=$item_qty[0];
-// echo "<br>";
-$qty_akhir=$item-$total_allo;
 
- // $query_update_qty_item=mysql_query("update t4t_shipment set item_qty='$qty_akhir' where bl='$bl' ");
+//insert into t4t_htc
+$k=1;
+while ($k <= 1 ) {
+// $jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where time like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+// $jml_ns2=$jml_ns[0]+1;
+// $no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
+$data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='$no_ship' and time='$date' group by no_t4tlahan");
 
+$i=1;
+while ( $data=mysql_fetch_array($data_lahan)) {
+    $no_lahan2      =$data['no_t4tlahan'];
+    $get_lahan      =mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no_lahan2'"));
+    $kd_lahan2      =$get_lahan['kd_lahan'];
+    $geo2           =$data['koordinat'];
+    $kd_sil         =$get_lahan['id_lahan'];
+    $silvilkultur2  =mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$kd_sil'"));
+    $luas2          =$get_lahan['luas_lahan'];
+    $kd_ptn         =$get_lahan['kd_petani'];
+    $kd_ds          =$get_lahan['id_desa'];
+    $desa2          =mysql_fetch_array(mysql_query("select desa from t4t_desa where id_desa='$kd_ds'"));
+    $petani2        =mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_ptn' and id_desa='$kd_ds'"));
+    $kdta           =$get_lahan['kd_ta'];
+    $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
+
+    $a=mysql_query("select count(*) from current_tree where bl='$bl' and no_shipment='$no_ship' and time='$date' group by no_t4tlahan");
+    $j=1;
+    while ($jml_pohon=mysql_fetch_array($a)) {
+        $jml_pohon2[$j]=$jml_pohon[0];
+    $j++;
+    }
+    
+    
+    //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
+   $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$nama_mu','$jml_pohon2[$i]','','$no_ship','$date')");
+
+$i++;
+}
+  $k++;  
+}//end while
 
 
 header("location:../../admin.php?4c079fe60164545aca6a15d1da3842b26d13fa85a72a1c4d0d323d98934f6d2f");
 
-
-
-// } //end post save
-
-// if ($_POST['add']) {
-// 	 $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
-//                           '$desa[0]','$ta[0]','$nama_mu','$total_trees','','$no_ship')");
-
-// 	 $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
-
-// 	 $query_current_tree_update=mysql_query("update current_tree set used='1' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' limit $total_trees");
-
-// 		 if ($unallocated>0) {
-// 					header("location:../../admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c");
-// 		 }else
-// 		   {
-// 				    header("location:../../admin.php?c3b00eb86cd337880f1639111f2af716061ba997b556a75c89e9bad84f0eb324"); //ditambah url untuk sukses nantinya
-// 		   }
-// }
 
 ?>
