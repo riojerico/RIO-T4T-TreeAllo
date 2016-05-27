@@ -6,10 +6,7 @@ include "../../assets/lib-encript/function.php";
 // --------------
 //POST from FORM
 $id_part	=$_POST['partisipan'];
-//add no shipment
-$id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$id_part'"));
 $bl         =$_POST['bl'];
-$date       =date("dmy");
 $no_ship    =$_POST['no_ship'];
 $tot_wins	=$_POST['tot_wins'];
 $min_allo	=$_POST['min_allo'];
@@ -52,7 +49,7 @@ $date=date("dmy");
 
     
 //update current tree
-$ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+$ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
 for ($i=1; $i <= $tot_wins ; $i++) { 
      //no shipment
     $date=date("dmy");

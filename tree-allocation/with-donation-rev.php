@@ -334,7 +334,7 @@
                                    $unallocated;
                                    date_default_timezone_set('Asia/Jakarta');
                                    $time=date("Y-m-d");                                  
-                                   $cek_blocking=mysql_fetch_array(mysql_query("select * from t4t_wins where id_part='$id_comp[0]' and bl like '%BL1%' and time='$time' limit 1"));
+                                   $cek_blocking=mysql_fetch_array(mysql_query("select * from t4t_wins where id_part='$id_comp[0]' and bl like '%BL10%' and time='$time' limit 1"));
 
                                    if ($tree>$ava_trees==1) {//Trees over allocation
                                   ?>
@@ -358,7 +358,7 @@
                                   <?php
                                  }//end over
 
-                                 elseif ($cek_blocking[time]==$time) {// partisipan maks 1 per day
+                                 elseif ($cek_blocking[time]==$time) {// partisipan maks 9 per day
                                   ?>
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-over').modal('show');">
@@ -370,7 +370,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Only allowed 1 times per day on this Participants
+                                                      Only allowed 10 times per day on this Participants, please try again next day...
                                                       
                                                   </div>
                                               </div>
