@@ -96,7 +96,7 @@
                                               echo $no_order; }?>
                                               </option>
                                               <?php
-                                              $data=mysql_query("select * from t4t_shipment where id_comp='$id_comp[0]' and acc='1' and no_shipment='$no_ship' order by no_order asc");
+                                              $data=mysql_query("select * from t4t_shipment where id_comp='$id_comp[0]' and acc_paid='1' and no_shipment='$no_ship' order by no_order asc");
                                               while ($data2=mysql_fetch_array($data)) {
                                                 for ($i=0; $i < 20 ; $i++) {
                                                 $pisah=explode(", ", $data2['no_order']);
