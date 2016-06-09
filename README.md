@@ -10,11 +10,10 @@ Company: BHL Foundation
 -Modul Alokasi Shipment dan Alokasi Container hanya dapat sekali dilakukan Alokasi pada hari yang sama
 
 [23 mei 2016]
-cek kembali donasi dan donasi many
-cek di server lama
-cek perubahan database
-upload server
----
+-cek kembali donasi dan donasi many
+-cek di server lama
+-cek perubahan database
+
 yg di upload ke server LIVE
 -ac shipment,container,donation-rev
 -wth-shipment,wth-cntainer,wth-donation-rev
