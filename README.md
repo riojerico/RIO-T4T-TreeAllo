@@ -2,6 +2,9 @@
 Author: Rio Jerico Widyatama
 Company: BHL Foundation
 
+[13 Juni 2016]
+-(Order) menu container, field wins diambil dari t4t_shipment wins_used dan datanya diambil apa adanya (readonly)
+
 [9 Juni 2016]
 -menghilangkan type of trees pada semua menu modul alokasi pohon [order]
 -menambahkan adding menu pada semua menu modul alokasi pohon [order]
