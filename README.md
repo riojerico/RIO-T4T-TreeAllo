@@ -2,6 +2,9 @@
 Author: Rio Jerico Widyatama
 Company: BHL Foundation
 
+[14 Juni 2016]
+-Update menu container di t4t-online.org, tetapi validasi msh kurang
+
 [13 Juni 2016]
 -(Order) menu container, field wins diambil dari t4t_shipment wins_used dan datanya diambil apa adanya (readonly)
 
