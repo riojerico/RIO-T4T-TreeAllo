@@ -56,7 +56,6 @@ for ($i=1; $i <= 1 ; $i++) {
      $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees");
 }
 
-
 //insert into t4t_htc
 $k=1;
 while ($k <= 1 ) {

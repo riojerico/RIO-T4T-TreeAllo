@@ -19,7 +19,6 @@ $add=$_REQUEST['add'];
 $save=$_REQUEST['save'];
 if ($add or $save ) {
 
-
 //insert into t4t_htc
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$add_type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$add_nama_mu'")); 

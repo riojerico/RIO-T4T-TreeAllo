@@ -342,9 +342,6 @@
                                   </div>
                                   <!-- CLOSE TOTAL TREES -->
 
-
-
-
                                   <!-- CLOSE  -->
                                   <div align="center">
                                   <button type="submit" name="cek" value="cek" class="btn btn-success"><i class="fa fa-check"> Check</i></button><br><br><br>

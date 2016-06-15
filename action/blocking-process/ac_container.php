@@ -6,7 +6,6 @@ include '../../koneksi/koneksi.php';
 //for encription
 include "../../assets/lib-encript/function.php";
 
-
 // --------------
 //POST from FORM
 $id_part	=$_POST['partisipan'];
