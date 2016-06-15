@@ -199,7 +199,7 @@ $i++;
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
 
                                    <!-- OPEN TYPE TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Type of Trees</label>
                                       <div class="col-sm-10">
 
@@ -227,7 +227,7 @@ $i++;
                                           </select>
                                           <noscript><input type="submit" value="type_trees"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE TYPE TREES -->
 
                                   <?php 
@@ -238,7 +238,7 @@ $i++;
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
                                   ?>
 

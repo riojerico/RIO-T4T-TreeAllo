@@ -5,14 +5,15 @@ $add_bl         =$_POST['bl'];
 $add_tot_wins   =$_POST['tot_wins'];
 $add_min_allo   =$_POST['min_allo'];
 $add_total_allo =$_POST['total_allo'];
-$add_ava_allo   =$_POST['ava_allo'];
+$win_num        =$_POST['win_num'];
 $add_nama_mu    =$_POST['mu']; 
 $add_type_trees =$_POST['type_trees'];
 $add_total_trees=$_POST['total_trees'];
 $add_no_order   =$_POST['no_order'];
 $unallocated2   =$_POST['unallocated'];
 $start_w        =$_POST['start_w'];
-$land           =$_POST['land'];
+$land     =$_POST['land'];
+date_default_timezone_set('Asia/Jakarta');
 
 $add=$_REQUEST['add'];
 $save=$_REQUEST['save'];
@@ -23,7 +24,7 @@ if ($add or $save ) {
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$add_type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$add_nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$add_noship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit 1"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit 1"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -41,39 +42,64 @@ $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelah
 $geo=$no_t4tlahan[1];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
 
-$query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$kd_lahan','$no_lahan','$geo','$silvilkultur[0]','$luas','$petani[0]',
-                        '$desa[0]','$ta[0]','$add_nama_mu','$add_total_trees','','$add_noship')");
-
-
-//insert into t4t_wins
-for ($i=1; $i <= $tot_wins ; $i++) { 
-  //get the last wins
-    // $last_wins=mysql_query("select wins from t4t_wins order by no desc limit 1 ");
-    // $last_wins2=mysql_fetch_array($last_wins);
-    // $wins=$last_wins2['wins'];
-      // $wins+$i;
-  //ambil start wins
-  $wins=$start_w-1;
-  //echo "<br>";
-    $win=$wins+$i;
-
-  //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
-  $id_partisipan[0];
-
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship')");
-}
+//no shipment
+$date=date("Y-m-d");
 
 //update current tree
- $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit $add_total_trees");
-
-$item_qty=mysql_fetch_array(mysql_query("select item_qty from t4t_shipment where bl='$bl'"));
-$item=$item_qty[0];
-// echo "<br>";
-$qty_akhir=$item-$total_allo;
-
-  //$query_update_qty_item=mysql_query("update t4t_shipment set item_qty='$qty_akhir' where bl='$bl' ");
+$ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where time like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+for ($i=1; $i <= 1 ; $i++) { 
+     //no shipment
+    $date=date("Y-m-d");
+   
+   $ns2=$ns[0]+$i;
+    
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees");
 }
 
+
+//insert into t4t_htc
+$k=1;
+while ($k <= 1 ) {
+
+$data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11' group by no_t4tlahan");
+
+$i=1;
+while ( $data=mysql_fetch_array($data_lahan)) {
+    $no_lahan2      =$data['no_t4tlahan'];
+    $get_lahan      =mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no_lahan2'"));
+    $kd_lahan2      =$get_lahan['kd_lahan'];
+    $geo2           =$data['koordinat'];
+    $kd_sil         =$get_lahan['id_lahan'];
+    $silvilkultur2  =mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$kd_sil'"));
+    $luas2          =$get_lahan['luas_lahan'];
+    $kd_ptn         =$get_lahan['kd_petani'];
+    $kd_ds          =$get_lahan['id_desa'];
+    $desa2          =mysql_fetch_array(mysql_query("select desa from t4t_desa where id_desa='$kd_ds'"));
+    $petani2        =mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_ptn' and id_desa='$kd_ds'"));
+    $kdta           =$get_lahan['kd_ta'];
+    $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
+
+    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11' group by no_t4tlahan");
+    $j=1;
+    while ($jml_pohon=mysql_fetch_array($a)) {
+        $jml_pohon2[$j]=$jml_pohon[0];
+    $j++;
+    }
+    
+    
+    //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
+   $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$add_nama_mu','$jml_pohon2[$i]','','$add_noship','$date')");
+
+$i++;
+}
+  $k++;  
+}//end while
+
+$date=date("Y-m-d");
+//update current_tree kedua
+$query_current_tree_update2=mysql_query("update current_tree set time='$date' where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11'");
+
+}
 
 ?>
           <section class="wrapper">
@@ -137,6 +163,7 @@ $qty_akhir=$item-$total_allo;
                                                       <input type="hidden" name="no_order" value="<?php echo $add_no_order ?>">
                                                       <input type="hidden" name="unallocated" value="<?php echo $unallocated2 ?>">
                                                       <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
+                                                      <input type="hidden" name="win_num" value="<?php echo $win_num ?>">
 
                                   </div>
                                       <!-- CLOSE MU -->
@@ -150,7 +177,7 @@ $qty_akhir=$item-$total_allo;
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
 
                                    <!-- OPEN TYPE TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Type of Trees</label>
                                       <div class="col-sm-10">
 
@@ -178,11 +205,11 @@ $qty_akhir=$item-$total_allo;
                                           </select>
                                           <noscript><input type="submit" value="type_trees"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE TYPE TREES -->
 
                                   <!-- OPEN LAHAN TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Land ID</label>
                                       <div class="col-sm-10">
                                       <?php $land2=$_REQUEST['land2'] ?>
@@ -210,7 +237,7 @@ $qty_akhir=$item-$total_allo;
                                           </select>
                                           <noscript><input type="submit" value="land2"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE LAHAN TREES -->
 
                                   <?php 
@@ -221,7 +248,7 @@ $qty_akhir=$item-$total_allo;
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and no_t4tlahan='$land2'"));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -258,7 +285,7 @@ $qty_akhir=$item-$total_allo;
                                       $unallocated=$unallocated2-$pohon;
                                   ?>
                                   <div class="col-sm-2">
-                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> unallocated" readonly="">
+                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> estimated unallocated" readonly="">
                                   </div>
                               <!-- close form -->
                               <?php
@@ -289,6 +316,7 @@ $qty_akhir=$item-$total_allo;
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land2 ?>">
+                                  <input type="hidden" name="win_num" value="<?php echo $win_num ?>">
 
                     
                                     
@@ -299,18 +327,19 @@ $qty_akhir=$item-$total_allo;
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-warning"> <strong>Warning!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please submit data now...
+                                                 <font color="red"> Tree < Total Tree Allocation </font><br>
+                                                      Please add another tree...
                                                   </div>
                                               </div>
-                                          </div> 
+                                          </div>
                                       </div>
                                   </body>
                                   <!-- end modal -->
                                         <br><br>
-                                      <button type="submit" value="add" name="add" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
+                                      <button type="submit" value="add" name="add" class="btn btn-primary"><i class="fa fa-plus"> Add Tree</i></button>
                                      
                                      
                                   </div>
@@ -340,6 +369,7 @@ $qty_akhir=$item-$total_allo;
                                   <input type="hidden" name="unallocated" value="0">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land2 ?>">
+                                  <input type="hidden" name="win_num" value="<?php echo $win_num ?>">
 
                     
                                     
@@ -350,7 +380,7 @@ $qty_akhir=$item-$total_allo;
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title allert alert-success">Data has been checked!</h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
@@ -378,13 +408,13 @@ $qty_akhir=$item-$total_allo;
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data do not match!</h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please check your allocation trees...
                                                   </div>
                                               </div>
-                                          </div> 
+                                          </div>
                                       </div>
                                   </body>
                                   <!-- end modal -->
@@ -416,4 +446,3 @@ $qty_akhir=$item-$total_allo;
               </div>
               <!-- page end-->
           </section>
-<?php include 'js/jsku.php'; ?>

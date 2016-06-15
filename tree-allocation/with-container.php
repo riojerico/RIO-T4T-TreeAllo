@@ -131,6 +131,70 @@
                                   </div>
                                     <!-- CLOSE BL -->
 
+                                    <!-- cek wins -->
+                                  <div class="form-group">
+                                  <?php 
+                                    $win_number=$_REQUEST['win_num']; 
+                                    $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_shipment where no_shipment='$no_ship' "));
+                                  ?>
+                                      <label class="col-sm-2 control-label">Wins Number</label>
+                                      <div class="col-sm-10">
+                                          <textarea type="" class="form-control" name="win_num" placeholder="<?php echo $win_num[0] ?>" readonly="" required><?php echo $win_num[0] ?></textarea>
+                                      </div>
+                                      <!-- <label class="col-sm-2 "></label>
+                                      <div class="col-sm-10">
+                                       <font color="red">*wins used from shipment</font>
+                                       </div> -->
+                                  </div>
+                                      <!-- //cek wins -->
+
+                                    <!-- OPEN TOTAL WINS -->
+                                   <!-- <div class="form-group">
+                                      <label class="col-sm-2 control-label">Total Allocation <b>(WINS)</b></label>
+                                      <?php
+                                        $tot_wins=$_REQUEST['tot_wins'];
+
+                                        $ex_win=explode(",", $win_num);
+                                        $ex_win2=count($ex_win);
+
+                                        $a=0;
+                                         $c=0;
+                                         $hasil=array();
+                                        while ( $a < $ex_win2) {
+                                          
+                                            for ($i=0; $i < 1 ; $i++) { 
+                                                $isi = explode("-", $ex_win[$a]);
+                                                $start=$isi[0];
+                                                if (!$isi[1]) {
+                                                    $end=$isi[0];
+                                                }else {
+                                                    $end=$isi[1];
+                                                }
+
+                                                $hasil=trim($start);
+                                                
+                                                for ($i=$start; $i <= $end ; $i++) { 
+                                                    // echo $.'<br>';
+                                                    //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time
+                                                    //$query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date')");
+                                                    $hasil;
+
+                                                    $hasil++;
+                                                }
+
+                                               
+                                            }
+
+                                        $a++;    
+                                        }
+
+                                      ?>
+                                      <div class="col-sm-10">
+                                          <input type="number" class="form-control" readonly="" name="tot_wins" value="<?php echo count($hasil) ?>" required="">
+                                      </div>
+                                  </div> --> 
+                                      <!-- CLOSE TOTAL WINS -->
+
                                     <!-- OPEN TOTAL ALLO -->
                                   <div class="form-group">
                                   <?php $total_allo=$_REQUEST['total_allo'];
@@ -142,38 +206,11 @@
                                       </div>
                                   </div>
                                       <!-- CLOSE TOTAL ALLO -->
-
-                                    <!-- OPEN TOTAL WINS -->
-                                  <div class="form-group">
-                                      <label class="col-sm-2 control-label">Total Allocation <b>(WINS)</b></label>
-                                      <?php
-                                        $tot_wins=$_REQUEST['tot_wins'];
-                                      ?>
-                                      <div class="col-sm-10">
-                                          <input type="number" class="form-control" name="tot_wins" value="<?php echo $tot_wins ?>" min="<?php echo $total_allo ?>" required="">
-                                      </div>
-                                  </div>
-                                      <!-- CLOSE TOTAL WINS -->
-                                      
-                                      <!-- cek wins -->
-                                  <div class="form-group">
-                                  <?php $ava_allo=$_REQUEST['win_num']; 
-                                    $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_shipment where no_shipment='$no_ship' "));
-                                  ?>
-                                      <label class="col-sm-2 control-label">Wins Number</label>
-                                      <div class="col-sm-10">
-                                          <textarea type="" class="form-control" readonly="" name="win_num" required><?php echo $win_num[0] ?></textarea>
-                                      </div>
-                                      <label class="col-sm-2 "></label>
-                                      <div class="col-sm-10">
-                                       <font color="red">*wins used from shipment</font>
-                                       </div>
-                                  </div>
-                                      <!-- //cek wins -->
+     
 
                                       <!-- START WINS -->
-                                  <div class="form-group">
-                                  <?php $ava_allo=$_REQUEST['ava_allo']; ?>
+                                  <!-- <div class="form-group">
+                                  <?php $win_number=$_REQUEST['win_num']; ?>
                                   <div class="col-lg-2"></div>
                                     <div class="col-lg-4">
                                       <label class="col-sm-3 control-label c">Start Wins</label>
@@ -190,7 +227,7 @@
                                       </div>
                                     </div>
                                     <div class="col-lg-2"></div>
-                                  </div>
+                                  </div> -->
                                       <!-- //START WINS -->
 
 
@@ -240,7 +277,7 @@
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
 
                                    <!-- OPEN TYPE TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Type of Trees</label>
                                       <div class="col-sm-10">
 
@@ -268,7 +305,7 @@
                                           </select>
                                           <noscript><input type="submit" value="type_trees"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE TYPE TREES -->
                                 
                                   <?php
@@ -281,7 +318,7 @@
                                  // echo $id_mu['kd_mu'];
 
                                   //echo $land;
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -331,7 +368,7 @@
                                    $time=date("Y-m-d");
                                    $bl=$_REQUEST['bl'];
                                    $cek_blocking=mysql_fetch_array(mysql_query("select * from current_tree where bl='$bl' and time='$time' limit 1"));
-                                   $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
+                                   $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins_copy where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
                                    if ($cek_blocking[11]==$time) {//Trees over allocation
                                   ?>
                                   <!-- modal -->
@@ -383,7 +420,7 @@
                                         ?>
 
                                  <!-- SUBMIT BUTTON -->
-                                  <!-- <form  id="form" action="admin.php?4c079fe60164545aca6a15d1da3842b2485f19446e3798321e88b99316830961" method="post"> -->
+                                  <form  id="form" action="admin.php?4c079fe60164545aca6a15d1da3842b2485f19446e3798321e88b99316830961" method="post">
                                   <div align="center">
 
 
@@ -394,7 +431,7 @@
                                   <input type="hidden" name="min_allo" value="<?php echo $tot_wins[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
                                   <input type="hidden" name="mu" value="<?php echo $mu ?>">
-                                  <input type="hidden" name="ava_allo" value="<?php echo $ava_allo ?>">
+                                  <input type="hidden" name="win_num" value="<?php echo $win_number ?>">
                                   <input type="hidden" name="type_trees" value="<?php echo $type_trees ?>">
                                   <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
                                   <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
@@ -417,7 +454,7 @@
                                                   </div>
                                                   <div class="modal-body">
                                                  <font color="red"> Tree < Total Tree Allocation </font><br>
-                                                      Sorry this process is not allowed...
+                                                      Please add another tree...
                                                   </div>
                                               </div>
                                           </div>
@@ -425,11 +462,11 @@
                                   </body>
                                   <!-- end modal -->
 
-                                      <!-- <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
-                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a> -->
+                                      <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-plus"> Add Tree</i></button>
+                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
 
                                   </div>
-                                  <!-- </form> -->
+                                  </form>
                                   <?php
 
                                    }//end unallocated
@@ -451,7 +488,7 @@
                                   <input type="hidden" name="min_allo" value="<?php echo $item[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
                                   <input type="hidden" name="mu" value="<?php echo $mu ?>">
-                                  <input type="hidden" name="ava_allo" value="<?php echo $ava_allo ?>">
+                                  <input type="hidden" name="win_num" value="<?php echo $win_number ?>">
                                   <input type="hidden" name="type_trees" value="<?php echo $type_trees ?>">
                                   <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
                                   <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
@@ -533,4 +570,4 @@
               </div>
               <!-- page end-->
           </section>
-<?php include 'js/jsku.php'; ?>
+

@@ -240,7 +240,7 @@
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
 
                                    <!-- OPEN TYPE TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Type of Trees</label>
                                       <div class="col-sm-10">
 
@@ -268,7 +268,7 @@
                                           </select>
                                           <noscript><input type="submit" value="type_trees"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE TYPE TREES -->
 
                                   <?php
@@ -281,7 +281,7 @@
                                  // echo $id_mu['kd_mu'];
 
                                   //echo $land;
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and id_pohon='$id_trees[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -379,8 +379,8 @@
                                     elseif ($unallocated > 0) {
                                         ?>
 
-                                 <!-- SUBMIT BUTTON -->
-                                  <!-- <form  id="form" action="admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c" method="post"> -->
+                                 <!-- SUBMIT BUTTON ke add 1-->
+                                  <form  id="form" action="admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c" method="post">
                                   <div align="center">
 
 
@@ -410,11 +410,11 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-warning"> <strong>Warning!</strong></h4>
+                                                  <h4 class="modal-title alert alert-warning"> <strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                  <font color="red"> Tree < Total Tree Allocation </font><br>
-                                                      Sorry this process is not allowed...
+                                                      Please add another trees...
                                                   </div>
                                               </div>
                                           </div>
@@ -422,11 +422,11 @@
                                   </body>
                                   <!-- end modal -->
 
-                                      <!-- <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
-                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a> -->
+                                      <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-plus"> Add</i></button>
+                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
 
                                   </div>
-                                  <<!-- /form> -->
+                                  </form>
                                   <?php
 
                                    }//end unallocated

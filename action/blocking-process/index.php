@@ -29,7 +29,7 @@ $datetime	= date("Y-m-d H:i:s");
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$no_ship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
@@ -57,7 +57,7 @@ for ($i=1; $i <= 1 ; $i++) {
    
    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship',time='$date' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship',time='$date' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees");
 }
 
 //insert into t4t_wins
