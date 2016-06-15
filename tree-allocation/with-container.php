@@ -368,7 +368,7 @@
                                    $time=date("Y-m-d");
                                    $bl=$_REQUEST['bl'];
                                    $cek_blocking=mysql_fetch_array(mysql_query("select * from current_tree where bl='$bl' and time='$time' limit 1"));
-                                   $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins_copy where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
+                                   $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
                                    if ($cek_blocking[11]==$time) {//Trees over allocation
                                   ?>
                                   <!-- modal -->

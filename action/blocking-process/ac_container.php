@@ -83,7 +83,6 @@ while ( $a < $ex_win2) {
         $hasil=trim($start);
         
         for ($i=$start; $i <= $end ; $i++) { 
-            // echo $.'<br>';
             //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time
             $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date')");
 
@@ -103,9 +102,7 @@ $a++;
 //insert into t4t_htc
 $k=1;
 while ($k <= 1 ) {
-// $jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where time like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
-// $jml_ns2=$jml_ns[0]+1;
-// $no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
+
 $data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11' group by no_t4tlahan");
 
 $i=1;
