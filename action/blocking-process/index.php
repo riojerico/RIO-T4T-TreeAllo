@@ -57,7 +57,7 @@ for ($i=1; $i <= 1 ; $i++) {
    
    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship',time='$date' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees");
 }
 
 //insert into t4t_wins
@@ -79,7 +79,7 @@ while ($k <= 1 ) {
 // $jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where time like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
 // $jml_ns2=$jml_ns[0]+1;
 // $no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
-$data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='$no_ship' and time='$date' group by no_t4tlahan");
+$data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11' group by no_t4tlahan");
 
 $i=1;
 while ( $data=mysql_fetch_array($data_lahan)) {
@@ -97,7 +97,7 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     $kdta           =$get_lahan['kd_ta'];
     $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
 
-    $a=mysql_query("select count(*) from current_tree where bl='$bl' and no_shipment='$no_ship' and time='$date' group by no_t4tlahan");
+    $a=mysql_query("select count(*) from current_tree where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11' group by no_t4tlahan");
     $j=1;
     while ($jml_pohon=mysql_fetch_array($a)) {
         $jml_pohon2[$j]=$jml_pohon[0];
@@ -113,6 +113,9 @@ $i++;
   $k++;  
 }//end while
 
+$date=date("Y-m-d");
+//update current_tree kedua
+$query_current_tree_update2=mysql_query("update current_tree set time='$date' where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11'");
 
 header("location:../../admin.php?c3b00eb86cd337880f1639111f2af716061ba997b556a75c89e9bad84f0eb324");
 

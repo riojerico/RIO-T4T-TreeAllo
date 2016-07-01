@@ -326,9 +326,9 @@
                                   date_default_timezone_set('Asia/Jakarta');
                                    $time=date("Y-m-d");
                                    $bl=$_REQUEST['bl'];
-                                   $cek_blocking=mysql_fetch_array(mysql_query("select * from current_tree where bl='$bl' and time='$time' limit 1"));
                                    $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
-                                   if ($cek_blocking[11]==$time) {//Trees over allocation
+                                  
+                                  if ($cek_order['id_part']==$id_comp[0]) {//Trees over allocation
                                   ?>
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-over').modal('show');">
@@ -337,10 +337,10 @@
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
+                                                  <h4 class="modal-title alert alert-warning"><strong>Warning</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Only allowed 1 times per day on this BL
+                                                      "No Order" and "No Shipment" have ever been processed... <br><font color="green">Ignore if all risks are understood</font>
                                                       
                                                   </div>
                                               </div>
@@ -348,30 +348,108 @@
                                       </div>
                                   </body>
                                   <!-- end modal -->
-                                  <?php
-                                 }//end over
+                                          <?php 
+                                          if ($unallocated==0) {
+                                             ?>
+                                             <!-- SUBMIT BUTTON -->
+                                          <form  id="form" action="action/blocking-process/index.php" method="post">
+                                          <div align="center">
+                                          <?php $pohon=$_REQUEST['total_trees'];
+                                                $unallocated=$total_allo-$pohon;
+                                          ?>
 
-                                  elseif ($cek_order['id_part']==$id_comp[0]) {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      "No Order" and "No Shipment" have ever been processed...
-                                                      
+                                          <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
+                                          <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
+                                          <input type="hidden" name="bl" value="<?php echo $data_ship['bl'] ?>">
+                                          <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
+                                          <input type="hidden" name="min_allo" value="<?php echo $item[0] ?>">
+                                          <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
+                                          <input type="hidden" name="mu" value="<?php echo $mu ?>">
+                                          <input type="hidden" name="ava_allo" value="<?php echo $ava_allo ?>">
+                                          <input type="hidden" name="type_trees" value="<?php echo $type_trees ?>">
+                                          <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
+                                          <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
+                                          <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
+                                          <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
+                                          <input type="hidden" name="land" value="<?php echo $land ?>">
+                                          
+
+
+                                          <!-- modal -->
+                                          <body onLoad="$('#my-modal-allo').modal('show');">
+                                              <div id="my-modal-allo" class="modal fade">
+                                                  <div class="modal-dialog">
+                                                      <div class="modal-content">
+                                                          <div class="modal-header">
+                                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                          <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
+                                                          </div>
+                                                          <div class="modal-body">
+                                                              Please submit data now...
+                                                          </div>
+                                                      </div>
                                                   </div>
                                               </div>
+                                          </body>
+                                          <!-- end modal -->
+                                              <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
+                                              <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
+
                                           </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
+                                          </form>
+
+                                             <?php
+                                           }//end pass
+                                          elseif ($unallocated > 0) {
+                                        ?>
+                                         <!-- SUBMIT BUTTON ke add 1-->
+                                          <form  id="form" action="admin.php?c3b00eb86cd337880f1639111f2af716f86f51ed9f35a9b3ced72f3876350b3c" method="post">
+                                          <div align="center">
+
+
+                                          <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
+                                          <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
+                                          <input type="hidden" name="bl" value="<?php echo $data_ship['bl'] ?>">
+                                          <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
+                                          <input type="hidden" name="min_allo" value="<?php echo $tot_wins[0] ?>">
+                                          <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
+                                          <input type="hidden" name="mu" value="<?php echo $mu ?>">
+                                          <input type="hidden" name="ava_allo" value="<?php echo $ava_allo ?>">
+                                          <input type="hidden" name="type_trees" value="<?php echo $type_trees ?>">
+                                          <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
+                                          <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
+                                          <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
+                                          <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
+                                          <input type="hidden" name="land" value="<?php echo $land ?>">
+
+
+                                          <!-- modal -->
+                                          <body onLoad="$('#my-modal-unallo').modal('show');">
+                                              <div id="my-modal-unallo" class="modal fade">
+                                                  <div class="modal-dialog">
+                                                      <div class="modal-content">
+                                                          <div class="modal-header">
+                                                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                          <h4 class="modal-title alert alert-warning"> <strong>Data has been checked!</strong></h4>
+                                                          </div>
+                                                          <div class="modal-body">
+                                                         <font color="red"> Tree < Total Tree Allocation </font><br>
+                                                              Please add another trees...
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </body>
+                                          <!-- end modal -->
+
+                                              <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-plus"> Add</i></button>
+                                              <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
+
+                                          </div>
+                                          </form>
+                                          <?php
+
+                                           }//end unallocated
                                  }//end over
 
                                   
@@ -529,4 +607,4 @@
               </div>
               <!-- page end-->
           </section>
-<?php include 'js/jsku.php'; ?>
+

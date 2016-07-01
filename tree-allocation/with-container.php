@@ -1,4 +1,4 @@
-          <section class="wrapper">
+<section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
           <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Container</h3>
@@ -51,7 +51,6 @@
                                     $no_ship = $_REQUEST['no_ship'] ;
                                     if ($parts) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
-
                                   ?>
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">No Shipment</label>
@@ -83,7 +82,6 @@
                                     $no_order = $_REQUEST['no_order'] ;
                                     if ($no_ship) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
-
                                   ?>
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">No Order</label>
@@ -116,11 +114,8 @@
                                   <!-- [OPEN] BL - TOTAL WINS - MIN. ALLOCATION -  TOT. ALLOCATION - AVA. ALLOCATION - M. UNIT -->
                                   <?php
                                     $no_order  =$_REQUEST['no_order'];
-
                                     if ($no_order) {
-
                                      $data_ship=mysql_fetch_array(mysql_query("select * from t4t_shipment where no_shipment='$no_ship' and id_comp='$id_comp[0]' "));
-
                                   ?>
                                     <!-- OPEN BL -->
                                   <div class="form-group">
@@ -153,10 +148,8 @@
                                       <label class="col-sm-2 control-label">Total Allocation <b>(WINS)</b></label>
                                       <?php
                                         $tot_wins=$_REQUEST['tot_wins'];
-
                                         $ex_win=explode(",", $win_num);
                                         $ex_win2=count($ex_win);
-
                                         $a=0;
                                          $c=0;
                                          $hasil=array();
@@ -170,7 +163,6 @@
                                                 }else {
                                                     $end=$isi[1];
                                                 }
-
                                                 $hasil=trim($start);
                                                 
                                                 for ($i=$start; $i <= $end ; $i++) { 
@@ -178,16 +170,12 @@
                                                     //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time
                                                     //$query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date')");
                                                     $hasil;
-
                                                     $hasil++;
                                                 }
-
                                                
                                             }
-
                                         $a++;    
                                         }
-
                                       ?>
                                       <div class="col-sm-10">
                                           <input type="number" class="form-control" readonly="" name="tot_wins" value="<?php echo count($hasil) ?>" required="">
@@ -251,7 +239,6 @@
                                               $data=mysql_query("select count(no_pohon) as trees,kd_mu from current_tree where hidup=1 and used=0 and bl='' 
                                                 and no_shipment='' and koordinat!='' group by kd_mu order by trees desc");
                                               while ($data2=mysql_fetch_array($data)) {
-
                                                 $unit=$data2[1];
                                                 $data_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where kd_mu='$unit'"));
                                               ?>
@@ -280,7 +267,6 @@
                                   <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Type of Trees</label>
                                       <div class="col-sm-10">
-
                                           <select class="form-control m-bot15" name="type_trees" onchange='this.form.submit()' required>
                                               <option><?php
                                               if ($type_trees=='') {
@@ -290,12 +276,9 @@
                                               </option>
                                               <?php
                                               $unit_per_mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
-
                                               $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 
                                 and bl='' and no_shipment='' and koordinat!='' and kd_mu='$unit_per_mu[0]' group by id_pohon order by trees desc");
                                               while ($data2=mysql_fetch_array($data)) {
-
-
                                                $species=$data2[1];
                                                $sp=mysql_fetch_array(mysql_query("select * from t4t_pohon where id_pohon='$species'"));
                                               ?>
@@ -309,14 +292,12 @@
                                   <!-- CLOSE TYPE TREES -->
                                 
                                   <?php
-
                                   $tot_trees=$_REQUEST['type_trees'];
                                  // echo $tot_trees;
                                   $id_trees=mysql_fetch_array(mysql_query("select * from t4t_pohon where nama_pohon like '%$tot_trees%'"));
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-
                                   //echo $land;
                                   $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
@@ -354,11 +335,9 @@
                                   ?>
                               <!-- close form -->
                               <?php
-
                                  //if submit check
                                  $cek=$_REQUEST['cek'];
                                  if ($cek) {
-
                              
                                    $unallocated;
                                    date_default_timezone_set('Asia/Jakarta');
@@ -378,7 +357,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Only allowed 1 times per day on this BL
+                                                      Tree has been allocated..
                                                   </div>
                                               </div>
                                           </div>
@@ -387,7 +366,6 @@
                                   <!-- end modal -->
                                   <?php
                                  }//end over
-
                                  elseif ($cek_order['id_part']==$id_comp[0]) {//Trees over allocation
                                   ?>
                                   <!-- modal -->
@@ -410,8 +388,6 @@
                                   <!-- end modal -->
                                   <?php
                                  }//end over
-
-
                                       //if unallocated
                                     elseif ($unallocated > 0) {
                                         ?>
@@ -465,9 +441,7 @@
                                   </div>
                                   </form>
                                   <?php
-
                                    }//end unallocated
-
                                    elseif ($unallocated==0) {
                                      ?>
                                      <!-- SUBMIT BUTTON -->
@@ -541,7 +515,6 @@
                                   <!-- end modal -->
                                   <?php
                                  }//end over
-
                                 }//end check
                                  ?>
 
@@ -567,4 +540,3 @@
               </div>
               <!-- page end-->
           </section>
-
