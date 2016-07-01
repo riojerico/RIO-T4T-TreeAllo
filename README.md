@@ -2,6 +2,9 @@
 Author: Rio Jerico Widyatama
 Company: BHL Foundation
 
+[15 Juni 2016]
++Update menu container
+
 [14 Juni 2016]
 -Update menu container di t4t-online.org, tetapi validasi msh kurang
 
