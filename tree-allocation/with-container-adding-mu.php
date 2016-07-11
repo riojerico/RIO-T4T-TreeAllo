@@ -285,7 +285,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                       $unallocated=$unallocated2-$pohon;
                                   ?>
                                   <div class="col-sm-2">
-                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> estimated unallocated" readonly="">
+                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> unallocated estimation" readonly="">
                                   </div>
                               <!-- close form -->
                               <?php

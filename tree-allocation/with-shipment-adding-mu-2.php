@@ -284,7 +284,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                       $unallocated=$unallocated2-$pohon;
                                   ?>
                                   <div class="col-sm-2">
-                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> unallocated" readonly="">
+                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> unallocated estimation" readonly="">
                                   </div>
                               <!-- close form -->
                               <?php
@@ -325,7 +325,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-success"><b>Data has been checked!</b></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
@@ -376,7 +376,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data has been checked!</h4>
+                                                  <h4 class="modal-title alert alert-success"><b>Data has been checked!</b></h4>
                                                   </div>
                                                   <div class="modal-body">
                                                       Please submit data now...
