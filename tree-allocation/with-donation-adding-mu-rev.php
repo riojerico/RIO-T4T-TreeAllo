@@ -20,6 +20,8 @@ $land           =$_POST['land'];
 $destination    =$_POST['destination'];
 $treeperwins    =$_POST['treeperwins'];
 $tpw_fix        =$_POST['tpw_fix'];
+$fee=$_POST['fee'];
+$note=$_POST['note'];
 
 $add=$_REQUEST['add'];
 $save=$_REQUEST['save'];
@@ -30,62 +32,64 @@ if ($add or $save ) {
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$add_type_trees'"));
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$add_nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$add_noship'")); //tujuan [0]
-$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees"));
+$no_t4tlahan=mysql_fetch_array(mysql_query("select no_t4tlahan,koordinat from current_tree where used='0' and hidup='1' and kd_mu='$mu[0]' and no_t4tlahan='$land' limit 1"));
 $no=$no_t4tlahan[0];
 $lahan=mysql_fetch_array(mysql_query("select * from t4t_lahan where no='$no'"));
 $kd_lahan=$lahan['kd_lahan']; //kd_lahan
 $no_lahan=$lahan['no_lahan']; //no_lahan
 $luas=$lahan['luas_lahan']; //luas
 $kd_petani=$lahan['kd_petani'];
-$petani=mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_petani'")); //petani [0]
 $kd_desa=$lahan['id_desa'];
 $desa=mysql_fetch_array(mysql_query("select desa from t4t_desa where id_desa='$kd_desa'")); //desa [0]
+$petani=mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_petani' and id_desa='$kd_desa'")); //petani [0]
 $kd_ta=$lahan['kd_ta'];
 $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kd_ta'")); //ta [0]
 $id_lahan=$lahan['id_lahan'];
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
-$geo=$no_t4tlahan['koordinat'];
-
-
-
+$geo=$no_t4tlahan[1];
+$id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
 //no shipment
-$date=date("dmy");
+$date=date("Y-m-d");
+$date_second=date("Y-m-d h:i:s");
+$tanggal=date("dmy");  
+
 
 //update current tree
- $ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
-for ($i=1; $i <= 1 ; $i++) { 
+$ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where no_shipment like '%$tanggal%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+for ($i=1; $i <= $tot_wins ; $i++) { 
      //no shipment
     $date=date("dmy");
    
-    $ns2=$ns[0]+$i;
-    //echo $ns2;
+   $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship' where used='0' and hidup='1' and id_pohon='$id_pohon[0]' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$id_partisipan[0]$date$ns2',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $treeperwins");
 }
 
 
 
-//insert into t4t_wins
-$ns_win=mysql_fetch_array(mysql_query("select no_sh from add_wins where bl like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+//insert into t4t_shipment
+$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$tanggal%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+// no - no ship - id comp - bl - bl tgl - wins used - wins unused - wkt shipment - foto - acc - no order - kota tujuan - fee - diskon - tgl paid - acc paid - note - buyer - item qty
 for ($i=1; $i <= $tot_wins ; $i++) { 
-  //ambil start wins
-  $wins=$start_w-1;
-    $win=$wins+$i;
-   
-    $ns_win2=$ns_win[0]+$i;
-    $ns_win2;
-  //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment
-   
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$add_no_order','','','','','$add_bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2')");
+echo $jml_ns2=$jml_ns[0]+$i;
+$no_ship_htc=$id_partisipan[0].''.$tanggal.''.$jml_ns2;
+
+//Ambil wins
+$wins=$start_w-1;
+   $win=$wins+$i;
+
+    $query_shipment=mysql_query("insert into t4t_shipment values ('','$no_ship_htc','$id_partisipan[0]','$add_bl','$date','$win','','$date_second','','1','$add_no_order','$destination','$fee','0','$date','1','$note','','1')");
 }
 
 
 //insert into t4t_htc
-// $ns_htc=mysql_fetch_array(mysql_query("select count(*) from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+$k=1;
+while ($k <= $tot_wins ) {
+$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$tanggal%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+$jml_ns2=$jml_ns[0]+1;
+$no_ship_htc=$id_partisipan[0].''.$tanggal.''.$jml_ns2;
+$data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='$no_ship_htc' and time='1111-11-11' group by no_t4tlahan");
 
- $data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='$add_noship' group by no_t4tlahan");
-// $ns_htc2=$ns_htc[0]+1;
-// $no_shipment_htc=$id_partisipan[0].''.$date.''.$ns_htc2;
 $i=1;
 while ( $data=mysql_fetch_array($data_lahan)) {
     $no_lahan2      =$data['no_t4tlahan'];
@@ -102,7 +106,7 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     $kdta           =$get_lahan['kd_ta'];
     $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
 
-    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='$add_noship' group by no_t4tlahan");
+    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='$no_ship_htc' and time='1111-11-11' group by no_t4tlahan");
     $j=1;
     while ($jml_pohon=mysql_fetch_array($a)) {
         $jml_pohon2[$j]=$jml_pohon[0];
@@ -110,11 +114,18 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     }
     
     
-    //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment 
-    $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$destination','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$add_nama_mu','$jml_pohon2[$i]','','$add_noship')");
+    //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
+    $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$destination','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$add_nama_mu','$jml_pohon2[$i]','','$no_ship_htc','$date')");
 
 $i++;
 }
+  $k++;  
+}//end while
+
+   $date=date("Y-m-d");
+   
+    //update current_tree kedua
+    $query_current_tree_update2=mysql_query("update current_tree set time='$date' where bl='$add_bl'");
 
 
 } //end if
@@ -186,6 +197,8 @@ $i++;
                                                       <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                                       <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
                                                       <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
+                                                      <input type="hidden" name="fee" value="<?php echo $fee ?>">
+                                                      <input type="hidden" name="note" value="<?php echo $note ?>">
 
                                   </div>
                                       <!-- CLOSE MU -->
@@ -197,38 +210,6 @@ $i++;
                                   $mu = $_REQUEST['mu'] ;
                                     if ($mu) { ?>
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
-
-                                   <!-- OPEN TYPE TREES -->
-                                  <!-- <div class="form-group">
-                                      <label class="control-label col-sm-2">Type of Trees</label>
-                                      <div class="col-sm-10">
-
-                                          <select class="form-control m-bot15" name="type_trees" onchange='this.form.submit()' required>
-                                              <option><?php
-                                              if ($type_trees=='') {
-                                                echo "- Type of Trees -";
-                                              }else{
-                                              echo $type_trees; }?>
-                                              </option>
-                                              <?php
-                                              $unit_per_mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
-
-                                              $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 
-                                and bl='' and no_shipment='' and koordinat!='' and kd_mu='$unit_per_mu[0]' group by id_pohon order by trees desc");
-                                              while ($data2=mysql_fetch_array($data)) {
-
-
-                                               $species=$data2[1];
-                                               $sp=mysql_fetch_array(mysql_query("select * from t4t_pohon where id_pohon='$species'"));
-                                              ?>
-                                              <option value="<?php echo $sp['nama_pohon']?>"><?php echo $sp['nama_pohon'] ?> ( <?php echo $data2[0] ?> Trees)</option>
-                                              <?php
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="type_trees"></noscript>
-                                      </div>
-                                  </div> -->
-                                  <!-- CLOSE TYPE TREES -->
 
                                   <?php 
                                  
@@ -248,7 +229,7 @@ $i++;
                                       <div class="col-sm-7">
                                       <?php $tree=$_REQUEST['total_trees'] ?>
                                        
-                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $treeperwins ?>" max="<?php echo $jumlah_pohon[0] ?>" min="<?php echo $treeperwins ?>" required="">
+                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $unallocated ?>" max="<?php echo $jumlah_pohon[0] ?>" min="1" required="">
                                           <noscript><input type="submit" value="total_trees"></noscript>
                                       </div>
                                       
@@ -275,7 +256,7 @@ $i++;
                                       $unallocated=$unallocated2-$pohon;
                                   ?>
                                   <div class="col-sm-2">
-                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> unallocated" readonly="">
+                                    <input type="" class="form-control" name="" value="<?php echo  $unallocated ?> unallocated estimation" readonly="">
                                   </div>
                               <!-- close form -->
                               <?php
@@ -336,7 +317,9 @@ $i++;
                                   <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
                                   <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
                                   <input type="hidden" name="jml_ns" value="<?php echo $jml_ns+1 ?>">
-                                    
+                                  <input type="hidden" name="fee" value="<?php echo $fee ?>">
+                                  <input type="hidden" name="note" value="<?php echo $note ?>">  
+
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-unallo').modal('show');">
                                       <div id="my-modal-unallo" class="modal fade">
@@ -344,10 +327,10 @@ $i++;
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
+                                                  <h4 class="modal-title alert alert-warning"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please submit data now...
+                                                      Please <b>add</b> data now...
                                                   </div>
                                               </div>
                                           </div> 
@@ -355,7 +338,7 @@ $i++;
                                   </body>
                                   <!-- end modal -->
                                         <br><br>
-                                      <button type="submit" value="add" name="add" class="btn btn-primary"><i class="fa fa-save"> Submit</i></button>
+                                      <button type="submit" value="add" name="add" class="btn btn-warning"><i class="fa fa-plus"> Add</i></button>
                                      
                                      
                                   </div>
@@ -388,7 +371,9 @@ $i++;
                                   <input type="hidden" name="destination" value="<?php echo $destination ?>">
                                   <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
                                   <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>"> 
-                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns+1 ?>">                   
+                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns+1 ?>"> 
+                                  <input type="hidden" name="fee" value="<?php echo $fee ?>">
+                                  <input type="hidden" name="note" value="<?php echo $note ?>">                  
                                     
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">
@@ -400,7 +385,7 @@ $i++;
                                                   <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please submit data now...
+                                                      Please <b>submit</b> data now...
                                                   </div>
                                               </div>
                                           </div> 
