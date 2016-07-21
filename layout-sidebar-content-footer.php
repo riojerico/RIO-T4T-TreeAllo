@@ -21,11 +21,11 @@
                       </a>
                       <ul class="sub">
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-shipment')?>">With Shipment</a></li> 
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-container')?>">With Container</a></li> 
-                          <!-- <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation')?>">With Donation (One)</a></li> -->  
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-rev')?>">With Donation</a></li>  
-                          <!-- <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-adding-mu-rev-3')?>">add 3</a></li>  
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-adding-mu-rev-4')?>">add 4</a></li> -->
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-container')?>">With Container</a></li>  
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-rev')?>">With Donation</a></li> 
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-partnership')?>">With Partnership</a></li>  
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-partnership-adding-mu')?>">add 1</a></li> 
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-partnership-adding-mu-2')?>">add 2</a></li>  
                       </ul>
                   </li>       
                 
