@@ -28,7 +28,7 @@
                                           <select class="form-control m-bot15" name="partisipan" onchange='this.form.submit()'>
                                               <option><?php
                                               if ($parts=='') {
-                                                echo "- Partisipan -";
+                                                echo "- Participants -";
                                               }else{
                                               echo $parts; }?>
                                               </option>
@@ -46,41 +46,10 @@
                                   </div>
                                   <!-- CLOSE PARTISIPAN -->
 
-                                  <!-- NO SHIPMENT -->
-                                  <?php
-                                    $no_ship = $_REQUEST['no_ship'] ;
-                                    if ($parts) {
-                                      $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
-                                  ?>
-                                  <div class="form-group">
-                                      <label class="col-sm-2 control-label">No Shipment</label>
-                                      <div class="col-sm-10">
-                                          <select class="form-control m-bot15" name="no_ship" onchange="this.form.submit()" required>
-                                              <option><?php
-                                              if ($no_ship=='') {
-                                                echo "- No Shipment -";
-                                              }else{
-                                              echo $no_ship; }?>
-                                              </option>
-                                              <?php
-                                              $data=mysql_query("select * from t4t_shipment where id_comp='$id_comp[0]' order by no_shipment asc");
-                                              while ($data2=mysql_fetch_array($data)) {
-                                              ?>
-                                              <option value="<?php echo $data2['no_shipment'] ?>"><?php echo $data2['no_shipment'] ?></option>
-                                              <?php
-                                              }
-                                              ?>
-                                          </select>
-                                          <noscript><input type="submit" value="no_ship"></noscript>
-                                      </div>
-                                  </div>
-                                  <?php  }  ?>
-                                  <!-- CLOSE NO SHIPMENT -->
-
                                   <!-- NO ORDER -->
                                   <?php
                                     $no_order = $_REQUEST['no_order'] ;
-                                    if ($no_ship) {
+                                    if ($parts) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                   ?>
                                   <div class="form-group">
@@ -94,14 +63,14 @@
                                               echo $no_order; }?>
                                               </option>
                                               <?php
-                                              $data=mysql_query("select * from t4t_shipment where id_comp='$id_comp[0]' and acc_paid='1' and no_shipment='$no_ship' order by no_order asc");
+                                              $data=mysql_query("select * from t4t_order where id_comp='$id_comp[0]' and acc='1' order by no desc");
                                               while ($data2=mysql_fetch_array($data)) {
-                                                for ($i=0; $i < 20 ; $i++) {
+                                                // for ($i=0; $i < 20 ; $i++) {
                                                 $pisah=explode(", ", $data2['no_order']);
                                               ?>
-                                              <option value="<?php echo $pisah[$i] ?>"><?php echo $pisah[$i] ?></option>
+                                              <option value="<?php echo $data2['no_order'] ?>"><?php echo $data2['no_order'] ?></option>
                                               <?php
-                                                }
+                                                //}
                                               }
                                               ?>
                                           </select>
@@ -111,6 +80,37 @@
                                   <?php  }  ?>
                                   <!-- CLOSE NO ORDER -->
 
+                                  <!-- NO SHIPMENT -->
+                                  <?php
+                                    $no_ship = $_REQUEST['no_ship'] ;
+                                    if ($no_order) {
+                                      $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
+                                  ?>
+                                  <div class="form-group">
+                                      <label class="col-sm-2 control-label">No Shipment</label>
+                                      <div class="col-sm-10">
+                                          <select class="form-control m-bot15" name="no_ship" onchange="this.form.submit()" required>
+                                              <option><?php
+                                              if ($no_ship=='') {
+                                                echo "- No Shipment -";
+                                              }else{
+                                              echo $no_ship; }?>
+                                              </option>
+                                              <?php
+                                              $data=mysql_query("select * from t4t_shipment where id_comp='$id_comp[0]' and no_order like '%$no_order%' order by no desc");
+                                              while ($data2=mysql_fetch_array($data)) {
+                                              ?>
+                                              <option value="<?php echo $data2['no_shipment'] ?>"><?php echo $data2['no_shipment'] ?></option>
+                                              <?php
+                                              }
+                                              ?>
+                                          </select>
+                                          <noscript><input type="submit" value="no_ship"></noscript>
+                                      </div>
+                                  </div>
+                                  <?php  }  ?>
+                                  <!-- CLOSE NO SHIPMENT -->
+                                
                                   <!-- [OPEN] BL - TOTAL WINS - MIN. ALLOCATION -  TOT. ALLOCATION - AVA. ALLOCATION - M. UNIT -->
                                   <?php
                                     $no_order  =$_REQUEST['no_order'];
@@ -343,7 +343,7 @@
                                    date_default_timezone_set('Asia/Jakarta');
                                    $time=date("Y-m-d");
                                    $bl=$_REQUEST['bl'];
-                                   $cek_blocking=mysql_fetch_array(mysql_query("select * from current_tree where bl='$bl' and time='$time' limit 1"));
+                                   //$cek_blocking=mysql_fetch_array(mysql_query("select * from current_tree where bl='$bl' and time='$time' limit 1"));
                                    $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
                                    if ($cek_blocking[11]==$time) {//Trees over allocation
                                   ?>
@@ -411,7 +411,7 @@
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-
+                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">
 
                                   
 
@@ -426,6 +426,47 @@
                                                   <h4 class="modal-title alert alert-warning"> <strong>Warning!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
+                                                  <table border="0">
+                                                          <tr><!-- partisipan -->
+                                                            <td>Participants</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $parts ?></td>
+                                                          </tr>
+                                                          <tr><!-- no order -->
+                                                            <td>Order Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $no_order ?></td>
+                                                          </tr>
+                                                          <tr><!-- no ship -->
+                                                            <td>Shipment Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $no_ship ?></td>
+                                                          </tr>
+                                                          <tr><!-- bl -->
+                                                            <td>BL Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $bl ?></td>
+                                                          </tr>
+                                                          <tr><!-- Wins Number -->
+                                                            <td><B>WINS</B> Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $win_number ?></td>
+                                                          </tr>
+                                                          <tr><!-- tot tree -->
+                                                            <td>Tot. Allocation <b>TREE</b></td>
+                                                            <td>:</td>
+                                                            <td><?php echo $total_allo ?></td>
+                                                          </tr>
+                                                         
+                                                          <tr><!-- mu -->
+                                                            <td>Management Unit</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $mu ?></td>
+                                                          </tr>
+                                                          
+                                                        </table>
+                                                        <br><br>
+
                                                  <font color="red"> Tree < Total Tree Allocation </font><br>
                                                       Please add another tree...
                                                   </div>
@@ -435,7 +476,7 @@
                                   </body>
                                   <!-- end modal -->
 
-                                      <button type="submit" value="save" name="save" class="btn btn-primary"><i class="fa fa-plus"> Add Tree</i></button>
+                                      <button type="submit" value="save" name="save" class="btn btn-warning"><i class="fa fa-plus"> Add Tree</i></button>
                                       <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
 
                                   </div>
@@ -466,7 +507,7 @@
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-                                                                
+                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">                              
 
 
                                   <!-- modal -->
@@ -479,6 +520,47 @@
                                                   <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
+                                                  <table border="0">
+                                                          <tr><!-- partisipan -->
+                                                            <td>Participants</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $parts ?></td>
+                                                          </tr>
+                                                          <tr><!-- no order -->
+                                                            <td>Order Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $no_order ?></td>
+                                                          </tr>
+                                                          <tr><!-- no ship -->
+                                                            <td>Shipment Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $no_ship ?></td>
+                                                          </tr>
+                                                          <tr><!-- bl -->
+                                                            <td>BL Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $bl ?></td>
+                                                          </tr>
+                                                          <tr><!-- Wins Number -->
+                                                            <td><B>WINS</B> Number</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $win_number ?></td>
+                                                          </tr>
+                                                          <tr><!-- tot tree -->
+                                                            <td>Tot. Allocation <b>TREE</b></td>
+                                                            <td>:</td>
+                                                            <td><?php echo $total_allo ?></td>
+                                                          </tr>
+                                                         
+                                                          <tr><!-- mu -->
+                                                            <td>Management Unit</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $mu ?></td>
+                                                          </tr>
+                                                          
+                                                        </table>
+                                                        <br><br>
+
                                                       Please submit data now...
                                                   </div>
                                               </div>

@@ -1,19 +1,28 @@
 <?php  
 $add_part       =$_POST['partisipan'];
-$add_noship     =$_POST['no_ship']; 
-$add_bl         =$_POST['bl']; 
+//add no shipment
+$id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
+$add_bl         =$_POST['bl'];
+$date           =date("dmy");
+$jml_ns         =$_POST['jml_ns'];
+$add_noship     =$_POST['no_ship'];
 $add_tot_wins   =$_POST['tot_wins'];
 $add_min_allo   =$_POST['min_allo'];
 $add_total_allo =$_POST['total_allo'];
-$win_num        =$_POST['win_num'];
+$add_ava_allo   =$_POST['ava_allo'];
 $add_nama_mu    =$_POST['mu']; 
 $add_type_trees =$_POST['type_trees'];
 $add_total_trees=$_POST['total_trees'];
 $add_no_order   =$_POST['no_order'];
 $unallocated2   =$_POST['unallocated'];
 $start_w        =$_POST['start_w'];
-$land     =$_POST['land'];
-date_default_timezone_set('Asia/Jakarta');
+$land           =$_POST['land'];
+$destination    =$_POST['destination'];
+$treeperwins    =$_POST['treeperwins'];
+$tpw_fix        =$_POST['tpw_fix'];
+$fee            =$_POST['fee'];
+$note           =$_POST['note'];
+$log            =$_POST['log'];
 
 $add=$_REQUEST['add'];
 $save=$_REQUEST['save'];
@@ -37,30 +46,50 @@ $petani=mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd
 $kd_ta=$lahan['kd_ta'];
 $ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kd_ta'")); //ta [0]
 $id_lahan=$lahan['id_lahan'];
-
 $silvilkultur=mysql_fetch_array(mysql_query("select jenis_lahan from t4t_typelahan where id_lahan='$id_lahan'")); //silvilkultur [0]
 $geo=$no_t4tlahan[1];
 $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$add_part'"));
-
 //no shipment
 $date=date("Y-m-d");
+$date_second=date("Y-m-d h:i:s");
+$tanggal=date("dmy");  
+$wins_bagi=$add_total_trees/$treeperwins; //total pohon/tpw
 
 //update current tree
-$ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where time like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
-for ($i=1; $i <= 1 ; $i++) { 
+$ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where no_shipment like '%$tanggal%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+for ($i=1; $i <= $wins_bagi ; $i++) { 
      //no shipment
-    $date=date("Y-m-d");
+    $date=date("dmy");
    
    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$id_partisipan[0]$date$ns2' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $treeperwins");
 }
+
+
+
+//insert into t4t_shipment
+$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$tanggal%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+// no - no ship - id comp - bl - bl tgl - wins used - wins unused - wkt shipment - foto - acc - no order - kota tujuan - fee - diskon - tgl paid - acc paid - note - buyer - item qty
+for ($i=1; $i <= $tot_wins ; $i++) { 
+echo $jml_ns2=$jml_ns[0]+$i;
+$no_ship_htc=$id_partisipan[0].''.$tanggal.''.$jml_ns2;
+
+//Ambil wins
+$wins=$start_w-1;
+   $win=$wins+$i;
+
+    $query_shipment=mysql_query("insert into t4t_shipment values ('','$no_ship_htc','$id_partisipan[0]','$add_bl','$date','$win','','$date_second','','1','$add_no_order','$destination','$fee','0','$date','1','$note','','1')");
+}
+
 
 //insert into t4t_htc
 $k=1;
-while ($k <= 1 ) {
-
-$data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11' group by no_t4tlahan");
+while ($k <= $wins_bagi ) {
+$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$tanggal%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+$jml_ns2=$jml_ns[0]+1;
+$no_ship_htc=$id_partisipan[0].''.$tanggal.''.$jml_ns2;
+$data_lahan=mysql_query("select * from current_tree where bl='1111-11-11' and no_shipment='$no_ship_htc' group by no_t4tlahan");
 
 $i=1;
 while ( $data=mysql_fetch_array($data_lahan)) {
@@ -77,8 +106,10 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     $petani2        =mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_ptn' and id_desa='$kd_ds'"));
     $kdta           =$get_lahan['kd_ta'];
     $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
+    $kd_mu          =$get_lahan['kd_mu'];
+    $mu2            =mysql_fetch_array(mysql_query("select nama from t4t_mu where kd_mu='$kd_mu'"));
 
-    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11' group by no_t4tlahan");
+    $a=mysql_query("select count(*) from current_tree where bl='1111-11-11' and no_shipment='$no_ship_htc' group by no_t4tlahan");
     $j=1;
     while ($jml_pohon=mysql_fetch_array($a)) {
         $jml_pohon2[$j]=$jml_pohon[0];
@@ -87,24 +118,27 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     
     
     //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
-   $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$tujuan[0]','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$add_nama_mu','$jml_pohon2[$i]','','$add_noship','$date')");
+    $query_htc=mysql_query("insert into t4t_htc values ('','$add_bl','$destination','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$mu2[0]','$jml_pohon2[$i]','','$no_ship_htc','$date')");
 
 $i++;
 }
   $k++;  
 }//end while
 
-$date=date("Y-m-d");
-//update current_tree kedua
-$query_current_tree_update2=mysql_query("update current_tree set time='$date' where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11'");
+   $date=date("Y-m-d");
+   
+    //update current_tree kedua
+    $query_current_tree_update2=mysql_query("update current_tree set bl='$add_bl' where bl='1111-11-11'");
 
-}//end
+
+} //end if
+
 
 ?>
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Shipments</h3>
+          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Shipment</h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="admin.php?3ad70a78a1605cb4e480205df880705c">Home</a></li>
             <li><i class="fa fa-tree"></i>Tree Allocation</li>
@@ -117,7 +151,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                   <div class="col-lg-12">
                       <section class="panel">
                           <header class="panel-heading">
-                             Unallocated : <?php echo $unallocated2 ?>
+                             Unallocated : [<b> <?php echo $unallocated2 ?> </b>] | Tree per Wins : [ <?php echo $treeperwins ?> ]
                           </header>
                           <div class="panel-body">
                           
@@ -155,15 +189,20 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                           <noscript><input type="submit" value="mu"></noscript>
                                       </div>
                                                       <input type="hidden" name="partisipan" value="<?php echo $add_part ?>">
-                                                      <input type="hidden" name="no_ship" value="<?php echo $add_noship ?>">
+                                                      <input type="hidden" name="jml_ns" value="<?php echo $jml_ns ?>">
+                                                      <input type="hidden" name="no_ship" value="<?php echo $id_partisipan[0].''.date("dmy").''.$jml_ns?>">
                                                       <input type="hidden" name="bl" value="<?php echo $add_bl ?>">
                                                       <input type="hidden" name="tot_wins" value="<?php echo $add_tot_wins ?>">
                                                       <input type="hidden" name="total_allo" value="<?php echo $add_total_allo ?>">
                                                       <input type="hidden" name="no_order" value="<?php echo $add_no_order ?>">
                                                       <input type="hidden" name="unallocated" value="<?php echo $unallocated2 ?>">
                                                       <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-
-
+                                                      <input type="hidden" name="destination" value="<?php echo $destination ?>">
+                                                      <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
+                                                      <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
+                                                      <input type="hidden" name="fee" value="<?php echo $fee ?>">
+                                                      <input type="hidden" name="note" value="<?php echo $note ?>">
+                                                      <input type="hidden" name="log" value="<?php echo $log ?>">
 
                                   </div>
                                       <!-- CLOSE MU -->
@@ -176,70 +215,6 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                     if ($mu) { ?>
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
 
-                                   <!-- OPEN TYPE TREES -->
-                                  <!-- <div class="form-group">
-                                      <label class="control-label col-sm-2">Type of Trees</label>
-                                      <div class="col-sm-10">
-
-                                          <select class="form-control m-bot15" name="type_trees" onchange='this.form.submit()' required>
-                                              <option><?php
-                                              if ($type_trees=='') {
-                                                echo "- Type of Trees -";
-                                              }else{
-                                              echo $type_trees; }?>
-                                              </option>
-                                              <?php
-                                              $unit_per_mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
-
-                                              $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 
-                                and bl='' and no_shipment='' and koordinat!='' and kd_mu='$unit_per_mu[0]' group by id_pohon order by trees desc");
-                                              while ($data2=mysql_fetch_array($data)) {
-
-
-                                               $species=$data2[1];
-                                               $sp=mysql_fetch_array(mysql_query("select * from t4t_pohon where id_pohon='$species'"));
-                                              ?>
-                                              <option value="<?php echo $sp['nama_pohon']?>"><?php echo $sp['nama_pohon'] ?> ( <?php echo $data2[0] ?>)</option>
-                                              <?php
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="type_trees"></noscript>
-                                      </div>
-                                  </div> -->
-                                  <!-- CLOSE TYPE TREES -->
-
-                                  <!-- OPEN LAHAN TREES -->
-                                  <!-- <div class="form-group">
-                                      <label class="control-label col-sm-2">Land ID</label>
-                                      <div class="col-sm-10">
-                                      <?php $land2=$_REQUEST['land2'] ?>
-                                          <select class="form-control m-bot15" name="land2" onchange='this.form.submit()' required>
-                                              <option><?php
-                                              if ($land2=='') {
-                                                echo "- Land ID -";
-                                              }else{
-                                              echo $land2; }?>
-                                              </option>
-                                              <?php
-                                              //ambilidmu dan id pohon
-                                              $idpohon2=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
-                                              $idmu2=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
-
-                                              $data=mysql_query("select count(*) as jml_pohon,no from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and id_pohon='$idpohon2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' 
-                                                and used=0 and hidup=1 group by no_t4tlahan order by jml_pohon desc");
-                                              while ($data2=mysql_fetch_array($data)) {
-
-
-                                              ?>
-                                              <option value="<?php echo $data2['no']?>"><?php echo $data2['no'] ?> (<?php echo $data2[0] ?> Trees)</option>
-                                              <?php
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="land2"></noscript>
-                                      </div>
-                                  </div> -->
-                                  <!-- CLOSE LAHAN TREES -->
-
                                   <?php 
                                  
                                   $tot_trees=$_REQUEST['type_trees'];
@@ -248,7 +223,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                  // echo $id_trees['id_pohon'];
                                   $id_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where nama like '%$mu%'"));
                                  // echo $id_mu['kd_mu'];
-                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and hidup=1"));
+                                  $jumlah_pohon=mysql_fetch_array(mysql_query("select count(*) from current_tree where kd_mu='$id_mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 "));
                                  // echo $jumlah_pohon[0];
                                   ?>
 
@@ -258,7 +233,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                       <div class="col-sm-7">
                                       <?php $tree=$_REQUEST['total_trees'] ?>
                                        
-                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $jumlah_pohon[0] ?>" max="<?php echo $total_allo ?>" min="1" required="">
+                                          <input type="number" class="form-control" onchange="this.form.submit()" name="total_trees" value="<?php echo $tree ?>" max="<?php echo $unallocated ?>" max="<?php echo $jumlah_pohon[0] ?>" min="1" required="">
                                           <noscript><input type="submit" value="total_trees"></noscript>
                                       </div>
                                       
@@ -294,9 +269,149 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                  $cek=$_REQUEST['cek'];
                                  if ($cek) {  
 
-                                   $unallocated;
+                                   $tree=$_REQUEST['total_trees'];
+                                   $ava_trees=$jumlah_pohon[0];
+                                   $cek_kelipatan=$tree/$treeperwins;
+                                   $tiga_dari_belakang= substr ($cek_kelipatan, -3, 1); // menghasilkan ","
+                                   $dua_dari_belakang= substr ($cek_kelipatan, -2, 1); // menghasilkan ","
+                                   $empat_dari_belakang= substr ($cek_kelipatan, -4, 1); // menghasilkan ","
+                                   $tiga_dari_depan= substr ($cek_kelipatan, 2, 1); // menghasilkan ","
+                                   $dua_dari_depan= substr ($cek_kelipatan, 1, 1); // menghasilkan ","
+
+                                   if ($tree>$ava_trees==1) {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Please check the available trees ...
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
+                                 elseif ($empat_dari_belakang==".") {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
+                                 elseif ($tiga_dari_belakang==".") {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
+                                 elseif ($dua_dari_belakang==".") {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
+                                 elseif ($tiga_dari_depan==".") {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
+                                 elseif ($dua_dari_depan==".") {//Trees over allocation
+                                  ?>
+                                  <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');">
+                                      <div id="my-modal-over" class="modal fade" align="center">
+                                          <div class="modal-dialog">
+                                              <div class="modal-content">
+                                                  <div class="modal-header">
+                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </body>
+                                  <!-- end modal -->
+                                  <?php
+                                 }//end over
+
                                       //if unallocated 
-                                      if ($unallocated > 0) {
+                                      elseif ($unallocated > 0) {
                                         ?>
                                   
                                  <!-- SUBMIT BUTTON ke adding 2-->
@@ -315,11 +430,15 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                   <input type="hidden" name="no_order" value="<?php echo $_REQUEST['no_order'] ?>">
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land2 ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
+                                  <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>">
+                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns+1 ?>">
+                                  <input type="hidden" name="fee" value="<?php echo $fee ?>">
+                                  <input type="hidden" name="note" value="<?php echo $note ?>">  
+                                  <input type="hidden" name="log" value="<?php echo $log ?>">
 
-
-                    
-                                    
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-unallo').modal('show');">
                                       <div id="my-modal-unallo" class="modal fade">
@@ -327,10 +446,27 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-success"><b>Data has been checked!</b></h4>
+                                                  <h4 class="modal-title alert alert-warning"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please add data now...
+                                                  <table border="0">
+                                                          
+                                                          
+                                                          <tr><!-- mu -->
+                                                            <td>Management Unit</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $mu ?></td>
+                                                          </tr>
+
+                                                          <tr><!-- tot tree -->
+                                                            <td>Tot. Trees <b>TREE</b></td>
+                                                            <td>:</td>
+                                                            <td><?php echo $tree ?></td>
+                                                          </tr>
+                                                          
+                                                        </table>
+                                                        <br><br>
+                                                      Please <b>add</b> data now...
                                                   </div>
                                               </div>
                                           </div> 
@@ -338,7 +474,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                   </body>
                                   <!-- end modal -->
                                         <br><br>
-                                      <button type="submit" value="add" name="add" class="btn btn-primary"><i class="fa fa-plus"> Add</i></button>
+                                      <button type="submit" value="add" name="add" class="btn btn-warning"><i class="fa fa-plus"> Add</i></button>
                                      
                                      
                                   </div>
@@ -367,11 +503,15 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                   <input type="hidden" name="no_order" value="<?php echo $_REQUEST['no_order'] ?>">
                                   <input type="hidden" name="unallocated" value="0">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land2 ?>">
+                                  <input type="hidden" name="land" value="<?php echo $land ?>">
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
+                                  <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
+                                  <input type="hidden" name="tpw_fix" value="<?php echo $tpw_fix ?>"> 
+                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns+1 ?>"> 
+                                  <input type="hidden" name="fee" value="<?php echo $fee ?>">
+                                  <input type="hidden" name="note" value="<?php echo $note ?>">                  
+                                  <input type="hidden" name="log" value="<?php echo $log ?>">
 
-
-                    
-                                    
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">
                                       <div id="my-modal-allo" class="modal fade">
@@ -379,10 +519,27 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-success"><b>Data has been checked!</b></h4>
+                                                  <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please submit data now...
+                                                  <table border="0">
+                                                          
+                                                          
+                                                          <tr><!-- mu -->
+                                                            <td>Management Unit</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $mu ?></td>
+                                                          </tr>
+
+                                                          <tr><!-- tot tree -->
+                                                            <td>Tot. Trees <b>TREE</b></td>
+                                                            <td>:</td>
+                                                            <td><?php echo $tree ?></td>
+                                                          </tr>
+                                                          
+                                                        </table>
+                                                        <br><br>
+                                                      Please <b>submit</b> data now...
                                                   </div>
                                               </div>
                                           </div> 
@@ -407,10 +564,10 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title">Data do not match!</h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please check your allocation trees...
+                                                      Please check the available trees ...
                                                   </div>
                                               </div>
                                           </div> 
@@ -419,6 +576,8 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                   <!-- end modal -->
                                   <?php
                                  }//end over
+
+                                 
                                  
                                 }//end check
                                  ?>

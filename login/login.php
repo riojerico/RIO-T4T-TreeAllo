@@ -18,6 +18,7 @@ echo "<div align='center'>
     // menyimpan username dan level ke dalam session
     $_SESSION['level'] = $data['id_grup'];
     $_SESSION['username'] = $data['uname'];
+    $_SESSION['id'] = $data['id'];
     //Penggunaan Meta Header HTTP
     echo '<META HTTP-EQUIV="Refresh" Content="0; URL=../admin.php?3ad70a78a1605cb4e480205df880705c">';    
 	exit;

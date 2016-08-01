@@ -92,6 +92,12 @@ function hitung(){
     c= a-b;
     $(".c").val(c);
 }
+function hitung_pohon(){
+    var x = $(".x").val();
+    var y = $(".y").val();
+    z= x*y;
+    $(".z").val(z);
+}
 
   </script>
   <!-- datatable -->

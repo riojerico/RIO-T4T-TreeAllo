@@ -20,12 +20,13 @@
                           <span class="menu-arrow arrow_carrot-right"></span>
                       </a>
                       <ul class="sub">
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-shipment')?>">With Shipment</a></li> 
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-container')?>">With Container</a></li>  
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation-rev')?>">With Donation</a></li> 
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-partnership')?>">With Partnership</a></li>  
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-partnership-adding-mu')?>">add 1</a></li> 
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-partnership-adding-mu-2')?>">add 2</a></li>  
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-container')?>">Container</a></li> 
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation')?>">Donation</a></li> 
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-shipment')?>">Shipment</a></li> 
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship')?>">Sponsorship</a></li>  
+                           
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship-adding-mu')?>">add 1</a></li> 
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship-adding-mu-2')?>">add 2</a></li>  
                       </ul>
                   </li>       
                 

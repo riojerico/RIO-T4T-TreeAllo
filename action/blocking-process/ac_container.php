@@ -22,6 +22,7 @@ $no_order	=$_POST['no_order'];
 $unallocated=$_POST['unallocated'];
 $start_w 	=$_POST['start_w'];
 $land 		=$_POST['land'];
+$log        =$_POST['log'];
 date_default_timezone_set('Asia/Jakarta');
 $datetime	= date("Y-m-d H:i:s"); 
 
@@ -57,7 +58,7 @@ for ($i=1; $i <= 1 ; $i++) {
    
    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='$no_ship',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $total_trees");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and bl='' and no_shipment='' limit $total_trees");
 }
 
 
@@ -82,8 +83,8 @@ while ( $a < $ex_win2) {
         $hasil=trim($start);
         
         for ($i=$start; $i <= $end ; $i++) { 
-            //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time
-            $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date')");
+            //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user
+            $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date','$log')");
 
             $hasil++;
         }
@@ -102,7 +103,7 @@ $a++;
 $k=1;
 while ($k <= 1 ) {
 
-$data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11' group by no_t4tlahan");
+$data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='1111-11-11' group by no_t4tlahan");
 
 $i=1;
 while ( $data=mysql_fetch_array($data_lahan)) {
@@ -120,7 +121,7 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     $kdta           =$get_lahan['kd_ta'];
     $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
 
-    $a=mysql_query("select count(*) from current_tree where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11' group by no_t4tlahan");
+    $a=mysql_query("select count(*) from current_tree where bl='$bl' and no_shipment='1111-11-11' group by no_t4tlahan");
     $j=1;
     while ($jml_pohon=mysql_fetch_array($a)) {
         $jml_pohon2[$j]=$jml_pohon[0];
@@ -138,7 +139,7 @@ $i++;
 
 $date=date("Y-m-d");
 //update current_tree kedua
-$query_current_tree_update2=mysql_query("update current_tree set time='$date' where bl='$bl' and no_shipment='$no_ship' and time='1111-11-11'");
+$query_current_tree_update2=mysql_query("update current_tree set no_shipment='$no_ship' where bl='$bl' and no_shipment='1111-11-11'");
 
 header("location:../../admin.php?4c079fe60164545aca6a15d1da3842b26d13fa85a72a1c4d0d323d98934f6d2f");
 

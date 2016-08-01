@@ -13,6 +13,7 @@ $add_no_order   =$_POST['no_order'];
 $unallocated2   =$_POST['unallocated'];
 $start_w        =$_POST['start_w'];
 $land     =$_POST['land'];
+$log        =$_POST['log'];
 date_default_timezone_set('Asia/Jakarta');
 
 $add=$_REQUEST['add'];
@@ -52,7 +53,7 @@ for ($i=1; $i <= 1 ; $i++) {
    
    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='$add_noship',time='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $add_total_trees");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$add_bl',no_shipment='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and bl='' and no_shipment='' limit $add_total_trees");
 }
 
 
@@ -60,7 +61,7 @@ for ($i=1; $i <= 1 ; $i++) {
 $k=1;
 while ($k <= 1 ) {
 
-$data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11' group by no_t4tlahan");
+$data_lahan=mysql_query("select * from current_tree where bl='$add_bl' and no_shipment='1111-11-11' group by no_t4tlahan");
 
 $i=1;
 while ( $data=mysql_fetch_array($data_lahan)) {
@@ -78,7 +79,7 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     $kdta           =$get_lahan['kd_ta'];
     $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
 
-    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11' group by no_t4tlahan");
+    $a=mysql_query("select count(*) from current_tree where bl='$add_bl' and no_shipment='1111-11-11' group by no_t4tlahan");
     $j=1;
     while ($jml_pohon=mysql_fetch_array($a)) {
         $jml_pohon2[$j]=$jml_pohon[0];
@@ -96,7 +97,7 @@ $i++;
 
 $date=date("Y-m-d");
 //update current_tree kedua
-$query_current_tree_update2=mysql_query("update current_tree set time='$date' where bl='$add_bl' and no_shipment='$add_noship' and time='1111-11-11'");
+$query_current_tree_update2=mysql_query("update current_tree set no_shipment='$add_noship' where bl='$add_bl' and no_shipment='1111-11-11'");
 
 }
 
@@ -163,6 +164,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                                       <input type="hidden" name="unallocated" value="<?php echo $unallocated2 ?>">
                                                       <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                                       <input type="hidden" name="win_num" value="<?php echo $win_num ?>">
+                                                      <input type="hidden" name="log" value="<?php echo $log ?>">
 
                                   </div>
                                       <!-- CLOSE MU -->
@@ -316,7 +318,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land2 ?>">
                                   <input type="hidden" name="win_num" value="<?php echo $win_num ?>">
-
+                                  <input type="hidden" name="log" value="<?php echo $log ?>">
                     
                                     
                                   <!-- modal -->
@@ -329,6 +331,23 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                                   <h4 class="modal-title alert alert-warning"> <strong>Warning!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
+                                                  <table border="0">
+                                                          
+                                                          <tr><!-- mu -->
+                                                            <td>Management Unit</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $mu ?></td>
+                                                          </tr>
+                                                          <tr><!-- tot tree -->
+                                                            <td>Tot. Allocation <b>TREE</b></td>
+                                                            <td>:</td>
+                                                            <td><?php echo $pohon ?></td>
+                                                          </tr>
+                                                         
+                                                          
+                                                          
+                                                        </table>
+                                                        <br><br>
                                                  <font color="red"> Tree < Total Tree Allocation </font><br>
                                                       Please add another tree...
                                                   </div>
@@ -369,7 +388,7 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land2 ?>">
                                   <input type="hidden" name="win_num" value="<?php echo $win_num ?>">
-
+                                  <input type="hidden" name="log" value="<?php echo $log ?>">
                     
                                     
                                   <!-- modal -->
@@ -382,6 +401,23 @@ $query_current_tree_update2=mysql_query("update current_tree set time='$date' wh
                                                   <h4 class="modal-title allert alert-success">Data has been checked!</h4>
                                                   </div>
                                                   <div class="modal-body">
+                                                  <table border="0">
+                                                          
+                                                          <tr><!-- mu -->
+                                                            <td>Management Unit</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $mu ?></td>
+                                                          </tr>
+                                                          <tr><!-- tot tree -->
+                                                            <td>Tot. Allocation <b>TREE</b></td>
+                                                            <td>:</td>
+                                                            <td><?php echo $pohon ?></td>
+                                                          </tr>
+                                                         
+                                                          
+                                                          
+                                                        </table>
+                                                        <br><br>
                                                       Please submit data now...
                                                   </div>
                                               </div>

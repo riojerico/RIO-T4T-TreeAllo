@@ -155,7 +155,7 @@
                       <!-- WINS -->
                       <section class="panel">
                         <header class="panel-heading">
-                         Last 500.000 WINS
+                         Last WINS
                         </header>
                         <div class="panel-body">
                           <div class="col-lg-12">
