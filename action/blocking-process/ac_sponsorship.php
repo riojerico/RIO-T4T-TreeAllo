@@ -22,7 +22,7 @@ $fee=$_POST['fee'];
 $note=$_POST['note'];
 $log        =$_POST['log'];
 $land       =$_POST['land'];
-
+$kd_targetarea=$_POST['kd_targetarea'];
 
 $mu=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$nama_mu'")); 
 $tujuan=mysql_fetch_array(mysql_query("select kota_tujuan from t4t_shipment where no_shipment='$no_ship'")); //tujuan [0]
@@ -49,20 +49,37 @@ $time_second=date("Y-m-d h:i:s");
 //no shipment
 $date=date("dmy");
 $wins_bagi=$total_trees/$treeperwins; //total pohon/tpw
-$  
+ 
 
 //update current tree
-$ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
-for ($i=1; $i <= 1 ; $i++) { 
-     //no shipment
-    $date=date("dmy");
+// $ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+// for ($i=1; $i <= 1 ; $i++) { 
+//      //no shipment
+//     $date=date("dmy");
    
-   $ns2=$ns[0]+$i;
+//    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$no_ship' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and no_t4tlahan='$land' limit $total_trees");
+//      $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$no_ship' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and no_t4tlahan='$land' limit $total_trees");
+// }---------------------------------
+
+//update current tree
+$z=1;
+$select_current_tree=mysql_query("select count(*) as jml_pohon,no,kd_petani,id_desa from add_jmlpohon_lahan where kd_mu='$mu[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and kd_ta='$kd_targetarea' group by no_t4tlahan ");
+
+while ( $load=mysql_fetch_array($select_current_tree)) {
+   
+   $land_pohon   =$_POST['land_pohon'.$z];                                 
+   $alokasi_pohon=$_POST['alokasi_pohon'.$z];
+
+   // if ($alokasi_pohon=="") {
+   //     $alokasi_pohon="0";
+   // }
+
+   $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$no_ship' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and no_t4tlahan='$land_pohon' limit $alokasi_pohon");                         
+                                      
+$z++;
 }
-
-
+                                    
 
 //insert into t4t_wins
 $date=date("dmy");

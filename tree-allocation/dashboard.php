@@ -159,7 +159,7 @@
                         </header>
                         <div class="panel-body">
                           <div class="col-lg-12">
-                          <table id="data3" class="table table-hover">
+                          <table id="" class="table table-hover">
                             <thead>
                               <tr>
                                 <th>No</th>

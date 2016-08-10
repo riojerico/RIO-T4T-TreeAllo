@@ -24,9 +24,9 @@
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-donation')?>">Donation</a></li> 
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-shipment')?>">Shipment</a></li> 
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship')?>">Sponsorship</a></li>  
-                           
+                           <!-- 
                           <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship-adding-mu')?>">add 1</a></li> 
-                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship-adding-mu-2')?>">add 2</a></li>  
+                          <li><a class="" href="?<?php echo paramEncrypt('hal=with-sponsorship-adding-mu-2')?>">add 2</a></li>  --> 
                       </ul>
                   </li>       
                 

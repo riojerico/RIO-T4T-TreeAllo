@@ -18,7 +18,7 @@
                           <div class="panel-body">
 
                               <!-- Form -->
-                              <form class="form-horizontal " method="post">
+                              <form class="form-horizontal " method="post" action="">
 
                               <!-- PARTISIPAN -->
                               <?php $parts=$_REQUEST['partisipan'] ?>
@@ -63,6 +63,7 @@
                                               }else{
                                               echo $no_order; }?>
                                               </option>
+                                              <option></option>
                                               <?php
                                               $data=mysql_query("select * from t4t_order where id_comp='$id_comp[0]' and acc='1' order by no desc");
                                               while ($data2=mysql_fetch_array($data)) {
@@ -231,6 +232,7 @@
                                               }else{
                                               echo $mu; }?>
                                               </option>
+                                              <option></option>
                                               <?php
                                               $data=mysql_query("select count(no_pohon) as trees,kd_mu from current_tree where hidup=1 and used=0 and bl='' 
                                                 and no_shipment='' and koordinat!='' group by kd_mu order by trees desc");
@@ -263,7 +265,7 @@
                                     $ta=$_REQUEST['ta']; 
 
                                   ?>
-                                  <!-- <div class="form-group">
+                                  <div class="form-group">
                                     <label class="control-label col-sm-2">TA ID</label>
                                     <div class="col-sm-3">
                                       <select class="form-control" name="ta" onchange="this.form.submit()"> 
@@ -274,6 +276,7 @@
                                           echo $ta;
                                           } ?>
                                         </option>
+                                        <option></option>
                                         <?php
                                         $kab_kode=mysql_fetch_array(mysql_query("select kab_kode from t4t_mu where nama='$mu'"));
                                         $data=mysql_query("select * from t4t_tamaster where kab_code='$kab_kode[0]'");
@@ -290,7 +293,7 @@
                                     <div class="col-lg-3">
                                     <input class="form-control" type="text" readonly="" value="<?php $t=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$ta'")); echo $t[0]; ?>">
                                     </div>
-                                  </div> -->
+                                  </div> 
                                   <!-- TA Close -->
 
                                     <!-- Desa -->
@@ -298,7 +301,7 @@
                                     $desa=$_REQUEST['desa']; 
 
                                   ?>
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                     <label class="control-label col-sm-2">Village ID</label>
                                     <div class="col-sm-3">
                                       <select class="form-control" name="desa" onchange="this.form.submit()"> 
@@ -325,11 +328,11 @@
                                     <div class="col-lg-3">
                                     <input class="form-control" type="text" readonly="" value="<?php $v=mysql_fetch_array(mysql_query("select desa from t4t_desa where id_desa='$desa'")); echo $v[0]; ?>">
                                     </div>
-                                  </div>
+                                  </div> -->
                                   <!-- Desa Close -->
                                   <!-- Petani -->
                                   <?php $petani=$_REQUEST['petani'] ?>
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                     <label class="control-label col-sm-2">Farmer ID</label>
                                     <div class="col-sm-3">
                                       <select class="form-control" name="petani" onchange="this.form.submit()"> 
@@ -359,11 +362,11 @@
                                     <div class="col-lg-3">
                                     <input class="form-control" type="text" readonly="" value="<?php $f=mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$petani' and id_desa='$desa'")); echo $f[0]; ?>">
                                     </div>
-                                  </div>
+                                  </div> -->
                                   <!-- Petani Close -->
                                   <!-- OPEN LAHAN TREES -->
                                   <?php $land=$_REQUEST['land'] ?>
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Land ID</label>
                                       <div class="col-sm-10">
                                           <select class="form-control m-bot15" name="land" onchange='this.form.submit()' required>
@@ -373,6 +376,7 @@
                                               }else{
                                               echo $land; }?>
                                               </option>
+                                              <option></option>
                                               <?php
                                               //ambil idmu                                             
                                               $idmu2=mysql_fetch_array(mysql_query("select kd_mu from t4t_mu where nama='$mu'"));
@@ -386,7 +390,7 @@
                                           </select>
                                           <noscript><input type="submit" value="land"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE LAHAN TREES -->
 
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
@@ -408,7 +412,7 @@
                                   ?>
 
                                   <!-- OPEN TOTAL TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Trees</label>
                                       <div class="col-sm-7">
                                       <?php $tree=$_REQUEST['total_trees'];
@@ -426,11 +430,70 @@
                                       <div class="col-sm-3">
                                       <font color="red">*if 0 it means the tree is empty </font>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE TOTAL TREES -->
+                                  
+                                  <div class="col-lg-12">
+                                  <table class="table table-bordered table-striped">
+                                    <thead>
+                                      <tr>
+                                      <th >Management Unit</th>
+                                      <th >Target Area</th>
+                                      <th >Village</th>
+                                      <th >Farmer</th>
+                                      <th >Land ID</th>
+                                      <th >Trees Qty</th>
+                                      <th >Allocation</th>
+                                      </tr>
+                                    </thead>
+                                    <?php 
+                                   // echo $desa;
+                                    //echo $petani;
+                                    //echo $idmu2[0];
+                                    $i=1;
+                                    $data=mysql_query("select count(*) as jml_pohon,no,kd_petani,id_desa from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and kd_ta='$ta' group by no_t4tlahan ");
 
-
-
+                                    while ( $load=mysql_fetch_array($data)) {
+                                     
+                                     ?> 
+                                   
+                                    <tbody>
+                                      <tr>
+                                      <td width="15%"><?php echo $mu ?></td>
+                                      <td width="15%"><?php 
+                                      $nama_ta=mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$ta'"));
+                                      echo $nama_ta[0] ?></td>
+                                      <td width="15%"><?php 
+                                      $load_desa=$load['id_desa'];
+                                      $nama_desa=mysql_fetch_array(mysql_query("select * from t4t_desa where id_desa='$load_desa'"));
+                                      echo $nama_desa['desa'];
+                                                      ?></td>
+                                      <td width="15%"><?php 
+                                      $load_kdpetani=$load['kd_petani'];
+                                      $nama_petani=mysql_fetch_array(mysql_query("select * from t4t_petani where id_desa='$load_desa' and kd_petani='$load_kdpetani'"));
+                                      echo $nama_petani['nm_petani'] ;?></td>
+                                      <td width="10%"><left><?php echo $load['no'] ?></left></td>
+                                      <td width="10%" align="left"><?php echo $load[0] ?></td>
+                                      <td width="10%"><input type="number" class="form-control o" name="alokasi_pohon<?php echo $i?>" max="<?php echo $load[0] ?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>" onchange='this.form.submit()'></td>
+                                      <noscript><input type="submit" value="alokasi_pohon<?php echo $i?>"></noscript>
+                                       </tr>
+                                      <?php
+                                      $ap[]=$_REQUEST['alokasi_pohon'.$i];
+                                      $ava[]=$load[0];
+                                      $i++;
+                                      }
+                                      ?>
+                                     <tr>
+                                       <td colspan="5"></td>
+                                       <td><input type="text" class="form-control" value="<?php echo array_sum($ava)?> available" readonly></td>
+                                       <td><input type="text" class="form-control" name="total_trees" value="<?php echo array_sum($ap) ?> trees" readonly="" max="<?php echo $total_allo ?>" min="<?php echo $total_allo ?>"></td>
+                                     </tr>
+                                      
+                                    </tbody>
+                                    
+                                  </table>
+                                  </div>
+                                  
                                   <!-- CLOSE  -->
                                   <div align="center">
                                   <button type="submit" name="cek" value="cek" class="btn btn-success"><i class="fa fa-check"> Check</i></button><br><br><br>
@@ -447,6 +510,8 @@
                                  //if submit check
                                  $cek=$_REQUEST['cek'];
                                  if ($cek) {
+
+                                  
                                    $tree=$_REQUEST['total_trees'];
                                    $ava_trees=$jumlah_pohon[0];
                                    $unallocated;
@@ -461,139 +526,7 @@
                                    // $tiga_dari_depan= substr ($cek_kelipatan, 2, 1); // menghasilkan ","
                                    // $dua_dari_depan= substr ($cek_kelipatan, 1, 1); // menghasilkan ","
 
-                                   if ($tree>$ava_trees==1) {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      Please check the available trees ...
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
-                                 }//end over
-
-                                 elseif ($empat_dari_belakang==".") {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
-                                 }//end over
-
-                                 elseif ($tiga_dari_belakang==".") {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
-                                 }//end over
-
-                                 elseif ($dua_dari_belakang==".") {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
-                                 }//end over
-
-                                  elseif ($tiga_dari_depan==".") {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
-                                 }//end over
-
-                                 elseif ($dua_dari_depan==".") {//Trees over allocation
-                                  ?>
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-over').modal('show');">
-                                      <div id="my-modal-over" class="modal fade" align="center">
-                                          <div class="modal-dialog">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </body>
-                                  <!-- end modal -->
-                                  <?php
-                                 }//end over
-
-                                 elseif ($cek_blocking[time]==$time) {// partisipan maks 10 per day
+                                   if ($cek_blocking[time]==$time) {// partisipan maks 10 per day
                                   ?>
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-over').modal('show');">
@@ -621,152 +554,23 @@
                                       elseif ($unallocated > 0) {
                                         ?>
 
-                                 <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="admin.php?a46082f9f5d6e76572879db4b9985b5b2f8e9f23bcc4170dc360b7138a84d10a" method="post">
-                                  <!-- <form  id="form" action="action/blocking-process/ac_donation-rev.php" method="post"> -->
-
-                                  <div align="center">
-
-
-                                  <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
-                                  <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
-                                  <input type="hidden" name="bl" value="<?php echo $bl ?>">
-                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
-                                  <input type="hidden" name="min_allo" value="<?php echo $tot_wins[0] ?>">
-                                  <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
-                                  <input type="hidden" name="mu" value="<?php echo $mu ?>">
-                                  <input type="hidden" name="ava_allo" value="<?php echo $ava_allo ?>">
-                                  <input type="hidden" name="type_trees" value="<?php echo $type_trees ?>">
-                                  <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
-                                  <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
-                                  <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
-                                  <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land ?>">
-                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
-                                  <input type="hidden" name="treeperwins" value="<?php echo $treeperwins ?>">
-                                  <input type="hidden" name="tpw_fix" value="<?php echo $total_allo/$tot_wins ?>">
-                                  <input type="hidden" name="jml_ns" value="<?php echo $jml_ns2 ?>">
-                                  <input type="hidden" name="fee" value="<?php echo $fee ?>">
-                                  <input type="hidden" name="note" value="<?php echo $note ?>">
-                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">
-                                  <input type="hidden" name="land" value="<?php echo $land ?>">
-                                  <input type="hidden" name="petani" value="<?php echo $petani ?>">
-                                  <input type="hidden" name="desa" value="<?php echo $desa ?>">
-
-                                  <!-- modal -->
-                                  <body onLoad="$('#my-modal-unallo').modal('show');">
-                                      <div id="my-modal-unallo" class="modal fade">
+                                 <!-- modal -->
+                                  <body onLoad="$('#my-modal-over').modal('show');" >
+                                      <div id="my-modal-over" class="modal fade" align="center">
                                           <div class="modal-dialog">
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-warning"><strong>Data has been checked!</strong></h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-
-                                                      <table border="0">
-                                                          <tr><!-- partisipan -->
-                                                            <td>Participants</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $parts ?></td>
-                                                          </tr>
-                                                          <tr><!-- no order -->
-                                                            <td>Order Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $no_order ?></td>
-                                                          </tr>
-                                                          <tr><!-- no ship -->
-                                                            <td>Shipment Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $no_ship ?> - <?php echo $id_comp[0];echo $date;?><?php echo $jml_ns2+$jml_win ?></td>
-                                                          </tr>
-                                                          <tr><!-- bl -->
-                                                            <td>BL Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $bl ?></td>
-                                                          </tr>
-                                                          <tr><!-- Tot wins -->
-                                                            <td>Tot. Allocation <B>WINS</B></td>
-                                                            <td>:</td>
-                                                            <td><?php echo $tot_wins ?></td>
-                                                          </tr>
-                                                          <tr><!-- treeperwin -->
-                                                            <td>Tree/Wins</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $total_allo/$tot_wins ?></td>
-                                                          </tr>
-                                                          <tr><!-- tot tree -->
-                                                            <td>Tot. Allocation <b>TREE</b></td>
-                                                            <td>:</td>
-                                                            <td><?php echo $total_allo ?></td>
-                                                          </tr>
-                                                          <tr><!-- destin -->
-                                                            <td>Destination</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $destination ?></td>
-                                                          </tr>
-                                                          
-                                                          <tr><!-- fee -->
-                                                            <td>Fee</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $fee ?></td>
-                                                          </tr>
-                                                          <tr><!-- start end wins -->
-                                                            <td>Wins Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $start_w ?> </td>
-                                                          </tr>
-                                                          <tr><!-- mu -->
-                                                            <td>Management Unit</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $mu ?></td>
-                                                          </tr>
-                                                          <tr><!-- ta -->
-                                                            <td>Target Area</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $t[0] ?></td>
-                                                          </tr>
-                                                          <tr><!-- desa -->
-                                                            <td>Village</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $v[0] ?></td>
-                                                          </tr>
-                                                          <tr><!-- petani -->
-                                                            <td>Farmer</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $f[0] ?></td>
-                                                          </tr>
-                                                          <tr><!-- note -->
-                                                            <td>Note</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $note ?></td>
-                                                          </tr>
-                                                          <tr><!-- note -->
-                                                            <td>Unallocated</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $unallocated ?></td>
-                                                          </tr>
-                                                        </table>
-                                                        <br><br>
-                                                  <tr><!-- note -->
-                                                            <td>Unallocated</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $unallocated ?></td>
-                                                          </tr>
-                                                          <BR>
-                                                      Please <b>add</b> data now...
+                                                      Please check the allocation trees ...
                                                   </div>
                                               </div>
                                           </div>
                                       </div>
                                   </body>
                                   <!-- end modal -->
-
-                                      <button type="submit" value="save" name="save" class="btn btn-warning"><i class="fa fa-plus"> Add</i></button>
-                                      <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
-
-                                  </div>
-                                  </form>
                                   <?php
 
                                    }//end unallocated
@@ -783,7 +587,7 @@
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
                                   <input type="hidden" name="bl" value="<?php echo $bl ?>">
-                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">                                 
+                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
                                   <input type="hidden" name="mu" value="<?php echo $mu ?>">
                                   <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
@@ -800,6 +604,27 @@
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="petani" value="<?php echo $petani ?>">
                                   <input type="hidden" name="desa" value="<?php echo $desa ?>">
+                                  <input type="hidden" name="kd_targetarea" value="<?php echo $ta ?>">
+                                  
+                                   
+                                    <?php 
+
+                                    $i=1;
+                                    $data=mysql_query("select count(*) as jml_pohon,no,kd_petani,id_desa from add_jmlpohon_lahan where kd_mu='$idmu2[0]' and used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 and kd_ta='$ta' group by no_t4tlahan ");
+
+                                    while ( $load=mysql_fetch_array($data)) {
+                                     
+                                     ?> 
+                                       <input type="hidden" class="form-control o" name="land_pohon<?php echo $i?>" value="<?php echo $load['no'] ?>">
+                                      <input type="hidden" class="form-control o" name="alokasi_pohon<?php echo $i?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>">
+                                       
+                                      <?php
+                                      
+                                      $i++;
+                                      }
+                                      ?>
+                                    
+                                  
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">
                                       <div id="my-modal-allo" class="modal fade">
@@ -825,7 +650,7 @@
                                                           <tr><!-- no ship -->
                                                             <td>Shipment Number</td>
                                                             <td>:</td>
-                                                            <td><?php echo $no_ship ?> - <?php echo $id_comp[0];echo $date;?><?php echo $jml_ns2+$jml_win ?></td>
+                                                            <td><?php echo $no_ship ?></td>
                                                           </tr>
                                                           <tr><!-- bl -->
                                                             <td>BL Number</td>
@@ -861,7 +686,7 @@
                                                           <tr><!-- start end wins -->
                                                             <td>Wins Number</td>
                                                             <td>:</td>
-                                                            <td><?php echo $start_w ?> - <?php echo (int)$start_w+$jml_win; ?></td>
+                                                            <td><?php echo $start_w ?></td>
                                                           </tr>
                                                           <tr><!-- mu -->
                                                             <td>Management Unit</td>
@@ -873,16 +698,7 @@
                                                             <td>:</td>
                                                             <td><?php echo $t[0] ?></td>
                                                           </tr>
-                                                          <tr><!-- desa -->
-                                                            <td>Village</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $v[0] ?></td>
-                                                          </tr>
-                                                          <tr><!-- petani -->
-                                                            <td>Farmer</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $f[0] ?></td>
-                                                          </tr>
+                                                          
                                                           <tr><!-- note -->
                                                             <td>Note</td>
                                                             <td>:</td>
@@ -891,13 +707,10 @@
                                                         </table>
                                                         <br><br>
                                                         <tr><!-- note -->
-                                                            <td>Unallocated</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $unallocated ?></td>
-                                                          </tr>
+                                                            
                                                         <BR>
                                                   
-                                                      Please <b>submit</b> data now...
+                                                      Please <b>submit <i class="fa fa-save"></i></b> data now...
                                                   </div>
                                               </div>
                                           </div>
@@ -924,7 +737,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Please check the available trees ...
+                                                      Please check the allocation trees ...
                                                   </div>
                                               </div>
                                           </div>

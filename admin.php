@@ -12,6 +12,9 @@ if (isset($_SESSION['level']))
    elseif ($_SESSION['level'] == "mkt" ) {
    	
    }
+   elseif ($_SESSION['level'] == "am" ) {
+      
+   }
    // jika kondisi level user maka akan diarahkan ke halaman lain
    else
    {

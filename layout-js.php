@@ -98,6 +98,11 @@ function hitung_pohon(){
     z= x*y;
     $(".z").val(z);
 }
+function hitung_alokasi(){
+    var o = $(".o").val();
+    r += o;
+    $(".r").val(r);
+}
 
   </script>
   <!-- datatable -->
