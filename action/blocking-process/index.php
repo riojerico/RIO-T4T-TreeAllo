@@ -49,16 +49,31 @@ $time_second=date("Y-m-d h:i:s");
 $date=date("dmy");
 $wins_bagi=$total_trees/$treeperwins; //total pohon/tpw
     
+
+
 //update current tree
-$ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where no_shipment like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
-for ($i=1; $i <= $wins_bagi ; $i++) { 
-     //no shipment
-    $date=date("dmy");
-   
+$select_current_tree=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu");
+$z=1;
+while ( $load=mysql_fetch_array($select_current_tree)) {
+
+   $kdman_unit   =$_POST['kdman_unit'.$z];                                 
+   $alokasi_pohon=$_POST['alokasi_pohon'.$z];
+
+   $ns=mysql_fetch_array(mysql_query("select no_sh from add_current_tree where tgl='$date' and id_part='$id_partisipan[0]' order by no_sh desc limit 1"));
+ 
+   $wins_alo=$alokasi_pohon/$treeperwins;
+   for ($i=1; $i <= $wins_alo ; $i++) { 
+   //no shipment
+
+   $date=date("dmy");   
    $ns2=$ns[0]+$i;
-    
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$id_partisipan[0]$date$ns2' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' limit $treeperwins");
+     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$id_partisipan[0]$date$ns2' where used='0' and hidup='1' and kd_mu='$kdman_unit' and koordinat!='' limit $treeperwins");
+   }                     
+                                      
+$z++;
 }
+
+
 
 
 
@@ -81,7 +96,7 @@ for ($i=1; $i <= $tot_wins ; $i++) {
 $jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
 // no - no ship - id comp - bl - bl tgl - wins used - wins unused - wkt shipment - foto - acc - no order - kota tujuan - fee - diskon - tgl paid - acc paid - note - buyer - item qty
 for ($i=1; $i <= $tot_wins ; $i++) { 
-echo $jml_ns2=$jml_ns[0]+$i;
+$jml_ns2=$jml_ns[0]+$i;
 $no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
 
 //Ambil wins
@@ -92,11 +107,19 @@ $wins=$start_w-1;
 }
 
 
-
 //insert into t4t_htc
+$select_htc=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu");
+
+$htc=1;
+ while ( $load=mysql_fetch_array($select_htc)) {
+   $kdman_unit   =$_POST['kdman_unit'.$htc];                                 
+   $alokasi_pohon=$_POST['alokasi_pohon'.$htc];
+
+   $wins_alo=$alokasi_pohon/$treeperwins;
+
 $k=1;
-while ($k <= $wins_bagi ) {
-$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+while ($k <= $wins_alo ) {
+$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_current_tree where bl like '%$date%' and id_part='$id_partisipan[0]' order by no_sh desc limit 1 "));
 $jml_ns2=$jml_ns[0]+1;
 $no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
 $data_lahan=mysql_query("select * from current_tree where bl='1111-11-11' and no_shipment='$no_ship_htc' group by no_t4tlahan");
@@ -129,16 +152,15 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     
     //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
     $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$destination','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$mu2[0]','$jml_pohon2[$i]','','$no_ship_htc','$time')");
+    $query_current_tree_update2=mysql_query("update current_tree set bl='$bl' where bl='1111-11-11' and no_shipment='$no_ship_htc'");
 
 $i++;
 }
   $k++;  
 }//end while
+ $htc++;
+ }
 
-   $date=date("Y-m-d");
-   
-    //update current_tree kedua
-    $query_current_tree_update2=mysql_query("update current_tree set bl='$bl' where bl='1111-11-11'");
 
 header("location:../../admin.php?c3b00eb86cd337880f1639111f2af716061ba997b556a75c89e9bad84f0eb324");
 ?>

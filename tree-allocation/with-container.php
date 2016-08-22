@@ -190,7 +190,8 @@
 
                                       <label class="col-sm-2 control-label">Total Allocation <b>(Tree)</b></label>
                                       <div class="col-sm-10">
-                                          <input type="number" class="form-control a" onchange="hitung();" name="total_allo" value="<?php echo $total_allo;?>" required="" >
+                                          <input type="number" class="form-control a" onchange="this.form.submit()" name="total_allo" value="<?php echo $total_allo;?>" required="" >
+                                          <noscript><input type="submit" value="total_allo"></noscript>
                                       </div>
                                   </div>
                                       <!-- CLOSE TOTAL ALLO -->
@@ -224,7 +225,7 @@
 
                                       <!-- OPEN MU -->
                                    <?php $mu=$_REQUEST['mu'] ?>
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Mangement Unit</label>
                                       <div class="col-sm-10">
 
@@ -251,7 +252,7 @@
                                           </select>
                                           <noscript><input type="submit" value="mu"></noscript>
                                       </div>
-                                  </div>
+                                  </div> -->
                                       <!-- CLOSE MU -->
 
                                   <?php  } ?>
@@ -260,7 +261,7 @@
                                   <!-- OPEN TYPE OF TREES - TOTAL TREES -->
                                   <?php
                                   $mu = $_REQUEST['mu'] ;
-                                    if ($mu) { ?>
+                                    if ($total_allo) { ?>
                                    <?php $type_trees=$_REQUEST['type_trees'] ?>
 
                                    <!-- OPEN TYPE TREES -->
@@ -304,7 +305,7 @@
                                   ?>
 
                                   <!-- OPEN TOTAL TREES -->
-                                  <div class="form-group">
+                                  <!-- <div class="form-group">
                                       <label class="control-label col-sm-2">Trees</label>
                                       <div class="col-sm-7">
                                       <?php $tree=$_REQUEST['total_trees'] ?>
@@ -320,8 +321,71 @@
                                       <div class="col-sm-3">
                                       <font color="red">*if 0 it means the tree is empty </font>
                                       </div>
-                                  </div>
+                                  </div> -->
                                   <!-- CLOSE TOTAL TREES -->
+
+                                  <div class="col-lg-12" align="center">
+                                  <table class="table table-bordered table-striped">
+                                    <thead>
+                                      <tr>
+                                      <th >No</th>
+                                      <th >MU ID</th>
+                                      <th >Management Unit</th>
+                                      <th >Trees Qty</th>
+                                      <th >Allocation</th>
+                                      </tr>
+                                    </thead>
+                                    <?php 
+                                   // echo $desa;
+                                    //echo $petani;
+                                    //echo $idmu2[0];
+                                    $i=1;
+                                    $data=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu ");
+
+                                    while ( $load=mysql_fetch_array($data)) {
+                                     
+                                     ?> 
+                                   
+                                    <tbody>
+                                      <tr>
+                                      <td width="5%"><?php echo $i; ?></td>
+                                      <td width="10%"><?php echo $load[1] ?></td>
+                                      <td width="55%"><?php $nama_mu=mysql_fetch_array(mysql_query("select nama from t4t_mu where kd_mu='$load[1]'")); echo $nama_mu[0]; ?></td>
+                                      <td width="15%" align="left"><?php echo $load[0] ?></td>
+                                      <!-- <td width="15%"><select class="form-control tooltips" data-original-title="Harus Kelipatan <?php echo $treeperwins ?>" data-placement="left">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option> -->
+                                        <?php 
+                                        // $jml_loop=$load[0]/$treeperwins;
+                                        // $jml_loop2=substr($jml_loop, 0,1);
+                                        // for ($i=$treeperwins; $i <= $jml_loop2 ; $i=$i+$treeperwins) { 
+                                          ?>
+                                          <!-- <option><?php echo $i ?></option> -->
+                                          <?php
+                                       // }
+                                         ?>
+                                        
+                                      <!-- </select></td> -->
+                                      <td width="15%"><input type="number" class="form-control trees" name="alokasi_pohon<?php echo $i?>" max="<?php echo $load[0] ?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>" min="1"></td>
+                                      
+                                       </tr>
+                                      <?php
+                                      $ap[]=$_REQUEST['alokasi_pohon'.$i];
+                                      $ava[]=$load[0];
+                                      $i++;
+                                      }
+                                      ?>
+                                     <tr>
+                                       <td colspan="3"></td>
+                                       <td><input type="text" class="form-control" value="<?php echo array_sum($ava)?> available" readonly></td>
+                                       <td><input type="text" class="form-control" id="totalTrees" name="total_trees" value="<?php echo array_sum($ap) ?> trees" readonly="" max="<?php echo $total_allo ?>" min="<?php echo $total_allo ?>"></td>
+                                     </tr>
+                                      
+                                    </tbody>
+                                    
+                                  </table>
+                                  </div>
 
                                   <!-- CLOSE  -->
                                   <div align="center">
@@ -393,7 +457,7 @@
                                         ?>
 
                                  <!-- SUBMIT BUTTON -->
-                                  <form  id="form" action="admin.php?4c079fe60164545aca6a15d1da3842b2485f19446e3798321e88b99316830961" method="post">
+                                  <!-- <form  id="form" action="admin.php?4c079fe60164545aca6a15d1da3842b2485f19446e3798321e88b99316830961" method="post">
                                   <div align="center">
 
 
@@ -411,64 +475,22 @@
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">
+                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>"> -->
 
                                   
 
 
                                   <!-- modal -->
-                                  <body onLoad="$('#my-modal-unallo').modal('show');">
-                                      <div id="my-modal-unallo" class="modal fade">
+                                  <body onLoad="$('#my-modal-over').modal('show');" >
+                                      <div id="my-modal-over" class="modal fade" align="center">
                                           <div class="modal-dialog">
                                               <div class="modal-content">
                                                   <div class="modal-header">
                                                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                  <h4 class="modal-title alert alert-warning"> <strong>Warning!</strong></h4>
+                                                  <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                  <table border="0">
-                                                          <tr><!-- partisipan -->
-                                                            <td>Participants</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $parts ?></td>
-                                                          </tr>
-                                                          <tr><!-- no order -->
-                                                            <td>Order Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $no_order ?></td>
-                                                          </tr>
-                                                          <tr><!-- no ship -->
-                                                            <td>Shipment Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $no_ship ?></td>
-                                                          </tr>
-                                                          <tr><!-- bl -->
-                                                            <td>BL Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $bl ?></td>
-                                                          </tr>
-                                                          <tr><!-- Wins Number -->
-                                                            <td><B>WINS</B> Number</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $win_number ?></td>
-                                                          </tr>
-                                                          <tr><!-- tot tree -->
-                                                            <td>Tot. Allocation <b>TREE</b></td>
-                                                            <td>:</td>
-                                                            <td><?php echo $total_allo ?></td>
-                                                          </tr>
-                                                         
-                                                          <tr><!-- mu -->
-                                                            <td>Management Unit</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $mu ?></td>
-                                                          </tr>
-                                                          
-                                                        </table>
-                                                        <br><br>
-
-                                                 <font color="red"> Tree < Total Tree Allocation </font><br>
-                                                      Please add another tree...
+                                                      Please check the allocation trees ...
                                                   </div>
                                               </div>
                                           </div>
@@ -476,11 +498,11 @@
                                   </body>
                                   <!-- end modal -->
 
-                                      <button type="submit" value="save" name="save" class="btn btn-warning"><i class="fa fa-plus"> Add Tree</i></button>
+                                     <!--  <button type="submit" value="save" name="save" class="btn btn-warning"><i class="fa fa-plus"> Add Tree</i></button>
                                       <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
 
                                   </div>
-                                  </form>
+                                  </form> -->
                                   <?php
                                    }//end unallocated
                                    elseif ($unallocated==0) {
@@ -508,7 +530,22 @@
                                   <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
                                   <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">                              
+                                  <?php 
 
+                                    $i=1;
+                                    $data=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu  ");
+
+                                    while ( $load=mysql_fetch_array($data)) {
+                                     
+                                     ?> 
+                                       <input type="hidden" class="form-control o" name="kdman_unit<?php echo $i?>" value="<?php echo $load['kd_mu'] ?>">
+                                      <input type="hidden" class="form-control o" name="alokasi_pohon<?php echo $i?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>">
+                                       
+                                      <?php
+                                      
+                                      $i++;
+                                      }
+                                      ?>
 
                                   <!-- modal -->
                                   <body onLoad="$('#my-modal-allo').modal('show');">
@@ -552,11 +589,7 @@
                                                             <td><?php echo $total_allo ?></td>
                                                           </tr>
                                                          
-                                                          <tr><!-- mu -->
-                                                            <td>Management Unit</td>
-                                                            <td>:</td>
-                                                            <td><?php echo $mu ?></td>
-                                                          </tr>
+                                                          
                                                           
                                                         </table>
                                                         <br><br>

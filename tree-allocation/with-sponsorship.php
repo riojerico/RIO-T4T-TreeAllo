@@ -474,8 +474,8 @@
                                       echo $nama_petani['nm_petani'] ;?></td>
                                       <td width="10%"><left><?php echo $load['no'] ?></left></td>
                                       <td width="10%" align="left"><?php echo $load[0] ?></td>
-                                      <td width="10%"><input type="number" class="form-control o" name="alokasi_pohon<?php echo $i?>" max="<?php echo $load[0] ?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>" onchange='this.form.submit()'></td>
-                                      <noscript><input type="submit" value="alokasi_pohon<?php echo $i?>"></noscript>
+                                      <td width="10%"><input type="number" class="form-control o trees" name="alokasi_pohon<?php echo $i?>" max="<?php echo $load[0] ?>" min="1" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>" ></td>
+                                     
                                        </tr>
                                       <?php
                                       $ap[]=$_REQUEST['alokasi_pohon'.$i];
@@ -486,7 +486,7 @@
                                      <tr>
                                        <td colspan="5"></td>
                                        <td><input type="text" class="form-control" value="<?php echo array_sum($ava)?> available" readonly></td>
-                                       <td><input type="text" class="form-control" name="total_trees" value="<?php echo array_sum($ap) ?> trees" readonly="" max="<?php echo $total_allo ?>" min="<?php echo $total_allo ?>"></td>
+                                       <td><input type="text" class="form-control" id="totalTrees" name="total_trees" value="<?php echo array_sum($ap) ?> trees" readonly="" max="<?php echo $total_allo ?>" min="<?php echo $total_allo ?>"></td>
                                      </tr>
                                       
                                     </tbody>

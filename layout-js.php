@@ -104,7 +104,26 @@ function hitung_alokasi(){
     $(".r").val(r);
 }
 
+
   </script>
+<script>
+// we used jQuery 'keyup' to trigger the computation as the user type
+$('.trees').keyup(function () {
+ 
+    // initialize the sum (total price) to zero
+    var sum = 0;
+     
+    // we use jQuery each() to loop through all the textbox with 'price' class
+    // and compute the sum for each loop
+    $('.trees').each(function() {
+        sum += Number($(this).val());
+    });
+     
+    // set the computed value to 'totalPrice' textbox
+    $('#totalTrees').val(sum);
+     
+});
+</script>
   <!-- datatable -->
   <script type="text/javascript" src="assets/data-table/js/jquery.dataTables.js"></script>
   <script type="text/javascript" src="assets/data-table/js/dataTables.bootstrap.js"></script>

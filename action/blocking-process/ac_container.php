@@ -51,16 +51,29 @@ $date=date("Y-m-d");
 
     
 //update current tree
-$ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where time like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
-for ($i=1; $i <= 1 ; $i++) { 
-     //no shipment
-    $date=date("Y-m-d");
+// $ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where time like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
+// for ($i=1; $i <= 1 ; $i++) { 
+//      //no shipment
+//     $date=date("Y-m-d");
    
-   $ns2=$ns[0]+$i;
+//    $ns2=$ns[0]+$i;
     
-     $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and bl='' and no_shipment='' limit $total_trees");
-}
+//      $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and bl='' and no_shipment='' limit $total_trees");
+// }
+//update current tree
+$z=1;
+$select_current_tree=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu");
 
+while ( $load=mysql_fetch_array($select_current_tree)) {
+   
+   $kdman_unit   =$_POST['kdman_unit'.$z];                                 
+   $alokasi_pohon=$_POST['alokasi_pohon'.$z];
+
+   $query_current_tree_update=mysql_query("update current_tree set used='1',bl='1111-11-11',no_shipment='$no_ship' where used='0' and hidup='1' and kd_mu='$kdman_unit' and koordinat!='' limit $alokasi_pohon");                         
+                                      
+$z++;
+}
+   
 
 //insert into t4t_wins
 $ex_win=explode(",", $win_num);
@@ -103,7 +116,7 @@ $a++;
 $k=1;
 while ($k <= 1 ) {
 
-$data_lahan=mysql_query("select * from current_tree where bl='$bl' and no_shipment='1111-11-11' group by no_t4tlahan");
+$data_lahan=mysql_query("select * from current_tree where bl='1111-11-11' and no_shipment='$no_ship' group by no_t4tlahan");
 
 $i=1;
 while ( $data=mysql_fetch_array($data_lahan)) {
@@ -120,8 +133,10 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     $petani2        =mysql_fetch_array(mysql_query("select nm_petani from t4t_petani where kd_petani='$kd_ptn' and id_desa='$kd_ds'"));
     $kdta           =$get_lahan['kd_ta'];
     $ta2            =mysql_fetch_array(mysql_query("select nama from t4t_tamaster where kd_ta='$kdta'"));
+    $kdman_unit0    =$get_lahan['kd_mu'];
+    $kdman_unit     =mysql_fetch_array(mysql_query("select nama from t4t_mu where kd_mu='$kdman_unit0'"));
+    $a=mysql_query("select count(*) from current_tree where bl='1111-11-11' and no_shipment='$no_ship' group by no_t4tlahan");
 
-    $a=mysql_query("select count(*) from current_tree where bl='$bl' and no_shipment='1111-11-11' group by no_t4tlahan");
     $j=1;
     while ($jml_pohon=mysql_fetch_array($a)) {
         $jml_pohon2[$j]=$jml_pohon[0];
@@ -130,7 +145,7 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     
     
     //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
-   $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$nama_mu','$jml_pohon2[$i]','','$no_ship','$date')");
+   $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$kdman_unit[0]','$jml_pohon2[$i]','','$no_ship','$date')");
 
 $i++;
 }
@@ -139,7 +154,7 @@ $i++;
 
 $date=date("Y-m-d");
 //update current_tree kedua
-$query_current_tree_update2=mysql_query("update current_tree set no_shipment='$no_ship' where bl='$bl' and no_shipment='1111-11-11'");
+$query_current_tree_update2=mysql_query("update current_tree set bl='$bl' where bl='1111-11-11'");
 
 header("location:../../admin.php?4c079fe60164545aca6a15d1da3842b26d13fa85a72a1c4d0d323d98934f6d2f");
 
