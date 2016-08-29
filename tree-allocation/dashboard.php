@@ -13,7 +13,7 @@
                   <!-- Current Tree -->
                       <section class="panel">
                           <header class="panel-heading">
-                             Current Tree Available for Blocking
+                             Current Tree Available for Allocation
                           </header>
                           <div class="panel-body">
                           <div class="col-lg-12" >
