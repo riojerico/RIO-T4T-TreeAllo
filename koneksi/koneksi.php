@@ -1,5 +1,4 @@
 <?php 
-
 $con = mysql_connect("localhost","root","");
 if (!$con) {
 	die('Cannot Connect'.mysql_error());
