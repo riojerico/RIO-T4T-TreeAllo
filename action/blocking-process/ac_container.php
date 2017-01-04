@@ -50,16 +50,7 @@ $id_partisipan=mysql_fetch_array(mysql_query("select id from t4t_partisipan wher
 $date=date("Y-m-d");
 
     
-//update current tree
-// $ns=mysql_fetch_array(mysql_query("select count(*) from add_current_tree where time like '%$date%' and id_part='$id_partisipan[0]' group by id_part"));
-// for ($i=1; $i <= 1 ; $i++) { 
-//      //no shipment
-//     $date=date("Y-m-d");
-   
-//    $ns2=$ns[0]+$i;
-    
-//      $query_current_tree_update=mysql_query("update current_tree set used='1',bl='$bl',no_shipment='1111-11-11' where used='0' and hidup='1' and kd_mu='$mu[0]' and koordinat!='' and bl='' and no_shipment='' limit $total_trees");
-// }
+
 //update current tree
 $z=1;
 $select_current_tree=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu");
@@ -96,8 +87,8 @@ while ( $a < $ex_win2) {
         $hasil=trim($start);
         
         for ($i=$start; $i <= $end ; $i++) { 
-            //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user
-            $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date','$log')");
+            //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user - type
+            $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date','$log','1')");
 
             $hasil++;
         }
@@ -156,7 +147,10 @@ $date=date("Y-m-d");
 //update current_tree kedua
 $query_current_tree_update2=mysql_query("update current_tree set bl='$bl' where bl='1111-11-11'");
 
-header("location:../../admin.php?4c079fe60164545aca6a15d1da3842b26d13fa85a72a1c4d0d323d98934f6d2f");
+
+// header("location:../../admin.php?4c079fe60164545aca6a15d1da3842b26d13fa85a72a1c4d0d323d98934f6d2f"); awal
+header("location:ac_transaction.php");
+
 
 
 ?>

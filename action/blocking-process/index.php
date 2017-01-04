@@ -87,9 +87,9 @@ for ($i=1; $i <= $tot_wins ; $i++) {
    
     $ns_win2=$ns_win[0]+$i;
     $ns_win2;
-    //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user
+    //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user - type
    
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2','$time','$log')");
+    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2','$time','$log','3')");
 }
 
 //insert into t4t_shipment
@@ -103,7 +103,7 @@ $no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
 $wins=$start_w-1;
    $win=$wins+$i;
 
-    $query_shipment=mysql_query("insert into t4t_shipment values ('','$no_ship_htc','$id_partisipan[0]','$bl','$time','$win','','$time_second','','1','$no_order','$destination','$fee','0','$time','1','$note','','1')");
+    $query_shipment=mysql_query("insert into t4t_shipment values ('','$no_ship_htc','$id_partisipan[0]','$bl','$time','$win','','$time_second','','1','$no_order','$destination','$fee','0','$time','1','$note','','3')");
 }
 
 
@@ -162,5 +162,6 @@ $i++;
  }
 
 
-header("location:../../admin.php?c3b00eb86cd337880f1639111f2af716061ba997b556a75c89e9bad84f0eb324");
+//header("location:../../admin.php?c3b00eb86cd337880f1639111f2af716061ba997b556a75c89e9bad84f0eb324");
+header("location:ac_transaction.php");
 ?>

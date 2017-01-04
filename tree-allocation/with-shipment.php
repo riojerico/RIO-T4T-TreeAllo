@@ -1,11 +1,11 @@
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
-          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Shipment </h3>
+          <h3 class="page-header"><i class="fa fa-tree"></i> Tree Allocation With Merchant </h3>
           <ol class="breadcrumb">
             <li><i class="fa fa-home"></i><a href="admin.php?3ad70a78a1605cb4e480205df880705c">Home</a></li>
             <li><i class="fa fa-tree"></i>Tree Allocation</li>
-            <li><i class="fa fa-file-text-o"></i>With Shipment</li>
+            <li><i class="fa fa-file-text-o"></i>With Merchant</li>
           </ol>
         </div>
       </div>
@@ -13,7 +13,7 @@
                   <div class="col-lg-12">
                       <section class="panel">
                           <header class="panel-heading">
-                             Form Tree Allocation With Shipment
+                             Form Tree Allocation With Merchant
                           </header>
                           <div class="panel-body">
 
@@ -21,26 +21,12 @@
                               <form class="form-horizontal " method="post">
 
                               <!-- PARTISIPAN -->
-                              <?php $parts=$_REQUEST['partisipan'] ?>
-                                  <div class="form-group">
+                                  <?php $parts=$_SESSION['nama_part'] ?>
+                                      <div class="form-group">
                                       <label class="col-sm-2 control-label">Participants</label>
                                       <div class="col-sm-10">
-                                          <select class="form-control m-bot15" name="partisipan" onchange='this.form.submit()'>
-                                              <option><?php
-                                              if ($parts=='') {
-                                                echo "- Partisipan -";
-                                              }else{
-                                              echo $parts; }?>
-                                              </option>
-                                              <?php
-                                              $data=mysql_query("select * from t4t_partisipan order by nama asc");
-                                              while ($data2=mysql_fetch_array($data)) {
-                                              ?>
-                                              <option value="<?php echo $data2['nama']?>"><?php echo $data2['nama'] ?></option>
-                                              <?php                                              
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="partisipan"></noscript>
+                                      <input type="text" readonly="" class="form-control m-bot15" name="partisipan" value="<?php echo $parts  ?>">
+
                                       </div>
 
                                   </div>
@@ -49,7 +35,7 @@
                                   <!-- NO ORDER -->
                                   <?php
                                     $no_order = $_REQUEST['no_order'] ;
-                                    if ($parts) {
+                                    
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                       $id_comp[0];
                                   ?>
@@ -77,7 +63,7 @@
                                           <noscript><input type="submit" value="no_order"></noscript>
                                       </div>
                                   </div>
-                                  <?php  }  ?>
+                             
                                   <!-- CLOSE NO ORDER -->
 
                                   <!-- NO SHIPMENT -->

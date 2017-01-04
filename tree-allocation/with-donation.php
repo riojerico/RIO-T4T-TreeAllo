@@ -20,27 +20,13 @@
                               <!-- Form -->
                               <form class="form-horizontal " method="post">
 
-                              <!-- PARTISIPAN -->
-                              <?php $parts=$_REQUEST['partisipan'] ?>
-                                  <div class="form-group">
+                                  <!-- PARTISIPAN -->
+                                  <?php $parts=$_SESSION['nama_part'] ?>
+                                      <div class="form-group">
                                       <label class="col-sm-2 control-label">Participants</label>
                                       <div class="col-sm-10">
-                                          <select class="form-control m-bot15" name="partisipan" onchange='this.form.submit()'>
-                                              <option><?php
-                                              if ($parts=='') {
-                                                echo "- Participants -";
-                                              }else{
-                                              echo $parts; }?>
-                                              </option>
-                                              <?php
-                                              $data=mysql_query("select * from t4t_partisipan order by nama asc");
-                                              while ($data2=mysql_fetch_array($data)) {
-                                              ?>
-                                              <option value="<?php echo $data2['nama']?>"><?php echo $data2['nama'] ?></option>
-                                              <?php
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="partisipan"></noscript>
+                                      <input type="text" readonly="" class="form-control m-bot15" name="partisipan" value="<?php echo $parts  ?>">
+
                                       </div>
 
                                   </div>
@@ -49,7 +35,7 @@
                                   <!-- NO ORDER -->
                                   <?php
                                     $no_order = $_REQUEST['no_order'] ;
-                                    if ($parts) {
+                                 
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                   ?>
                                   <div class="form-group">
@@ -77,7 +63,7 @@
                                           <noscript><input type="submit" value="no_order"></noscript>
                                       </div>
                                   </div>
-                                  <?php  }  ?>
+                                
                                   <!-- CLOSE NO ORDER -->
 
                                   <!-- NO SHIPMENT -->
@@ -85,29 +71,19 @@
                                     $no_ship = $_REQUEST['no_ship'] ;
                                     if ($no_order) {
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
+                                      $date=date("dmy");
+                                      $jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$date%' and id_part='$id_comp[0]' order by no desc limit 1 "));
+                                      $jml_ns2=$jml_ns[0]+1;
                                   ?>
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">No Shipment</label>
                                       <div class="col-sm-10">
-                                          <select class="form-control m-bot15" name="no_ship" onchange="this.form.submit()" required>
-                                              <option><?php
-                                              if ($no_ship=='') {
-                                                echo "- No Shipment -";
-                                              }else{
-                                              echo $no_ship; }?>
-                                              </option>
-                                              <?php
-                                               
-                                              $data=mysql_query("select * from t4t_shipment where id_comp='$id_comp[0]' and no_order like '%$no_order%' and wins_used not like '%-%' and wins_used not like '%,%' order by no desc");
-                                              while ($data2=mysql_fetch_array($data)) {
-                                              ?>
-                                              <option value="<?php echo $data2['no_shipment'] ?>"><?php echo $data2['no_shipment'] ?></option>
-                                              <?php
-                                              }
-                                              ?>
-                                          </select>
-                                          <noscript><input type="submit" value="no_ship"></noscript>
+                                          <input type="text" class="form-control" readonly="" name="no_ship" value="<?php echo $id_comp[0];echo $date;?><?php echo $jml_ns2 ?>" required>
                                       </div>
+                                      <label class="col-sm-2 "></label>
+                                      <!-- <div class="col-sm-10">
+                                       <font color="red">*No Shipment will start from this number</font>
+                                       </div> -->
                                   </div>
                                   <?php  }  ?>
                                   <!-- CLOSE NO SHIPMENT -->
@@ -117,12 +93,19 @@
                                     $no_order  =$_REQUEST['no_order'];
                                     if ($no_order) {
                                      $data_ship=mysql_fetch_array(mysql_query("select * from t4t_shipment where no_shipment='$no_ship' and id_comp='$id_comp[0]' "));
+
                                   ?>
                                     <!-- OPEN BL -->
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">BL</label>
                                       <div class="col-sm-10">
-                                          <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $data_ship['bl']?>" required>
+                                      <?php 
+                                      $bl=$_REQUEST['bl'];
+
+                                      $jml_bl=mysql_fetch_array(mysql_query("select no_bl from add_htc where bl like '%$date%' and id_part='$id_comp[0]' order by no desc limit 1 "));
+                                      $jml_bl2=$jml_bl[0]+1; 
+                                      ?>
+                                          <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $id_comp[0]?>BL<?php echo $jml_bl2 ?><?php echo $date ?>" required>
                                       </div>
                                   </div>
                                     <!-- CLOSE BL -->
@@ -134,15 +117,28 @@
                                     $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_shipment where no_shipment='$no_ship' "));
                                   ?>
                                       <label class="col-sm-2 control-label">Wins Number</label>
-                                      <div class="col-sm-10">
-                                          <textarea type="" class="form-control" name="win_num" placeholder="<?php echo $win_num[0] ?>" readonly="" required><?php echo $win_num[0] ?></textarea>
+                                      <div class="col-sm-4">
+                                          <input type="number" class="form-control" name="win_num" value="<?php echo $win_number ?>" required>
                                       </div>
                                       <label class="col-sm-2 "></label>
-                                      <div class="col-sm-10">
+                                      <!-- <div class="col-sm-10">
                                        <font color="red">*must be 1 wins</font>
-                                       </div>
+                                       </div> -->
                                   </div>
                                       <!-- //cek wins -->
+
+                                      <!-- Destination -->
+                                      <div class="form-group">
+                                  <?php 
+                                    $destination=$_REQUEST['destination']; 
+                                    
+                                  ?>
+                                      <label class="col-sm-2 control-label">Destination</label>
+                                      <div class="col-sm-10">
+                                          <input type="text" class="form-control" name="destination" placeholder="Destination" value="<?php echo $destination ?>" >
+                                      </div>
+                                  </div>
+                                      <!-- end destination -->
 
 
                                     <!-- OPEN TOTAL ALLO -->
@@ -153,8 +149,9 @@
 
                                       <label class="col-sm-2 control-label">Total Allocation <b>(Tree)</b></label>
                                       <div class="col-sm-7">
-                                          <input type="number" class="form-control a" onchange="hitung();" name="total_allo" value="<?php echo $total_allo;?>" required="" max="<?php echo $tersedia[0] ?>" min='1'>
+                                          <input type="number" class="form-control a" onchange="this.form.submit()" name="total_allo" value="<?php echo $total_allo;?>" required="" max="<?php echo $tersedia[0] ?>" min='1'>
                                       </div>
+                                      <noscript><input type="submit" value="total_allo"></noscript>
                                       <div class="col-sm-3">
                                           <input type="" class="form-control " name="tersedia" value="<?php  echo $tersedia[0];?> available trees" required="" readonly>
                                       </div>
@@ -226,7 +223,7 @@
 
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
-                                  <input type="hidden" name="bl" value="<?php echo $data_ship['bl'] ?>">
+                                  <input type="hidden" name="bl" value="<?php echo $bl ?>">
                                   <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
                                   <input type="hidden" name="min_allo" value="<?php echo $item[0] ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
@@ -236,9 +233,9 @@
                                   <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
                                   <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
-                                  <input type="hidden" name="start_w" value="<?php echo $start_w ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">                              
+                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">  
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">                            
 
 
                                   <!-- modal -->
@@ -276,6 +273,11 @@
                                                             <td><B>WINS</B> Number</td>
                                                             <td>:</td>
                                                             <td><?php echo $win_number ?></td>
+                                                          </tr>
+                                                          <tr><!-- Destination -->
+                                                            <td>Destination</td>
+                                                            <td>:</td>
+                                                            <td><?php echo $destination ?></td>
                                                           </tr>
                                                           <tr><!-- tot tree -->
                                                             <td>Tot. Allocation <b>TREE</b></td>

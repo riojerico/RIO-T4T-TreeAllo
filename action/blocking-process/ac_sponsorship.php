@@ -91,9 +91,9 @@ for ($i=1; $i <= $tot_wins ; $i++) {
    
     $ns_win2=$ns_win[0]+$i;
     $ns_win2;
-    //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user
+    //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user - type
    
-    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2','$time','$log')");
+    $query_wins=mysql_query("insert into t4t_wins values ('','$win','$no_order','','','','','$bl','$id_partisipan[0]','$id_partisipan[0]$date$ns_win2','$time','$log','4')");
 }
 
 //insert into t4t_shipment
@@ -159,5 +159,6 @@ $i++;
     //update current_tree kedua
     $query_current_tree_update2=mysql_query("update current_tree set bl='$bl' where bl='1111-11-11'");
 
-header("location:../../admin.php?a46082f9f5d6e76572879db4b9985b5b4b7497d6f82e256c83ca11d154eeb94a");
+//header("location:../../admin.php?a46082f9f5d6e76572879db4b9985b5b4b7497d6f82e256c83ca11d154eeb94a");
+header("location:ac_transaction.php");
 ?>

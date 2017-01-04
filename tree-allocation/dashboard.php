@@ -1,4 +1,3 @@
-
           <section class="wrapper">
       <div class="row">
         <div class="col-lg-12">
@@ -13,11 +12,24 @@
                   <!-- Current Tree -->
                       <section class="panel">
                           <header class="panel-heading">
-                             Current Tree Available for Allocation
+                             Tree Available for Allocation
                           </header>
                           <div class="panel-body">
                           <div class="col-lg-12" >
-                           <input align="center" class="form-control" readonly="" value="<?php $data=mysql_fetch_array(mysql_query("select count(*) from current_tree where used=0 and hidup=1 and bl='' and no_shipment='' and koordinat!=''")); echo $data[0]; ?> available">
+                          <?php 
+                          $data=mysql_fetch_array(mysql_query("select count(*) from current_tree where used=0 and hidup=1 and bl='' and no_shipment='' and koordinat!=''"));
+
+                          if ($data[0]<100000) {
+                            ?>
+                            <input align="center" class="form-control" readonly="" style="color:red;font-weight:bold;" value="<?php  echo number_format($data[0],0,',','.') ?> available">
+                            <?php
+                          }else{
+
+                           ?>
+                           <input align="center" class="form-control" readonly="" style="color:green;font-weight:bold;" value="<?php  echo number_format($data[0],0,',','.') ?> available">                           
+                          <?php 
+                          }
+                          ?>
                           </div><br> 
                           <div class="col-lg-12">
                             <div class="col-lg-6">
@@ -27,9 +39,9 @@
                               <table id="data" class="table table-hover">
                               <thead>
                               <tr>
-                                  <th>No</th>
+                                  <th width="5%">No</th>
                                   <th>Management Unit</th>
-                                  <th width="130">Number of Trees</th>   
+                                  <th width="27%">Number of Trees</th>   
                               </tr>
                               </thead>
                               <tbody>
@@ -61,15 +73,16 @@
                               <table id="data2" class="table table-hover" >
                               <thead>
                               <tr>
-                                  <th>No</th>
-                                  <th width="350">Species</th>
-                                  <th width="130">Number of Trees</th>
+                                  <th width="5%">No</th>
+                                  <th>Species</th>
+                                  <th width="27%">Number of Trees</th>
                               </tr>
                               </thead>
                               <tbody>
                               <?php  
                               $no=1;
-                              $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 and bl='' and no_shipment='' and koordinat!='' group by id_pohon order by trees desc");
+                              $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 and bl='' and no_shipment='' and koordinat!='' group by id_pohon order by trees desc
+");
                               while ($data2=mysql_fetch_array($data)) {
                                 ?>
 
@@ -173,7 +186,7 @@
                             </thead>
                             <?php  
                             $no=1;
-                            $htc=mysql_query("select * from t4t_wins order by no desc limit 10");
+                            $htc=mysql_query("select * from t4t_wins order by no desc limit 1");
                             while ($data=mysql_fetch_array($htc)) {
                             ?>
 

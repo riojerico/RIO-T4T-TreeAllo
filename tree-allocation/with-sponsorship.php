@@ -21,26 +21,12 @@
                               <form class="form-horizontal " method="post" action="">
 
                               <!-- PARTISIPAN -->
-                              <?php $parts=$_REQUEST['partisipan'] ?>
-                                  <div class="form-group">
+                                  <?php $parts=$_SESSION['nama_part'] ?>
+                                      <div class="form-group">
                                       <label class="col-sm-2 control-label">Participants</label>
                                       <div class="col-sm-10">
-                                          <select class="form-control m-bot15" name="partisipan" onchange='this.form.submit()'>
-                                              <option><?php
-                                              if ($parts=='') {
-                                                echo "- Partisipan -";
-                                              }else{
-                                              echo $parts; }?>
-                                              </option>
-                                              <?php
-                                              $data=mysql_query("select * from t4t_partisipan order by nama asc");
-                                              while ($data2=mysql_fetch_array($data)) {
-                                              ?>
-                                              <option value="<?php echo $data2['nama']?>"><?php echo $data2['nama'] ?></option>
-                                              <?php                                              
-                                              } ?>
-                                          </select>
-                                          <noscript><input type="submit" value="partisipan"></noscript>
+                                      <input type="text" readonly="" class="form-control m-bot15" name="partisipan" value="<?php echo $parts  ?>">
+
                                       </div>
 
                                   </div>
@@ -49,7 +35,7 @@
                                   <!-- NO ORDER -->
                                   <?php
                                     $no_order = $_REQUEST['no_order'] ;
-                                    if ($parts) {
+                                  
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                       $id_comp[0];
                                   ?>
@@ -78,7 +64,7 @@
                                           <noscript><input type="submit" value="no_order"></noscript>
                                       </div>
                                   </div>
-                                  <?php  }  ?>
+                           
                                   <!-- CLOSE NO ORDER -->
 
                                   <!-- NO SHIPMENT -->

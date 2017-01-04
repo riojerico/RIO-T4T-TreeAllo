@@ -25,6 +25,7 @@ $land       =$_POST['land'];
 $log        =$_POST['log'];
 date_default_timezone_set('Asia/Jakarta');
 $datetime   = date("Y-m-d H:i:s"); 
+$destination=$_POST['destination'];
 
 
 $id_pohon=mysql_fetch_array(mysql_query("select id_pohon from t4t_pohon where nama_pohon='$type_trees'"));
@@ -83,8 +84,8 @@ while ( $a < $ex_win2) {
         $hasil=trim($start);
         
         for ($i=$start; $i <= $end ; $i++) { 
-            //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user
-            $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date','$log')");
+            //no - win - no_order - pesen? - used? - unused? - vc? - bl - id_part - no shipment - time - log user - type
+            $query_wins=mysql_query("insert into t4t_wins values ('','$hasil','$no_order','','','','','$bl','$id_partisipan[0]','$no_ship','$date','$log','2')");
 
             $hasil++;
         }
@@ -95,6 +96,18 @@ while ( $a < $ex_win2) {
 $a++;    
 }
 
+//insert into t4t_shipment
+$date=date("dmy");
+$tanggal=date("Y-m-d");
+$jml_ns=mysql_fetch_array(mysql_query("select no_sh from add_htc where bl like '%$date%' and id_part='$id_partisipan[0]' order by no desc limit 1 "));
+// no - no ship - id comp - bl - bl tgl - wins used - wins unused - wkt shipment - foto - acc - no order - kota tujuan - fee - diskon - tgl paid - acc paid - note - buyer - item qty 
+for ($i=1; $i <= 1 ; $i++) { 
+$jml_ns2=$jml_ns[0]+$i;
+$no_ship_htc=$id_partisipan[0].''.$date.''.$jml_ns2;
+
+
+    $query_shipment=mysql_query("insert into t4t_shipment values ('','$no_ship_htc','$id_partisipan[0]','$bl','$tanggal','$win_num','','$datetime','','1','$no_order','$destination','$fee','0','$tanggal','1','$note','','1')");
+}
 
 
 
@@ -132,7 +145,8 @@ while ( $data=mysql_fetch_array($data_lahan)) {
     
     
     //no - bl - tujuan - kd lahan - no lahan - geo - silvilkultur - luas - petani - desa - ta - mu - jml phn - geo 2 - no shipment - time
-   $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$tujuan[0]','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$mu2[0]','$jml_pohon2[$i]','','$no_ship','$date')");
+   $date=date("Y-m-d");
+   $query_htc=mysql_query("insert into t4t_htc values ('','$bl','$destination','$kd_lahan2','$no_lahan2','$geo2','$silvilkultur2[0]','$luas2','$petani2[0]','$desa2[0]','$ta2[0]','$mu2[0]','$jml_pohon2[$i]','','$no_ship','$date')");
 
 $i++;
 }
@@ -143,7 +157,7 @@ $date=date("Y-m-d");
 //update current_tree kedua
 $query_current_tree_update2=mysql_query("update current_tree set no_shipment='$no_ship' where bl='$bl' and no_shipment='1111-11-11'");
 
-header("location:../../admin.php?a1a839ee8e9795202c5ebbcbe25ee83662484a4b355c150b26c3c6c68cde7ef7");
-
+//header("location:../../admin.php?a1a839ee8e9795202c5ebbcbe25ee83662484a4b355c150b26c3c6c68cde7ef7");
+header("location:ac_transaction.php");
 
 ?>
