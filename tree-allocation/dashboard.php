@@ -16,7 +16,7 @@
                           </header>
                           <div class="panel-body">
                           <div class="col-lg-12" >
-                          <?php 
+                          <?php
                           $data=mysql_fetch_array(mysql_query("select count(*) from current_tree where used=0 and hidup=1 and bl='' and no_shipment='' and koordinat!=''"));
 
                           if ($data[0]<100000) {
@@ -26,11 +26,11 @@
                           }else{
 
                            ?>
-                           <input align="center" class="form-control" readonly="" style="color:green;font-weight:bold;" value="<?php  echo number_format($data[0],0,',','.') ?> available">                           
-                          <?php 
+                           <input align="center" class="form-control" readonly="" style="color:green;font-weight:bold;" value="<?php  echo number_format($data[0],0,',','.') ?> available">
+                          <?php
                           }
                           ?>
-                          </div><br> 
+                          </div><br>
                           <div class="col-lg-12">
                             <div class="col-lg-6">
                             <header class="panel-heading">
@@ -41,18 +41,18 @@
                               <tr>
                                   <th width="5%">No</th>
                                   <th>Management Unit</th>
-                                  <th width="27%">Number of Trees</th>   
+                                  <th width="27%">Number of Trees</th>
                               </tr>
                               </thead>
                               <tbody>
-                              <?php 
+                              <?php
                               $no=1;
                               $data=mysql_query("select count(no_pohon) as trees,kd_mu from current_tree where hidup=1 and used=0 and bl='' and no_shipment='' and koordinat!='' group by kd_mu order by trees desc");
                               while ($data2=mysql_fetch_array($data)) {
                               ?>
                               <tr>
                                   <td><?php echo $no ?></td>
-                                  <td><?php 
+                                  <td><?php
                                   $unit=$data2[1];
                                   $data_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where kd_mu='$unit'"));
                                   echo $data_mu['nama']; ?></td>
@@ -62,7 +62,7 @@
                               }
                               ?>
                               </tr>
-                              
+
                               </tbody>
                           </table>
                             </div>
@@ -79,7 +79,7 @@
                               </tr>
                               </thead>
                               <tbody>
-                              <?php  
+                              <?php
                               $no=1;
                               $data=mysql_query("select count(no_pohon) as trees,id_pohon from current_tree where hidup=1 and used=0 and bl='' and no_shipment='' and koordinat!='' group by id_pohon order by trees desc
 ");
@@ -93,7 +93,7 @@
                                   if($sp['nama_pohon']==""){
 								  echo "Lainnya";
 								  }else{
-                                  
+
                                   echo $sp['nama_pohon'];}
                                   ?> <i>(<?php echo $sp['nama_latin'] ?>)</i></td>
                                   <td align="right"><?php echo $data2[0]?></td>
@@ -106,7 +106,7 @@
                           </table>
                             </div>
                           </div>
-                              
+
                           </div>
                       </section>
 
@@ -135,7 +135,7 @@
 
                               </tr>
                             </thead>
-<!--                             <?php  
+<!--                             <?php
                             $no=1;
                             $htc=mysql_query("select * from t4t_htc order by no desc limit 10");
                             while ($data=mysql_fetch_array($htc)) {
@@ -160,7 +160,7 @@
                             }
                             ?> -->
                             </tbody>
-                          </table> 
+                          </table>
                           </div>
 
                         </div>
@@ -184,7 +184,7 @@
 
                               </tr>
                             </thead>
-                            <?php  
+                            <?php
                             $no=1;
                             $htc=mysql_query("select * from t4t_wins order by no desc limit 1");
                             while ($data=mysql_fetch_array($htc)) {
@@ -194,7 +194,7 @@
                             <td><?php echo $no ?></td>
                             <td><?php $part=$data['id_part'];
                                       $part2=mysql_fetch_array(mysql_query("select * from t4t_partisipan where id='$part'"));
-                                      echo$part2['nama'] ?></td>
+                                      echo $part2['nama'] ?></td>
                             <td><?php echo $data['no_shipment']?></td>
                             <td><?php echo $data['no_order']?></td>
                             <td><?php echo $data['bl']?></td>
@@ -205,18 +205,18 @@
                             }
                             ?>
                             </tbody>
-                          </table> 
+                          </table>
                           </div>
 
                         </div>
                       </section>
-                      
-                      
-                      
+
+
+
                   </div>
               </div>
               <!-- Basic Forms & Horizontal Forms-->
-              
+
                       </div>
                   </div>
               </div>
