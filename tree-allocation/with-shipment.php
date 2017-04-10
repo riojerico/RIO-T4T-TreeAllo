@@ -35,7 +35,7 @@
                                   <!-- NO ORDER -->
                                   <?php
                                     $no_order = $_REQUEST['no_order'] ;
-                                    
+
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                       $id_comp[0];
                                   ?>
@@ -52,18 +52,18 @@
                                               <?php
                                               $data=mysql_query("select * from t4t_order where id_comp='$id_comp[0]' and acc='1' order by no desc");
                                               while ($data2=mysql_fetch_array($data)) {
-                                           
+
                                               ?>
                                               <option value="<?php echo $data2['no_order'] ?>"><?php echo $data2['no_order'] ?></option>
                                               <?php
-                                                
+
                                               }
                                               ?>
                                           </select>
                                           <noscript><input type="submit" value="no_order"></noscript>
                                       </div>
                                   </div>
-                             
+
                                   <!-- CLOSE NO ORDER -->
 
                                   <!-- NO SHIPMENT -->
@@ -85,7 +85,7 @@
                                        <font color="red">*No Shipment will start from this number</font>
                                        </div>
                                   </div>
-                                  
+
                                   <!-- CLOSE NO SHIPMENT -->
 
                                   <!-- [OPEN] BL - TOTAL WINS - MIN. ALLOCATION -  TOT. ALLOCATION - AVA. ALLOCATION - M. UNIT -->
@@ -98,11 +98,11 @@
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">BL</label>
                                       <div class="col-sm-10">
-                                      <?php 
+                                      <?php
                                       $bl=$_REQUEST['bl'];
 
                                       $jml_bl=mysql_fetch_array(mysql_query("select no_bl from add_htc where bl like '%$date%' and id_part='$id_comp[0]' order by no desc limit 1 "));
-                                      $jml_bl2=$jml_bl[0]+1; 
+                                      $jml_bl2=$jml_bl[0]+1;
                                       ?>
                                           <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $id_comp[0]?>BL<?php echo $jml_bl2 ?><?php echo $date ?>" required>
                                       </div>
@@ -119,12 +119,12 @@
                                           <input type="number" class="form-control x" onchange="hitung_pohon();" name="tot_wins" value="<?php echo $tot_wins ?>" required placeholder="WINS">
                                       </div>
                                   </div>
-                                  
+
                                       <!-- CLOSE TOTAL WINS -->
 
                                       <!-- tp wins -->
                                   <div class="form-group">
-                                  <?php $treeperwins=$_REQUEST['treeperwins']; 
+                                  <?php $treeperwins=$_REQUEST['treeperwins'];
                                     $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_wins where no_shipment='$no_ship' "));
                                   ?>
                                       <label class="col-sm-2 control-label">Tree / Wins</label>
@@ -133,9 +133,9 @@
                                       </div>
                                   </div>
                                       <!-- //tp wins -->
-                                      
+
                                       <!-- OPEN TOTAL ALLO -->
-                                     
+
                                   <div class="form-group">
                                   <?php $total_allo=$_REQUEST['total_allo'];
                                   //echo $total_allo; ?>
@@ -148,7 +148,7 @@
                                       <!-- CLOSE TOTAL ALLO -->
 
                                       <!-- OPEN Destination -->
-                                     
+
                                   <div class="form-group">
                                   <?php $destination=$_REQUEST['destination'];
                                   //echo $total_allo; ?>
@@ -159,7 +159,7 @@
                                       </div>
                                   </div>
                                       <!-- CLOSE Destination -->
-                                      
+
                                       <!-- fee -->
                                       <div class="form-group">
                                       <?php $fee=$_REQUEST['fee'];
@@ -227,7 +227,7 @@
                                               echo $mu; }?>
                                               </option>
                                               <?php
-                                              $data=mysql_query("select count(no_pohon) as trees,kd_mu from current_tree where hidup=1 and used=0 and bl='' 
+                                              $data=mysql_query("select count(no_pohon) as trees,kd_mu from current_tree where hidup=1 and used=0 and bl=''
                                                 and no_shipment='' and koordinat!='' group by kd_mu order by trees desc");
                                               while ($data2=mysql_fetch_array($data)) {
 
@@ -235,8 +235,8 @@
                                                 $data_mu=mysql_fetch_array(mysql_query("select * from t4t_mu where kd_mu='$unit'"));
                                               ?>
                                               <option value="<?php echo $data_mu['nama'];?>"><?php
-                                                
-                                                
+
+
                                                echo $data_mu['nama'];?> (<?php echo $data2[0]; ?> Trees)</option>
                                               <?php
                                               } ?>
@@ -304,7 +304,7 @@
                                       <th >Allocation</th>
                                       </tr>
                                     </thead>
-                                    <?php 
+                                    <?php
                                    // echo $desa;
                                     //echo $petani;
                                     //echo $idmu2[0];
@@ -312,9 +312,9 @@
                                     $data=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu ");
 
                                     while ( $load=mysql_fetch_array($data)) {
-                                     
-                                     ?> 
-                                   
+
+                                     ?>
+
                                     <tbody>
                                       <tr>
                                       <td width="5%"><?php echo $i; ?></td>
@@ -325,19 +325,19 @@
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option> -->
-                                        <?php 
+                                        <?php
                                         // $jml_loop=$load[0]/$treeperwins;
                                         // $jml_loop2=substr($jml_loop, 0,1);
-                                        // for ($i=$treeperwins; $i <= $jml_loop2 ; $i=$i+$treeperwins) { 
+                                        // for ($i=$treeperwins; $i <= $jml_loop2 ; $i=$i+$treeperwins) {
                                           ?>
                                           <!-- <option><?php echo $i ?></option> -->
                                           <?php
                                        // }
                                          ?>
-                                        
+
                                       <!-- </select></td> -->
-                                      <td width="15%"><input type="number" class="form-control tooltips trees" data-original-title="Harus Kelipatan <?php echo $treeperwins ?>" data-placement="left" name="alokasi_pohon<?php echo $i?>" max="<?php echo $load[0] ?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>" min="<?php echo $treeperwins ?>"></td>
-                                       
+                                      <td width="15%"><input type="number" class="form-control tooltips trees" data-original-title="Harus Kelipatan <?php echo $treeperwins ?>" data-placement="left" name="alokasi_pohon<?php echo $i?>" max="<?php echo $load[0] ?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>" min="<?php echo $treeperwins ?>" step="<?php echo $treeperwins ?>"></td>
+
                                        </tr>
                                       <?php
                                       $ap[]=$_REQUEST['alokasi_pohon'.$i];
@@ -351,12 +351,12 @@
                                        <td><input type="text" class="form-control" id="totalTrees" name="total_trees" value="<?php echo array_sum($ap) ?> trees" readonly="" max="<?php echo $total_allo ?>" min="<?php echo $total_allo ?>" onchange='this.form.submit()'></td>
                                        <noscript><input type="submit" value="total_trees"></noscript>
                                      </tr>
-                                      
+
                                     </tbody>
-                                    
+
                                   </table>
                                   </div>
-                                  
+
 
                                   <!-- CLOSE  -->
                                   <div align="center" class="col-lg-12">
@@ -366,7 +366,7 @@
                               </form>
                               <?php $pohon=$_REQUEST['total_trees'];
                                       $unallocated=$total_allo-$pohon;
-                                                                           
+
                                   ?>
                               <!-- close form -->
                               <?php
@@ -379,7 +379,7 @@
                                    $unallocated;
                                    date_default_timezone_set('Asia/Jakarta');
                                    $time=date("Y-m-d");
-                                   $tanggal=date("dmy");                                   
+                                   $tanggal=date("dmy");
                                    $cek_blocking=mysql_fetch_array(mysql_query("select * from t4t_wins where id_part='$id_comp[0]' and bl like '%BL10$tanggal%' and time='$time' limit 1"));
                                    $cek_kelipatan=$tree/$treeperwins;
                                    $tiga_dari_belakang= substr ($cek_kelipatan, -3, 1); // menghasilkan ","
@@ -400,7 +400,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                      Sorry, the number of trees must be multiples of the treeperwins
                                                   </div>
                                               </div>
                                           </div>
@@ -422,7 +422,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                      Sorry, the number of trees must be multiples of the treeperwins
                                                   </div>
                                               </div>
                                           </div>
@@ -444,7 +444,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                      Sorry, the number of trees must be multiples of the treeperwins
                                                   </div>
                                               </div>
                                           </div>
@@ -466,7 +466,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                      Sorry, the number of trees must be multiples of the treeperwins
                                                   </div>
                                               </div>
                                           </div>
@@ -488,7 +488,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Data do not match!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                      Sorry, the number of trees must be multiples of the treeperwins 
+                                                      Sorry, the number of trees must be multiples of the treeperwins
                                                   </div>
                                               </div>
                                           </div>
@@ -511,7 +511,7 @@
                                                   </div>
                                                   <div class="modal-body">
                                                       Only allowed 10 times per day on this Participants, please try again next day...
-                                                      
+
                                                   </div>
                                               </div>
                                           </div>
@@ -521,7 +521,7 @@
                                   <?php
                                  }//end part
 
-                                    
+
                                       //if unallocated
                                       elseif ($unallocated > 0) {
                                         ?>
@@ -571,7 +571,7 @@
                                       </div>
                                   </body>
                                   <!-- end modal -->
-<!-- 
+<!--
                                       <button type="submit" value="save" name="save" class="btn btn-warning"><i class="fa fa-plus"> Add</i></button>
                                       <a href="" name="" id="" class="btn btn-danger"><i class="fa fa-eraser"> Clear</i></a>
 
@@ -593,7 +593,7 @@
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
                                   <input type="hidden" name="no_ship" value="<?php echo $no_ship ?>">
                                   <input type="hidden" name="bl" value="<?php echo $bl ?>">
-                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">             
+                                  <input type="hidden" name="tot_wins" value="<?php echo $tot_wins ?>">
                                   <input type="hidden" name="total_allo" value="<?php echo $total_allo ?>">
                                   <input type="hidden" name="mu" value="<?php echo $mu ?>">
                                   <input type="hidden" name="total_trees" value="<?php echo $pohon ?>">
@@ -608,19 +608,19 @@
                                   <input type="hidden" name="note" value="<?php echo $note ?>">
                                   <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">
 
-                                  <?php 
+                                  <?php
 
                                     $i=1;
                                     $data=mysql_query("select count(*) as jml_pohon,kd_mu from add_jmlpohon_lahan where used=0 and bl='' and no_shipment='' and koordinat!='' and used=0 and hidup=1 group by kd_mu  ");
 
                                     while ( $load=mysql_fetch_array($data)) {
-                                     
-                                     ?> 
+
+                                     ?>
                                        <input type="hidden" class="form-control o" name="kdman_unit<?php echo $i?>" value="<?php echo $load['kd_mu'] ?>">
                                       <input type="hidden" class="form-control o" name="alokasi_pohon<?php echo $i?>" value="<?php echo $_REQUEST['alokasi_pohon'.$i] ?>">
-                                       
+
                                       <?php
-                                      
+
                                       $i++;
                                       }
                                       ?>
@@ -635,7 +635,7 @@
                                                   <h4 class="modal-title alert alert-success"><strong>Data has been checked!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                 
+
                                                      <table border="0">
                                                           <tr><!-- partisipan -->
                                                             <td>Participants</td>
@@ -677,7 +677,7 @@
                                                             <td>:</td>
                                                             <td><?php echo $destination ?></td>
                                                           </tr>
-                                                          
+
                                                           <tr><!-- fee -->
                                                             <td>Fee</td>
                                                             <td>:</td>
@@ -688,7 +688,7 @@
                                                             <td>:</td>
                                                             <td><?php echo $start_w ?> - <?php echo (int)$start_w+$jml_win; ?></td>
                                                           </tr>
-                                                          
+
                                                           <tr><!-- note -->
                                                             <td>Note</td>
                                                             <td>:</td>
@@ -696,7 +696,7 @@
                                                           </tr>
                                                         </table>
                                                         <br><br>
-                                                  
+
                                                       Please <b>submit</b> data now...
                                                   </div>
                                               </div>
@@ -733,11 +733,11 @@
                                   <!-- end modal -->
                                   <?php
                                  }//end over
-                                
 
 
-                                                                                                 
-                                  
+
+
+
                                 }//end check
 
                                  ?>
@@ -764,4 +764,3 @@
               </div>
               <!-- page end-->
           </section>
-

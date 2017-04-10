@@ -35,7 +35,7 @@
                                   <!-- NO ORDER -->
                                   <?php
                                     $no_order = $_REQUEST['no_order'] ;
-                                 
+
                                       $id_comp=mysql_fetch_array(mysql_query("select id from t4t_partisipan where nama='$parts'"));
                                   ?>
                                   <div class="form-group">
@@ -63,7 +63,7 @@
                                           <noscript><input type="submit" value="no_order"></noscript>
                                       </div>
                                   </div>
-                                
+
                                   <!-- CLOSE NO ORDER -->
 
                                   <!-- NO SHIPMENT -->
@@ -87,7 +87,7 @@
                                   </div>
                                   <?php  }  ?>
                                   <!-- CLOSE NO SHIPMENT -->
-                                
+
                                   <!-- [OPEN] BL - TOTAL WINS - MIN. ALLOCATION -  TOT. ALLOCATION - AVA. ALLOCATION - M. UNIT -->
                                   <?php
                                     $no_order  =$_REQUEST['no_order'];
@@ -99,11 +99,11 @@
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">BL</label>
                                       <div class="col-sm-10">
-                                      <?php 
+                                      <?php
                                       $bl=$_REQUEST['bl'];
 
                                       $jml_bl=mysql_fetch_array(mysql_query("select no_bl from add_htc where bl like '%$date%' and id_part='$id_comp[0]' order by no desc limit 1 "));
-                                      $jml_bl2=$jml_bl[0]+1; 
+                                      $jml_bl2=$jml_bl[0]+1;
                                       ?>
                                           <input type="text" class="form-control" readonly="" name="bl" value="<?php echo $id_comp[0]?>BL<?php echo $jml_bl2 ?><?php echo $date ?>" required>
                                       </div>
@@ -112,13 +112,13 @@
 
                                     <!-- cek wins -->
                                   <div class="form-group">
-                                  <?php 
-                                    $win_number=$_REQUEST['win_num']; 
-                                    $win_num=mysql_fetch_array(mysql_query("select wins_used from t4t_shipment where no_shipment='$no_ship' "));
+                                  <?php
+                                    $win_number=$_REQUEST['win_num'];
+                                    $win_num=mysql_fetch_array(mysql_query("select wins1 from t4t_order where no_order='$no_order' "));
                                   ?>
                                       <label class="col-sm-2 control-label">Wins Number</label>
                                       <div class="col-sm-4">
-                                          <input type="number" class="form-control" name="win_num" value="<?php echo $win_number ?>" required>
+                                          <input type="number" class="form-control" name="win_num" value="<?php echo $win_num[0] ?>" required>
                                       </div>
                                       <label class="col-sm-2 "></label>
                                       <!-- <div class="col-sm-10">
@@ -129,9 +129,9 @@
 
                                       <!-- Destination -->
                                       <div class="form-group">
-                                  <?php 
-                                    $destination=$_REQUEST['destination']; 
-                                    
+                                  <?php
+                                    $destination=$_REQUEST['destination'];
+
                                   ?>
                                       <label class="col-sm-2 control-label">Destination</label>
                                       <div class="col-sm-10">
@@ -156,9 +156,9 @@
                                           <input type="" class="form-control " name="tersedia" value="<?php  echo $tersedia[0];?> available trees" required="" readonly>
                                       </div>
                                   </div>
-                                      <!-- CLOSE TOTAL ALLO -->                                     
+                                      <!-- CLOSE TOTAL ALLO -->
 
-                                  <?php  } 
+                                  <?php  }
                                   if ($no_ship) {
 
                                   ?>
@@ -175,8 +175,8 @@
                                  //if submit check
                                  $cek=$_REQUEST['cek'];
                                  if ($cek) {
-                             
-                                   
+
+
                                    date_default_timezone_set('Asia/Jakarta');
                                    $time=date("Y-m-d");
                                    $bl=$_REQUEST['bl'];
@@ -184,7 +184,7 @@
                                    // $cek_order=mysql_fetch_array(mysql_query("select * from t4t_wins where no_order='$no_order' and no_shipment='$no_ship' limit 1"));
                                    // $cek_jumlah_wins=mysql_fetch_array(mysql_query("select * from t4t_shipment where wins_used not like '%-%' and wins_used not like '%,%' and no_shipment='$no_ship'"));
                                    $cek_nomor_wins=mysql_fetch_array(mysql_query("select wins from t4t_wins where wins='$win_number'"));
-                                  
+
                                   if ($cek_nomor_wins[0]==$win_number) {
                                     ?>
                                     <!-- modal -->
@@ -197,7 +197,7 @@
                                                   <h4 class="modal-title alert alert-danger"><strong>Not Allowed!</strong></h4>
                                                   </div>
                                                   <div class="modal-body">
-                                                  
+
 
                                                       Wins is already activated.
                                                   </div>
@@ -208,7 +208,7 @@
                                   <!-- end modal -->
 
 
-                                  <?php  
+                                  <?php
                                   }
                                   else  { //jumlah wins 1
                                         ?>
@@ -218,7 +218,7 @@
                                   <div align="center">
                                   <?php $pohon=$_REQUEST['total_trees'];
                                         $unallocated=$total_allo-$pohon;
-                                        
+
                                   ?>
 
                                   <input type="hidden" name="partisipan" value="<?php echo $parts ?>">
@@ -234,8 +234,8 @@
                                   <input type="hidden" name="no_order" value="<?php echo $no_order ?>">
                                   <input type="hidden" name="unallocated" value="<?php echo $unallocated ?>">
                                   <input type="hidden" name="land" value="<?php echo $land ?>">
-                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">  
-                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">                            
+                                  <input type="hidden" name="log" value="<?php echo $_SESSION['id'] ?>">
+                                  <input type="hidden" name="destination" value="<?php echo $destination ?>">
 
 
                                   <!-- modal -->
@@ -284,9 +284,9 @@
                                                             <td>:</td>
                                                             <td><?php echo $total_allo ?></td>
                                                           </tr>
-                                                         
-                                                          
-                                                          
+
+
+
                                                         </table>
                                                         <br><br>
 
